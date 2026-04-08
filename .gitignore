@@ -1,1 +1,15 @@
+# HAPPENHAUS — Git Ignore
+# ─────────────────────────────────────────────────
+# CRITICAL: Never commit config.js — it contains API keys
 config.js
+ 
+# OS
+.DS_Store
+Thumbs.db
+ 
+# Editors
+.vscode/
+.idea/
+ 
+# Node (if used locally)
+node_modules/
