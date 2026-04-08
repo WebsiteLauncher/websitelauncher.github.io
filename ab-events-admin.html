@@ -3,7 +3,10 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>HAPPENHAUS — Admin Dashboard</title>
+<title>HAPPENHAUS Admin — Event Management Console</title>
+<meta name="description" content="HAPPENHAUS Admin Dashboard — manage bookings, pipeline, gallery and team."/>
+<meta name="robots" content="noindex, nofollow"/>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23080808'/><rect x='2' y='4' width='5' height='24' fill='%23C9A84C' rx='1'/><rect x='13' y='4' width='5' height='24' fill='%23C9A84C' rx='1'/><rect x='2' y='13' width='28' height='6' fill='%23C9A84C' rx='1'/><rect x='18' y='4' width='5' height='24' fill='%23C9A84C' rx='1'/><rect x='25' y='4' width='5' height='24' fill='%23C9A84C' rx='1'/></svg>" type="image/svg+xml"/>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
 <!-- EmailJS for notifications -->
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
@@ -339,7 +342,20 @@ tbody tr:hover td{background:var(--s2);}
 <div id="loginScreen">
   <div class="login-wrap">
     <div class="login-chip">⚡ Admin Portal</div>
-    <div class="login-logo">HAPPENHAUS</div>
+    <div style="text-align:center;margin-bottom:24px;">
+      <svg width="100" height="92" viewBox="0 0 100 92" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs><linearGradient id="alg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#E2C97E"/><stop offset="50%" stop-color="#C9A84C"/><stop offset="100%" stop-color="#8B6914"/></linearGradient></defs>
+        <rect x="2"  y="6" width="14" height="70" fill="url(#alg)" rx="2"/>
+        <rect x="42" y="6" width="14" height="70" fill="url(#alg)" rx="2"/>
+        <rect x="2"  y="34" width="84" height="14" fill="url(#alg)" rx="2"/>
+        <rect x="56" y="6" width="14" height="70" fill="url(#alg)" rx="2"/>
+        <rect x="84" y="6" width="14" height="70" fill="url(#alg)" rx="2"/>
+        <rect x="40" y="6" width="60" height="46" fill="none" stroke="#C9A84C" stroke-width="0.8" opacity="0.28"/>
+        <line x1="2"  y1="34" x2="100" y2="34" stroke="#C9A84C" stroke-width="0.5" opacity="0.2"/>
+        <text x="91" y="22" font-family="Georgia,serif" font-size="13" fill="#C9A84C" opacity="0.75">2</text>
+        <text x="8" y="88" font-family="Syne,sans-serif" font-size="9" letter-spacing="4" fill="#C9A84C" opacity="0.85">HAPPENHAUS</text>
+      </svg>
+    </div>
     <div class="login-sub">Administration Dashboard</div>
     <div class="auth-tabs" id="adminAuthTabs">
       <button class="auth-tab active" onclick="switchAdminTab('login')">Sign In</button>
@@ -386,7 +402,20 @@ tbody tr:hover td{background:var(--s2);}
 
 <!-- ═══ SIDEBAR ═══ -->
 <aside id="sidebar">
-  <div class="sb-top"><div class="sb-logo">AB Events</div><div class="sb-tag">Administration Dashboard</div></div>
+  <div class="sb-top">
+    <svg width="130" height="36" viewBox="0 0 130 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs><linearGradient id="slg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#E2C97E"/><stop offset="100%" stop-color="#9A7520"/></linearGradient></defs>
+      <rect x="0" y="2" width="7" height="28" fill="url(#slg)" rx="1"/>
+      <rect x="17" y="2" width="7" height="28" fill="url(#slg)" rx="1"/>
+      <rect x="0" y="14" width="33" height="6" fill="url(#slg)" rx="1"/>
+      <rect x="22" y="2" width="7" height="28" fill="url(#slg)" rx="1"/>
+      <rect x="40" y="2" width="7" height="28" fill="url(#slg)" rx="1"/>
+      <text x="48" y="13" font-family="Georgia,serif" font-size="8" fill="#C9A84C" opacity="0.8">2</text>
+      <line x1="0" y1="14" x2="48" y2="14" stroke="#C9A84C" stroke-width="0.4" opacity="0.3"/>
+      <text x="52" y="18" font-family="Syne,sans-serif" font-size="11" letter-spacing="2" fill="url(#slg)" font-weight="700">HAPPENHAUS</text>
+    </svg>
+    <div class="sb-tag">Admin · HAPPENHAUS</div>
+  </div>
   <nav class="sb-nav">
     <div class="sb-sec">Overview</div>
     <a class="nav-item active" href="#" onclick="showPanel('dashboard',this)"><span class="nav-icon">📊</span>Dashboard</a>
@@ -703,18 +732,22 @@ tbody tr:hover td{background:var(--s2);}
 
 <script>
 // ════════════════════════════════════════════════════
-//  AB EVENTS & DECORS — ADMIN DASHBOARD
+//  HAPPENHAUS — ADMIN DASHBOARD
 //  Uses Firebase Compat (no ES modules) for reliability
 // ════════════════════════════════════════════════════
 
 // ── FIREBASE CONFIG ──
-const firebaseConfig = {
-  apiKey:            "AIzaSyDo8u-SZMHPXBLdJV4oq5rNiPz6p33KSF4",
-  authDomain:        "abevents-38a91.firebaseapp.com",
-  projectId:         "abevents-38a91",
-  storageBucket:     "abevents-38a91.appspot.com",
-  messagingSenderId: "408468587854",
-  appId:             "1:408468587854:web:09c108c41c4fb7cd81ca1f"
+// SECURITY: Load from window.__HH_CFG__ injected by config.js
+// Create config.js: window.__HH_CFG__ = { apiKey:"...", ... }
+// Add <script src="config.js"></script> in <head>
+// NEVER commit real keys to source control.
+const firebaseConfig = (window.__HH_CFG__) || {
+  apiKey:            "REPLACE_WITH_ENV_VAR",
+  authDomain:        "REPLACE_WITH_ENV_VAR",
+  projectId:         "REPLACE_WITH_ENV_VAR",
+  storageBucket:     "REPLACE_WITH_ENV_VAR",
+  messagingSenderId: "REPLACE_WITH_ENV_VAR",
+  appId:             "REPLACE_WITH_ENV_VAR"
 };
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
@@ -722,8 +755,9 @@ const db   = firebase.firestore();
 
 // ── CLOUDINARY CONFIG ──
 // Replace YOUR_CLOUD_NAME with your Cloudinary cloud name from cloudinary.com
-var CLOUDINARY_CLOUD  = 'di0ihwmg0';
-var CLOUDINARY_PRESET = 'ab_events_gallery';
+// SECURITY: Load from config.js → window.__HH_MEDIA__
+var CLOUDINARY_CLOUD  = (window.__HH_MEDIA__ && window.__HH_MEDIA__.cloud)  || 'REPLACE_WITH_ENV_VAR';
+var CLOUDINARY_PRESET = (window.__HH_MEDIA__ && window.__HH_MEDIA__.preset) || 'REPLACE_WITH_ENV_VAR';
 
 // ── EMAILJS CONFIG (optional) ──
 var EMAILJS_SERVICE_ID  = 'YOUR_EMAILJS_SERVICE_ID';
@@ -732,11 +766,12 @@ var EMAILJS_PUBLIC_KEY  = 'YOUR_EMAILJS_PUBLIC_KEY';
 
 // ── ADMIN WHITELIST ──
 // Add YOUR email address here to gain access
-var ADMIN_EMAILS = [
-  'srikanth.ambati4957@gmail.com',
-  'owner@abevents.in',
-  'abevents@gmail.com'
-  // 'youremail@gmail.com'  ← ADD YOUR EMAIL HERE
+// SECURITY: Admin emails should be stored in Firestore 'admin_roles' collection
+// or loaded via window.__HH_ADMINS__ from config.js
+// Example config.js: window.__HH_ADMINS__ = ['admin@happenhaus.in']
+var ADMIN_EMAILS = (window.__HH_ADMINS__) || [
+  // ADD YOUR ADMIN EMAIL VIA config.js — do not hardcode here
+  'srikanth.ambati4957@gmail.com'  // ← REMOVE after adding config.js
 ];
 
 // ── PIPELINE STAGES ──

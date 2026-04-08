@@ -6,11 +6,29 @@
 <title>HAPPENHAUS — Where Every Moment Becomes Extraordinary</title>
 <meta name="theme-color" content="#C9A84C"/>
 <link rel="manifest" href="manifest.json"/>
-
-<meta name="theme-color" content="#C9A84C"/>
+<!-- SEO -->
+<meta name="description" content="HAPPENHAUS — Hyderabad's premier celebration studio. Luxury decor, photography, lighting, music &amp; complete event management. Every Occasion, Perfectly Crafted."/>
+<meta name="keywords" content="HAPPENHAUS, event management Hyderabad, wedding decor, luxury events, photography, lighting design, Jubilee Hills"/>
+<meta name="author" content="HAPPENHAUS"/>
+<meta name="robots" content="index, follow"/>
+<!-- Open Graph -->
+<meta property="og:type" content="website"/>
+<meta property="og:site_name" content="HAPPENHAUS"/>
+<meta property="og:title" content="HAPPENHAUS — Every Occasion, Perfectly Crafted"/>
+<meta property="og:description" content="Hyderabad's premier celebration studio for weddings, decor, photography, lighting &amp; complete event management."/>
+<meta property="og:image" content="https://placehold.co/1200x630/080808/C9A84C?text=HAPPENHAUS"/>
+<meta property="og:url" content="https://happenhaus.in"/>
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="HAPPENHAUS — Every Occasion, Perfectly Crafted"/>
+<meta name="twitter:description" content="Hyderabad's premier event studio — weddings, decor, photography, lighting &amp; entertainment."/>
+<meta name="twitter:image" content="https://placehold.co/1200x630/080808/C9A84C?text=HAPPENHAUS"/>
+<!-- PWA -->
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <meta name="apple-mobile-web-app-title" content="HAPPENHAUS"/>
+<!-- Favicon (gold H² on dark) -->
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23080808'/><rect x='2' y='4' width='5' height='24' fill='%23C9A84C' rx='1'/><rect x='13' y='4' width='5' height='24' fill='%23C9A84C' rx='1'/><rect x='2' y='13' width='28' height='6' fill='%23C9A84C' rx='1'/><rect x='18' y='4' width='5' height='24' fill='%23C9A84C' rx='1'/><rect x='25' y='4' width='5' height='24' fill='%23C9A84C' rx='1'/></svg>" type="image/svg+xml"/>
 <!-- EmailJS -->
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500;600&family=Italiana&display=swap" rel="stylesheet"/>
@@ -198,6 +216,11 @@ section{padding:88px 0;}
 .bk-contacts{margin-top:34px;display:flex;flex-direction:column;gap:14px;}
 .c-item{display:flex;align-items:center;gap:12px;font-size:.82rem;color:var(--cream);}
 .c-icon{width:36px;height:36px;border:1px solid rgba(201,168,76,.25);display:flex;align-items:center;justify-content:center;color:var(--gold);flex-shrink:0;border-radius:var(--r);}
+.bk-svc-chips{margin-top:28px;margin-bottom:24px;}
+.bk-svc-label{font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;}
+.bk-svc-list{display:flex;flex-wrap:wrap;gap:7px;}
+.bk-svc-chip{font-size:.68rem;background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.16);color:var(--cream);padding:5px 11px;border-radius:100px;white-space:nowrap;transition:var(--tr);}
+.bk-svc-chip:hover{background:rgba(201,168,76,.12);border-color:rgba(201,168,76,.35);}
 .bk-form-box{background:var(--dark2);padding:38px;border:1px solid rgba(201,168,76,.08);border-radius:var(--r);}
 .fg{margin-bottom:18px;}
 .fl{display:block;font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:6px;}
@@ -267,9 +290,7 @@ section{padding:88px 0;}
 .rev-nm{font-size:.8rem;font-weight:500;}
 .rev-ev{font-size:.7rem;color:var(--muted);}
 .rev-empty{text-align:center;padding:48px;color:var(--muted);font-size:.86rem;}
-/* Review submission */
-.rev-submit-card{background:var(--dark2);padding:32px;border:1px solid rgba(201,168,76,.1);border-radius:var(--r);margin-top:36px;}
-.rev-submit-card h3{font-family:var(--fd);font-size:1.5rem;color:var(--cream);margin-bottom:6px;}
+/* star-picker used only in review modal */
 .star-picker{display:flex;gap:6px;margin:12px 0 18px;}
 .star-picker span{font-size:1.8rem;cursor:pointer;color:var(--dark3);transition:var(--tr);}
 .star-picker span.sel{color:var(--gold);}
@@ -345,7 +366,8 @@ section{padding:88px 0;}
 /* ── FOOTER ── */
 footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:54px 0 26px;}
 .ft-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:42px;margin-bottom:40px;}
-.ft-brand{font-family:var(--fd);font-size:1.45rem;color:var(--gold);margin-bottom:11px;}
+.ft-brand-wrap{margin-bottom:14px;}
+.ft-tagline{font-family:var(--fd);font-size:.78rem;font-style:italic;color:rgba(201,168,76,.55);margin-top:8px;letter-spacing:.04em;}
 .ft-about{font-size:.78rem;color:var(--muted);line-height:1.8;}
 .ft-h{font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;}
 .ft-links{display:flex;flex-direction:column;gap:8px;}
@@ -385,6 +407,7 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
 .intro-bar{width:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:22px auto 0;animation:barGrow .8s 1.4s ease forwards;}
 @keyframes barGrow{to{width:120px;}}
 .intro-sub{font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.25);margin-top:14px;opacity:0;animation:fadeUp .6s 1.8s ease forwards;}
+.intro-svg-mark{opacity:0;animation:fadeUp .7s .35s cubic-bezier(.22,1,.36,1) forwards;filter:drop-shadow(0 0 18px rgba(201,168,76,.22));margin-bottom:8px;}
 
 
 /* ── BOOKING STATUS EXTRA CLASSES ── */
@@ -428,8 +451,31 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
   <div class="intro-logo-wrap">
     <div class="intro-ring"></div>
     <div class="intro-ring intro-ring2"></div>
+    <!-- H² SVG Monogram -->
+    <svg class="intro-svg-mark" width="140" height="130" viewBox="0 0 140 130" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="ig" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#E2C97E"/>
+          <stop offset="50%" stop-color="#C9A84C"/>
+          <stop offset="100%" stop-color="#8B6914"/>
+        </linearGradient>
+      </defs>
+      <!-- Left H -->
+      <rect x="4"  y="8" width="18" height="100" fill="url(#ig)" rx="2"/>
+      <rect x="58" y="8" width="18" height="100" fill="url(#ig)" rx="2"/>
+      <rect x="4"  y="49" width="110" height="18" fill="url(#ig)" rx="2"/>
+      <!-- Right H (shares crossbar) -->
+      <rect x="72" y="8" width="18" height="100" fill="url(#ig)" rx="2"/>
+      <rect x="118"y="8" width="18" height="100" fill="url(#ig)" rx="2"/>
+      <!-- Architectural grid lines -->
+      <rect x="58" y="8" width="78" height="62" fill="none" stroke="#C9A84C" stroke-width="0.8" opacity="0.3" rx="0"/>
+      <line x1="4"  y1="49" x2="138" y2="49"  stroke="#C9A84C" stroke-width="0.5" opacity="0.25"/>
+      <line x1="107"y1="8"  x2="107" y2="108" stroke="#C9A84C" stroke-width="0.5" opacity="0.2"/>
+      <!-- Superscript ² -->
+      <text x="126" y="26" font-family="Georgia,serif" font-size="18" fill="#C9A84C" opacity="0.8">2</text>
+    </svg>
     <div class="intro-wordmark">HAPPEN<span>HAUS</span></div>
-    <div class="intro-tagline">Where Every Moment Becomes Extraordinary</div>
+    <div class="intro-tagline">Every Occasion, Perfectly Crafted</div>
     <div class="intro-bar"></div>
     <div class="intro-sub">Hyderabad · Est. 2012</div>
   </div>
@@ -449,7 +495,33 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
 
 <!-- NAV -->
 <nav id="mainNav">
-  <a href="#" class="nav-logo">HAPPENHAUS</a>
+  <a href="#" class="nav-logo" aria-label="HAPPENHAUS Home">
+    <svg width="160" height="40" viewBox="0 0 160 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <linearGradient id="ng" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#E2C97E"/>
+          <stop offset="60%" stop-color="#C9A84C"/>
+          <stop offset="100%" stop-color="#9A7520"/>
+        </linearGradient>
+      </defs>
+      <!-- Left H -->
+      <rect x="1" y="4" width="7" height="32" fill="url(#ng)" rx="1"/>
+      <rect x="19" y="4" width="7" height="32" fill="url(#ng)" rx="1"/>
+      <rect x="1" y="17" width="34" height="6" fill="url(#ng)" rx="1"/>
+      <!-- Right H (shared crossbar) -->
+      <rect x="24" y="4" width="7" height="32" fill="url(#ng)" rx="1"/>
+      <rect x="42" y="4" width="7" height="32" fill="url(#ng)" rx="1"/>
+      <!-- Superscript 2 -->
+      <text x="50" y="12" font-family="Georgia,serif" font-size="9" fill="#C9A84C" opacity="0.85">2</text>
+      <!-- Grid lines (architectural) -->
+      <line x1="1" y1="17" x2="50" y2="17" stroke="#C9A84C" stroke-width="0.4" opacity="0.35"/>
+      <line x1="1" y1="23" x2="50" y2="23" stroke="#C9A84C" stroke-width="0.4" opacity="0.2"/>
+      <line x1="35" y1="4" x2="35" y2="36" stroke="#C9A84C" stroke-width="0.4" opacity="0.25"/>
+      <!-- Wordmark -->
+      <text x="62" y="19" font-family="Italiana,Georgia,serif" font-size="13" letter-spacing="2.5" fill="url(#ng)" font-weight="400">HAPPEN</text>
+      <text x="62" y="34" font-family="Italiana,Georgia,serif" font-size="13" letter-spacing="2.5" fill="#C9A84C" font-weight="400" opacity="0.82">HAUS</text>
+    </svg>
+  </a>
   <div class="nav-mid">
     <a href="#services">Services</a>
     <a href="#gallery-section">Gallery</a>
@@ -575,10 +647,24 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
         <h2 class="s-ttl">Let's Create<br>Something <em>Beautiful</em></h2>
         <div class="divider"></div>
         <p>Ready to turn your vision into reality? Sign in or create an account. Our HAPPENHAUS specialists reach out within 24 hours.</p>
+        <!-- Services We Offer -->
+        <div class="bk-svc-chips">
+          <div class="bk-svc-label">What We Offer</div>
+          <div class="bk-svc-list">
+            <span class="bk-svc-chip">🌸 Luxury Decor</span>
+            <span class="bk-svc-chip">📷 Photography</span>
+            <span class="bk-svc-chip">🎵 Live Music</span>
+            <span class="bk-svc-chip">✨ Lighting Design</span>
+            <span class="bk-svc-chip">🎊 Full Event Management</span>
+            <span class="bk-svc-chip">💍 Wedding Planning</span>
+            <span class="bk-svc-chip">🎂 Birthday &amp; Celebrations</span>
+            <span class="bk-svc-chip">🏢 Corporate Events</span>
+          </div>
+        </div>
         <div class="bk-contacts">
           <div class="c-item"><div class="c-icon">📍</div><span>Jubilee Hills, Hyderabad, Telangana</span></div>
           <div class="c-item"><div class="c-icon">📞</div><span>+91 7386030321</span></div>
-          <div class="c-item"><div class="c-icon">✉️</div><span><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="e9818c858586a9888b8c9f8c879d9ac78087">[email&#160;protected]</a></span></div>
+          <div class="c-item"><div class="c-icon">✉️</div><span>happenhaus.in@gmail.com</span></div>
           <div class="c-item"><div class="c-icon">🕐</div><span>Mon–Sat: 10 AM – 7 PM</span></div>
         </div>
       </div>
@@ -672,24 +758,7 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
       <div><div class="rev-avg-num" id="revAvgNum">—</div><div class="rev-avg-stars" id="revAvgStars"></div><div class="rev-avg-count" id="revAvgCount">Loading reviews…</div></div>
     </div>
     <div class="rev-grid" id="revGrid"><div class="rev-empty">Loading reviews…</div></div>
-    <!-- Submit Review (visible when logged in and has confirmed booking) -->
-    <div class="rev-submit-card hidden" id="revSubmitCard">
-      <h3>Share Your Experience</h3>
-      <p style="font-size:.8rem;color:var(--muted);margin-bottom:14px;">Your review helps other families choose the right event partner.</p>
-      <label class="fl">Your Rating *</label>
-      <div class="star-picker" id="starPicker">
-        <span onclick="setRating(1)" data-v="1">★</span>
-        <span onclick="setRating(2)" data-v="2">★</span>
-        <span onclick="setRating(3)" data-v="3">★</span>
-        <span onclick="setRating(4)" data-v="4">★</span>
-        <span onclick="setRating(5)" data-v="5">★</span>
-      </div>
-      <div class="fg"><label class="fl">Your Review *</label><textarea class="fta" id="revText" placeholder="Tell us about your HAPPENHAUS experience…" style="min-height:80px;"></textarea></div>
-      <div class="fg"><label class="fl">Your Name (shown publicly)</label><input class="fi" id="revName" placeholder="e.g. Priya &amp; Rahul"/></div>
-      <div class="fg"><label class="fl">Event Type</label><input class="fi" id="revEvent" placeholder="e.g. Wedding · Taj Falaknuma"/></div>
-      <button class="sub-btn" onclick="submitReview()" style="margin-top:4px;">Submit Review →</button>
-      <div id="revSt" style="margin-top:10px;font-size:.78rem;"></div>
-    </div>
+    <!-- Review submissions are handled via the booking completion modal -->
   </div>
 </section>
 
@@ -707,7 +776,26 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
 <footer>
   <div class="con">
     <div class="ft-grid">
-      <div><div class="ft-brand">HAPPENHAUS</div><p class="ft-about">Hyderabad's premier celebration studio — where every moment is crafted with passion, precision, and a touch of the extraordinary.</p></div>
+      <div><div class="ft-brand-wrap">
+        <svg width="130" height="32" viewBox="0 0 130 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="HAPPENHAUS">
+          <defs>
+            <linearGradient id="fg2" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#E2C97E"/>
+              <stop offset="100%" stop-color="#9A7520"/>
+            </linearGradient>
+          </defs>
+          <rect x="0" y="2" width="6" height="28" fill="url(#fg2)" rx="1"/>
+          <rect x="16" y="2" width="6" height="28" fill="url(#fg2)" rx="1"/>
+          <rect x="0" y="13" width="30" height="6" fill="url(#fg2)" rx="1"/>
+          <rect x="20" y="2" width="6" height="28" fill="url(#fg2)" rx="1"/>
+          <rect x="37" y="2" width="6" height="28" fill="url(#fg2)" rx="1"/>
+          <text x="45" y="12" font-family="Georgia,serif" font-size="7" fill="#C9A84C" opacity="0.8">2</text>
+          <line x1="0" y1="13" x2="44" y2="13" stroke="#C9A84C" stroke-width="0.4" opacity="0.3"/>
+          <text x="50" y="15" font-family="Italiana,Georgia,serif" font-size="11" letter-spacing="2" fill="url(#fg2)">HAPPEN</text>
+          <text x="50" y="28" font-family="Italiana,Georgia,serif" font-size="11" letter-spacing="2" fill="#C9A84C" opacity="0.75">HAUS</text>
+        </svg>
+        <p class="ft-tagline">Every Occasion, Perfectly Crafted</p>
+      </div><p class="ft-about">Hyderabad's premier celebration studio — where every moment is crafted with passion, precision, and a touch of the extraordinary.</p></div>
       <div><div class="ft-h">Services</div><div class="ft-links"><a href="#services">Decor &amp; Styling</a><a href="#services">Photography</a><a href="#services">Music &amp; DJ</a><a href="#services">Lighting</a></div></div>
       <div><div class="ft-h">Company</div><div class="ft-links"><a href="#process">Our Process</a><a href="#reviews">Reviews</a><a href="#booking">Contact</a></div></div>
       <div><div class="ft-h">Connect</div><div class="ft-links"><a href="#">Instagram</a><a href="#">Facebook</a><a href="#">Pinterest</a><a href="#">YouTube</a></div></div>
@@ -737,6 +825,20 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
 <div class="m-ov" id="authModal">
   <div class="m-box">
     <button class="m-x" onclick="closeAuth()">×</button>
+<div style="text-align:center;margin-bottom:18px;">
+      <svg width="90" height="82" viewBox="0 0 90 82" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs><linearGradient id="ag" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#E2C97E"/><stop offset="100%" stop-color="#8B6914"/></linearGradient></defs>
+        <rect x="2" y="4" width="12" height="64" fill="url(#ag)" rx="1.5"/>
+        <rect x="38" y="4" width="12" height="64" fill="url(#ag)" rx="1.5"/>
+        <rect x="2"  y="30" width="72" height="12" fill="url(#ag)" rx="1.5"/>
+        <rect x="48" y="4" width="12" height="64" fill="url(#ag)" rx="1.5"/>
+        <rect x="76" y="4" width="12" height="64" fill="url(#ag)" rx="1.5"/>
+        <rect x="36" y="4" width="52" height="40" fill="none" stroke="#C9A84C" stroke-width="0.7" opacity="0.28"/>
+        <line x1="2" y1="30" x2="90" y2="30" stroke="#C9A84C" stroke-width="0.5" opacity="0.2"/>
+        <text x="82" y="16" font-family="Georgia,serif" font-size="12" fill="#C9A84C" opacity="0.75">2</text>
+        <text x="10" y="78" font-family="Italiana,Georgia,serif" font-size="10" letter-spacing="3.5" fill="#C9A84C" opacity="0.8">HAPPENHAUS</text>
+      </svg>
+    </div>
     <div class="m-ttl">Welcome</div>
     <div class="m-sub">Sign in or create a free account to book your event</div>
     <div class="m-tabs" id="mTabs">
@@ -854,13 +956,36 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/fireba
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, sendPasswordResetEmail, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getFirestore, collection, addDoc, query, where, getDocs, getDoc, doc, updateDoc, orderBy, serverTimestamp, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyDo8u-SZMHPXBLdJV4oq5rNiPz6p33KSF4",
-  authDomain: "abevents-38a91.firebaseapp.com",
-  projectId: "abevents-38a91",
-  storageBucket: "abevents-38a91.appspot.com",
-  messagingSenderId: "408468587854",
-  appId: "1:408468587854:web:09c108c41c4fb7cd81ca1f"
+/* ─────────────────────────────────────────────────────────────
+   SECURITY: Firebase config is loaded from window.__HH_CFG__
+   which should be injected by your build/server using
+   environment variables — NEVER commit real keys to source.
+
+   For local dev: create a config.js alongside index.html:
+     window.__HH_CFG__ = {
+       apiKey:            "YOUR_API_KEY",
+       authDomain:        "YOUR_AUTH_DOMAIN",
+       projectId:         "YOUR_PROJECT_ID",
+       storageBucket:     "YOUR_STORAGE_BUCKET",
+       messagingSenderId: "YOUR_SENDER_ID",
+       appId:             "YOUR_APP_ID"
+     };
+   Then add <script src="config.js"></script> in <head>.
+
+   For GitHub Pages / static hosting: use a CI secret to
+   generate config.js at build time (GitHub Actions example):
+     echo "window.__HH_CFG__={apiKey:'${{ secrets.FB_API_KEY }}',...}" > config.js
+
+   NEVER hardcode real values below.
+───────────────────────────────────────────────────────────── */
+const firebaseConfig = (window.__HH_CFG__) || {
+  /* FALLBACK — replace with real values via config.js above */
+  apiKey:            "REPLACE_WITH_ENV_VAR",
+  authDomain:        "REPLACE_WITH_ENV_VAR",
+  projectId:         "REPLACE_WITH_ENV_VAR",
+  storageBucket:     "REPLACE_WITH_ENV_VAR",
+  messagingSenderId: "REPLACE_WITH_ENV_VAR",
+  appId:             "REPLACE_WITH_ENV_VAR"
 };
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
@@ -899,8 +1024,7 @@ onAuthStateChanged(auth, async user => {
     checkMaintenanceMode();
     loadReviews();
     // Check for confirmed booking to show review form
-    const hasConfirmed = myBookings.some(b=>b.status==='confirmed');
-    if(hasConfirmed) document.getElementById('revSubmitCard').classList.remove('hidden');
+    // Review available only on completed bookings — handled via booking card button
   } else {
     currentUser = null; myBookings = [];
     document.getElementById('guestNav').classList.remove('hidden');
@@ -1162,7 +1286,7 @@ function renderBookingsList(docs) {
   // Check for completed bookings to allow reviews
   const hasCompleted = myBookings.some(b=>b.status==='completed'||b.pipeline==='Completed');
   const hasConfirmed = myBookings.some(b=>b.status==='confirmed'||b.pipeline==='Confirmed');
-  if(hasCompleted||hasConfirmed) document.getElementById('revSubmitCard').classList.remove('hidden');
+  // Review buttons appear inline on completed booking cards
 }
 
 async function loadMyBookings(uid) {
@@ -1286,36 +1410,7 @@ async function loadReviews(){
   }
 }
 
-let selectedRating=0;
-window.setRating=(n)=>{
-  selectedRating=n;
-  document.querySelectorAll('#starPicker span').forEach((s,i)=>s.classList.toggle('sel',i<n));
-};
-window.submitReview=async()=>{
-  const st=document.getElementById('revSt');
-  if(!selectedRating){st.innerHTML='<span class="a-err">Please select a star rating.</span>';return;}
-  const text=document.getElementById('revText').value.trim();
-  if(!text){st.innerHTML='<span class="a-err">Please write a review.</span>';return;}
-  st.innerHTML='<span style="color:var(--gold)">Submitting…</span>';
-  try{
-    await addDoc(collection(db,'reviews'),{
-      rating:selectedRating,
-      text,
-      name:document.getElementById('revName').value.trim()||'Anonymous',
-      event:document.getElementById('revEvent').value.trim(),
-      userId:currentUser?currentUser.uid:'',
-      approved:false,
-      createdAt:serverTimestamp()
-    });
-    st.innerHTML='<span class="a-ok">✓ Thank you! Your review will appear after admin approval.</span>';
-    showToast('Review submitted! Thank you 🌟');
-    document.getElementById('revText').value='';
-    document.getElementById('revName').value='';
-    document.getElementById('revEvent').value='';
-    selectedRating=0;
-    document.querySelectorAll('#starPicker span').forEach(s=>s.classList.remove('sel'));
-  }catch(e){st.innerHTML=`<span class="a-err">${e.message}</span>`;}
-};
+// Review submission handled via per-booking modal (openReviewModal / submitModalReview)
 
 // ── CUSTOMER NOTIFICATIONS ──
 function loadCustomerNotifications(uid){
