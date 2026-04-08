@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>AB Events & Decors</title>
+<script>
+// GitHub Pages SPA fix — redirect 404s back to index.html
+// This preserves the URL path as a query parameter
+var path = window.location.pathname;
+var search = window.location.search;
+var hash = window.location.hash;
+// Store the original path so index.html can restore it
+sessionStorage.setItem('redirect_path', path + search + hash);
+// Redirect to root index.html
+window.location.replace(
+  window.location.protocol + '//' + window.location.hostname + 
+  (window.location.port ? ':' + window.location.port : '') + '/'
+);
+</script>
+</head>
+<body>
+<p style="font-family:sans-serif;color:#888;text-align:center;padding:40px;">
+  Redirecting to AB Events &amp; Decors…
+</p>
+</body>
+</html>
