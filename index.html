@@ -451,28 +451,32 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
   <div class="intro-logo-wrap">
     <div class="intro-ring"></div>
     <div class="intro-ring intro-ring2"></div>
-    <!-- H² SVG Monogram -->
-    <svg class="intro-svg-mark" width="140" height="130" viewBox="0 0 140 130" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- HAPPENHAUS H² Monogram — exact match to brand logo -->
+    <svg class="intro-svg-mark" width="160" height="148" viewBox="0 0 160 148" fill="none" xmlns="http://www.w3.org/2000/svg">
       <defs>
-        <linearGradient id="ig" x1="0" y1="0" x2="1" y2="1">
+        <linearGradient id="isplash" x1="0" y1="0" x2="1" y2="1">
           <stop offset="0%" stop-color="#E2C97E"/>
-          <stop offset="50%" stop-color="#C9A84C"/>
-          <stop offset="100%" stop-color="#8B6914"/>
+          <stop offset="55%" stop-color="#C9A84C"/>
+          <stop offset="100%" stop-color="#9A7520"/>
         </linearGradient>
       </defs>
-      <!-- Left H -->
-      <rect x="4"  y="8" width="18" height="100" fill="url(#ig)" rx="2"/>
-      <rect x="58" y="8" width="18" height="100" fill="url(#ig)" rx="2"/>
-      <rect x="4"  y="49" width="110" height="18" fill="url(#ig)" rx="2"/>
-      <!-- Right H (shares crossbar) -->
-      <rect x="72" y="8" width="18" height="100" fill="url(#ig)" rx="2"/>
-      <rect x="118"y="8" width="18" height="100" fill="url(#ig)" rx="2"/>
-      <!-- Architectural grid lines -->
-      <rect x="58" y="8" width="78" height="62" fill="none" stroke="#C9A84C" stroke-width="0.8" opacity="0.3" rx="0"/>
-      <line x1="4"  y1="49" x2="138" y2="49"  stroke="#C9A84C" stroke-width="0.5" opacity="0.25"/>
-      <line x1="107"y1="8"  x2="107" y2="108" stroke="#C9A84C" stroke-width="0.5" opacity="0.2"/>
-      <!-- Superscript ² -->
-      <text x="126" y="26" font-family="Georgia,serif" font-size="18" fill="#C9A84C" opacity="0.8">2</text>
+      <!-- Left H: stems at x=4 and x=60, crossbar y=61-76 -->
+      <rect x="4"   y="8"  width="20" height="132" fill="url(#isplash)" rx="2"/>
+      <rect x="60"  y="8"  width="20" height="132" fill="url(#isplash)" rx="2"/>
+      <!-- Shared extended crossbar -->
+      <rect x="4"   y="61" width="136" height="18" fill="url(#isplash)" rx="2"/>
+      <!-- Right H: stems at x=68 and x=124 -->
+      <rect x="68"  y="8"  width="20" height="132" fill="url(#isplash)" rx="2"/>
+      <rect x="124" y="8"  width="20" height="132" fill="url(#isplash)" rx="2"/>
+      <!-- Architectural frame around right H area -->
+      <rect x="58"  y="8"  width="88" height="82"  fill="none" stroke="#C9A84C" stroke-width="1.1" opacity="0.35" rx="0"/>
+      <!-- Two horizontal grid lines at crossbar level -->
+      <line x1="4"  y1="61"  x2="156" y2="61"  stroke="#C9A84C" stroke-width="0.7" opacity="0.28"/>
+      <line x1="4"  y1="79"  x2="156" y2="79"  stroke="#C9A84C" stroke-width="0.5" opacity="0.18"/>
+      <!-- Vertical guide line inside frame -->
+      <line x1="112" y1="8"  x2="112" y2="90"  stroke="#C9A84C" stroke-width="0.6" opacity="0.22"/>
+      <!-- Superscript 2 in top-right corner of frame -->
+      <text x="147" y="26" font-family="Georgia,serif" font-size="20" fill="#C9A84C" opacity="0.85">2</text>
     </svg>
     <div class="intro-wordmark">HAPPEN<span>HAUS</span></div>
     <div class="intro-tagline">Every Occasion, Perfectly Crafted</div>
@@ -496,31 +500,28 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
 <!-- NAV -->
 <nav id="mainNav">
   <a href="#" class="nav-logo" aria-label="HAPPENHAUS Home">
-    <svg width="160" height="40" viewBox="0 0 160 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <defs>
-        <linearGradient id="ng" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stop-color="#E2C97E"/>
-          <stop offset="60%" stop-color="#C9A84C"/>
-          <stop offset="100%" stop-color="#9A7520"/>
-        </linearGradient>
-      </defs>
-      <!-- Left H -->
-      <rect x="1" y="4" width="7" height="32" fill="url(#ng)" rx="1"/>
-      <rect x="19" y="4" width="7" height="32" fill="url(#ng)" rx="1"/>
-      <rect x="1" y="17" width="34" height="6" fill="url(#ng)" rx="1"/>
-      <!-- Right H (shared crossbar) -->
-      <rect x="24" y="4" width="7" height="32" fill="url(#ng)" rx="1"/>
-      <rect x="42" y="4" width="7" height="32" fill="url(#ng)" rx="1"/>
-      <!-- Superscript 2 -->
-      <text x="50" y="12" font-family="Georgia,serif" font-size="9" fill="#C9A84C" opacity="0.85">2</text>
-      <!-- Grid lines (architectural) -->
-      <line x1="1" y1="17" x2="50" y2="17" stroke="#C9A84C" stroke-width="0.4" opacity="0.35"/>
-      <line x1="1" y1="23" x2="50" y2="23" stroke="#C9A84C" stroke-width="0.4" opacity="0.2"/>
-      <line x1="35" y1="4" x2="35" y2="36" stroke="#C9A84C" stroke-width="0.4" opacity="0.25"/>
-      <!-- Wordmark -->
-      <text x="62" y="19" font-family="Italiana,Georgia,serif" font-size="13" letter-spacing="2.5" fill="url(#ng)" font-weight="400">HAPPEN</text>
-      <text x="62" y="34" font-family="Italiana,Georgia,serif" font-size="13" letter-spacing="2.5" fill="#C9A84C" font-weight="400" opacity="0.82">HAUS</text>
-    </svg>
+    <svg width="168" height="44" viewBox="0 0 168 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <linearGradient id="hgnav" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0%" stop-color="#E2C97E"/>
+    <stop offset="55%" stop-color="#C9A84C"/>
+    <stop offset="100%" stop-color="#9A7520"/>
+  </linearGradient>
+</defs>
+  <rect x="2.0" y="6.2" width="8.6" height="31.7" fill="url(#hgnav)" rx="1"/>
+  <rect x="26.3" y="6.2" width="8.6" height="31.7" fill="url(#hgnav)" rx="1"/>
+  <rect x="2.0" y="19.8" width="54.9" height="4.3" fill="url(#hgnav)" rx="1"/>
+  <rect x="28.8" y="6.2" width="8.6" height="31.7" fill="url(#hgnav)" rx="1"/>
+  <rect x="53.1" y="6.2" width="8.6" height="31.7" fill="url(#hgnav)" rx="1"/>
+  <rect x="25.0" y="6.2" width="40.9" height="19.6" fill="none" stroke="#C9A84C" stroke-width="0.7" opacity="0.32"/>
+  <line x1="2.0" y1="19.8" x2="65.8" y2="19.8" stroke="#C9A84C" stroke-width="0.45" opacity="0.28"/>
+  <line x1="2.0" y1="24.1" x2="65.8" y2="24.1" stroke="#C9A84C" stroke-width="0.35" opacity="0.18"/>
+  <line x1="41.6" y1="6.2" x2="41.6" y2="25.8" stroke="#C9A84C" stroke-width="0.35" opacity="0.2"/>
+  <text x="66.8" y="16.2" font-family="Georgia,serif" font-size="7" fill="#C9A84C" opacity="0.8">2</text>
+  <text x="74" y="17" font-family="Italiana,Georgia,serif" font-size="13" letter-spacing="2.6" fill="url(#hgnav)">HAPPEN</text>
+  <text x="74" y="30" font-family="Italiana,Georgia,serif" font-size="13" letter-spacing="2.6" fill="#C9A84C" opacity="0.82">HAUS</text>
+  <line x1="74" y1="24" x2="164" y2="24" stroke="#C9A84C" stroke-width="0.4" opacity="0.25"/>
+</svg>
   </a>
   <div class="nav-mid">
     <a href="#services">Services</a>
@@ -664,7 +665,7 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
         <div class="bk-contacts">
           <div class="c-item"><div class="c-icon">📍</div><span>Jubilee Hills, Hyderabad, Telangana</span></div>
           <div class="c-item"><div class="c-icon">📞</div><span>+91 7386030321</span></div>
-          <div class="c-item"><div class="c-icon">✉️</div><span>happenhaus.in@gmail.com</span></div>
+          <div class="c-item"><div class="c-icon">✉️</div><span>happenhaus.events@gmail.com</span></div>
           <div class="c-item"><div class="c-icon">🕐</div><span>Mon–Sat: 10 AM – 7 PM</span></div>
         </div>
       </div>
@@ -777,22 +778,30 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
   <div class="con">
     <div class="ft-grid">
       <div><div class="ft-brand-wrap">
-        <svg width="130" height="32" viewBox="0 0 130 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="HAPPENHAUS">
+        <svg width="148" height="36" viewBox="0 0 148 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="HAPPENHAUS">
           <defs>
-            <linearGradient id="fg2" x1="0" y1="0" x2="1" y2="1">
+            <linearGradient id="flogo" x1="0" y1="0" x2="1" y2="1">
               <stop offset="0%" stop-color="#E2C97E"/>
+              <stop offset="55%" stop-color="#C9A84C"/>
               <stop offset="100%" stop-color="#9A7520"/>
             </linearGradient>
           </defs>
-          <rect x="0" y="2" width="6" height="28" fill="url(#fg2)" rx="1"/>
-          <rect x="16" y="2" width="6" height="28" fill="url(#fg2)" rx="1"/>
-          <rect x="0" y="13" width="30" height="6" fill="url(#fg2)" rx="1"/>
-          <rect x="20" y="2" width="6" height="28" fill="url(#fg2)" rx="1"/>
-          <rect x="37" y="2" width="6" height="28" fill="url(#fg2)" rx="1"/>
-          <text x="45" y="12" font-family="Georgia,serif" font-size="7" fill="#C9A84C" opacity="0.8">2</text>
-          <line x1="0" y1="13" x2="44" y2="13" stroke="#C9A84C" stroke-width="0.4" opacity="0.3"/>
-          <text x="50" y="15" font-family="Italiana,Georgia,serif" font-size="11" letter-spacing="2" fill="url(#fg2)">HAPPEN</text>
-          <text x="50" y="28" font-family="Italiana,Georgia,serif" font-size="11" letter-spacing="2" fill="#C9A84C" opacity="0.75">HAUS</text>
+          <!-- Left H -->
+          <rect x="1"  y="2"  width="7"  height="32" fill="url(#flogo)" rx="1"/>
+          <rect x="19" y="2"  width="7"  height="32" fill="url(#flogo)" rx="1"/>
+          <rect x="1"  y="14" width="38" height="7"  fill="url(#flogo)" rx="1"/>
+          <!-- Right H (shares crossbar) -->
+          <rect x="24" y="2"  width="7"  height="32" fill="url(#flogo)" rx="1"/>
+          <rect x="43" y="2"  width="7"  height="32" fill="url(#flogo)" rx="1"/>
+          <!-- Frame + grid -->
+          <rect x="18" y="2"  width="33" height="21" fill="none" stroke="#C9A84C" stroke-width="0.6" opacity="0.3"/>
+          <line x1="1"  y1="14" x2="51" y2="14"  stroke="#C9A84C" stroke-width="0.4" opacity="0.25"/>
+          <line x1="36" y1="2"  x2="36" y2="23"  stroke="#C9A84C" stroke-width="0.4" opacity="0.2"/>
+          <text x="52" y="12" font-family="Georgia,serif" font-size="8" fill="#C9A84C" opacity="0.8">2</text>
+          <!-- Wordmark -->
+          <text x="63" y="16" font-family="Italiana,Georgia,serif" font-size="12" letter-spacing="2.2" fill="url(#flogo)">HAPPEN</text>
+          <text x="63" y="31" font-family="Italiana,Georgia,serif" font-size="12" letter-spacing="2.2" fill="#C9A84C" opacity="0.78">HAUS</text>
+          <line x1="63" y1="20" x2="148" y2="20" stroke="#C9A84C" stroke-width="0.3" opacity="0.2"/>
         </svg>
         <p class="ft-tagline">Every Occasion, Perfectly Crafted</p>
       </div><p class="ft-about">Hyderabad's premier celebration studio — where every moment is crafted with passion, precision, and a touch of the extraordinary.</p></div>
@@ -826,17 +835,31 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
   <div class="m-box">
     <button class="m-x" onclick="closeAuth()">×</button>
 <div style="text-align:center;margin-bottom:18px;">
-      <svg width="90" height="82" viewBox="0 0 90 82" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <defs><linearGradient id="ag" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#E2C97E"/><stop offset="100%" stop-color="#8B6914"/></linearGradient></defs>
-        <rect x="2" y="4" width="12" height="64" fill="url(#ag)" rx="1.5"/>
-        <rect x="38" y="4" width="12" height="64" fill="url(#ag)" rx="1.5"/>
-        <rect x="2"  y="30" width="72" height="12" fill="url(#ag)" rx="1.5"/>
-        <rect x="48" y="4" width="12" height="64" fill="url(#ag)" rx="1.5"/>
-        <rect x="76" y="4" width="12" height="64" fill="url(#ag)" rx="1.5"/>
-        <rect x="36" y="4" width="52" height="40" fill="none" stroke="#C9A84C" stroke-width="0.7" opacity="0.28"/>
-        <line x1="2" y1="30" x2="90" y2="30" stroke="#C9A84C" stroke-width="0.5" opacity="0.2"/>
-        <text x="82" y="16" font-family="Georgia,serif" font-size="12" fill="#C9A84C" opacity="0.75">2</text>
-        <text x="10" y="78" font-family="Italiana,Georgia,serif" font-size="10" letter-spacing="3.5" fill="#C9A84C" opacity="0.8">HAPPENHAUS</text>
+      <svg width="120" height="112" viewBox="0 0 120 112" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="authg" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#E2C97E"/>
+            <stop offset="55%" stop-color="#C9A84C"/>
+            <stop offset="100%" stop-color="#9A7520"/>
+          </linearGradient>
+        </defs>
+        <!-- Left H -->
+        <rect x="4"  y="6"  width="15" height="88" fill="url(#authg)" rx="2"/>
+        <rect x="49" y="6"  width="15" height="88" fill="url(#authg)" rx="2"/>
+        <rect x="4"  y="40" width="96" height="14" fill="url(#authg)" rx="2"/>
+        <!-- Right H (shares crossbar) -->
+        <rect x="58" y="6"  width="15" height="88" fill="url(#authg)" rx="2"/>
+        <rect x="97" y="6"  width="15" height="88" fill="url(#authg)" rx="2"/>
+        <!-- Architectural frame -->
+        <rect x="47" y="6"  width="61" height="55" fill="none" stroke="#C9A84C" stroke-width="0.9" opacity="0.32"/>
+        <!-- Grid lines -->
+        <line x1="4"  y1="40" x2="116" y2="40"  stroke="#C9A84C" stroke-width="0.6" opacity="0.25"/>
+        <line x1="4"  y1="54" x2="116" y2="54"  stroke="#C9A84C" stroke-width="0.45" opacity="0.15"/>
+        <line x1="80" y1="6"  x2="80"  y2="61"  stroke="#C9A84C" stroke-width="0.5" opacity="0.2"/>
+        <!-- Superscript 2 -->
+        <text x="108" y="22" font-family="Georgia,serif" font-size="14" fill="#C9A84C" opacity="0.82">2</text>
+        <!-- Wordmark below -->
+        <text x="10" y="104" font-family="Italiana,Georgia,serif" font-size="11" letter-spacing="4.5" fill="#C9A84C" opacity="0.78">HAPPENHAUS</text>
       </svg>
     </div>
     <div class="m-ttl">Welcome</div>
@@ -956,36 +979,16 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/fireba
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, sendPasswordResetEmail, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getFirestore, collection, addDoc, query, where, getDocs, getDoc, doc, updateDoc, orderBy, serverTimestamp, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-/* ─────────────────────────────────────────────────────────────
-   SECURITY: Firebase config is loaded from window.__HH_CFG__
-   which should be injected by your build/server using
-   environment variables — NEVER commit real keys to source.
-
-   For local dev: create a config.js alongside index.html:
-     window.__HH_CFG__ = {
-       apiKey:            "YOUR_API_KEY",
-       authDomain:        "YOUR_AUTH_DOMAIN",
-       projectId:         "YOUR_PROJECT_ID",
-       storageBucket:     "YOUR_STORAGE_BUCKET",
-       messagingSenderId: "YOUR_SENDER_ID",
-       appId:             "YOUR_APP_ID"
-     };
-   Then add <script src="config.js"></script> in <head>.
-
-   For GitHub Pages / static hosting: use a CI secret to
-   generate config.js at build time (GitHub Actions example):
-     echo "window.__HH_CFG__={apiKey:'${{ secrets.FB_API_KEY }}',...}" > config.js
-
-   NEVER hardcode real values below.
-───────────────────────────────────────────────────────────── */
-const firebaseConfig = (window.__HH_CFG__) || {
-  /* FALLBACK — replace with real values via config.js above */
-  apiKey:            "REPLACE_WITH_ENV_VAR",
-  authDomain:        "REPLACE_WITH_ENV_VAR",
-  projectId:         "REPLACE_WITH_ENV_VAR",
-  storageBucket:     "REPLACE_WITH_ENV_VAR",
-  messagingSenderId: "REPLACE_WITH_ENV_VAR",
-  appId:             "REPLACE_WITH_ENV_VAR"
+// ── FIREBASE CONFIG ──
+// Production: set GitHub Secrets → Actions injects config.js → window.__HH_CFG__
+// Local dev:  create config.js with window.__HH_CFG__ = { apiKey:"...", ... }
+const firebaseConfig = (typeof window.__HH_CFG__ !== 'undefined' && window.__HH_CFG__) || {
+  apiKey:            "AIzaSyDo8u-SZMHPXBLdJV4oq5rNiPz6p33KSF4",
+  authDomain:        "abevents-38a91.firebaseapp.com",
+  projectId:         "abevents-38a91",
+  storageBucket:     "abevents-38a91.appspot.com",
+  messagingSenderId: "408468587854",
+  appId:             "1:408468587854:web:09c108c41c4fb7cd81ca1f"
 };
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
@@ -1751,7 +1754,6 @@ window.validatePhoneInput = (el) => {
 window.quickBook=(svc)=>{
   if(svc==='Gourmet Catering'){showToast('🍽️ Catering is coming soon! Please choose another service.');return;}
   document.getElementById('bkService').value=svc;
-  updateWaLink(svc);
   document.getElementById('booking').scrollIntoView({behavior:'smooth'});
 };
 window.showToast=(msg)=>{const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3500);};
@@ -1774,17 +1776,9 @@ document.addEventListener('keydown',e=>{
   }, 2800);
 })();
 
-initHero(); initServices(); initStrip(); renderDynGallery();
+initHero(); initServices(); renderDynGallery();
 setTimeout(()=>{if(window.loadFirestoreGallery) window.loadFirestoreGallery();},1000);
 
 // ── SERVICE WORKER REGISTRATION (PWA) ──
 if('serviceWorker' in navigator){
-  window.addEventListener('load', function(){
-    navigator.serviceWorker.register('./sw.js')
-      .then(function(reg){ console.log('SW registered', reg.scope); })
-      .catch(function(err){ console.log('SW failed', err); });
-  });
-}
-</script>
-</body>
-</html>
+  window.addEventListener('l
