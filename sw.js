@@ -1,5 +1,5 @@
-// AB Events & Decors — Service Worker v2
-const CACHE_NAME = 'ab-events-v2';
+// HAPPENHAUS — Service Worker v3
+const CACHE_NAME = 'happenhaus-v3';
 const OFFLINE_URL = './index.html';
 
 self.addEventListener('install', e => {
