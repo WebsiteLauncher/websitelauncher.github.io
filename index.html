@@ -386,9 +386,9 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
 @media(max-width:520px){.dyn-gallery-grid{grid-template-columns:1fr;}.ft-grid{grid-template-columns:1fr;}.proc{grid-template-columns:1fr;}.bk-wrap{gap:28px;}.wa-fab{bottom:16px;right:16px;width:50px;height:50px;}}
 
 /* ── HAPPENHAUS INTRO SPLASH ── */
-#introSplash{position:fixed;inset:0;z-index:99999;background:#050505;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;}
-#introSplash.fade-out{animation:splashOut .9s cubic-bezier(.4,0,.2,1) forwards;}
-@keyframes splashOut{to{opacity:0;transform:scale(1.04);}}
+#introSplash{position:fixed;inset:0;z-index:99999;background:#050505;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:all;overflow:hidden;}
+#introSplash.fade-out{animation:splashOut 1s cubic-bezier(.4,0,.2,1) forwards;}
+@keyframes splashOut{0%{opacity:1;transform:scale(1);}100%{opacity:0;transform:scale(1.05);}}
 .intro-lines{position:absolute;inset:0;overflow:hidden;opacity:.18;}
 .intro-line{position:absolute;width:100%;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);animation:lineSweep 2.4s ease-in-out infinite;}
 .intro-line:nth-child(1){top:30%;animation-delay:0s;}
@@ -407,10 +407,52 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
 .intro-bar{width:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:22px auto 0;animation:barGrow .8s 1.4s ease forwards;}
 @keyframes barGrow{to{width:120px;}}
 .intro-sub{font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.25);margin-top:14px;opacity:0;animation:fadeUp .6s 1.8s ease forwards;}
-.intro-svg-mark{opacity:0;animation:fadeUp .7s .35s cubic-bezier(.22,1,.36,1) forwards;filter:drop-shadow(0 0 18px rgba(201,168,76,.22));margin-bottom:8px;}
+.intro-svg-mark{opacity:0;animation:fadeUp .7s .35s cubic-bezier(.22,1,.36,1) forwards;filter:drop-shadow(0 0 24px rgba(201,168,76,.28));margin-bottom:14px;}
 
 
-/* ── BOOKING STATUS EXTRA CLASSES ── */
+/* ── SCROLL REVEAL ANIMATIONS ── */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .7s var(--ease),transform .7s var(--ease);}
+.reveal.in{opacity:1;transform:none;}
+.reveal-left{opacity:0;transform:translateX(-28px);transition:opacity .7s var(--ease),transform .7s var(--ease);}
+.reveal-left.in{opacity:1;transform:none;}
+.reveal-right{opacity:0;transform:translateX(28px);transition:opacity .7s var(--ease),transform .7s var(--ease);}
+.reveal-right.in{opacity:1;transform:none;}
+/* Stagger children */
+.stagger>*:nth-child(1){transition-delay:.05s;}
+.stagger>*:nth-child(2){transition-delay:.12s;}
+.stagger>*:nth-child(3){transition-delay:.19s;}
+.stagger>*:nth-child(4){transition-delay:.26s;}
+.stagger>*:nth-child(5){transition-delay:.33s;}
+.stagger>*:nth-child(6){transition-delay:.40s;}
+/* ── SECTION GOLD ACCENT LINE ── */
+.s-accent{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.s-accent::before{content:'';width:28px;height:1px;background:var(--gold);flex-shrink:0;}
+/* ── PROCESS steps enhanced ── */
+.proc-n{box-shadow:0 0 0 6px rgba(201,168,76,.06),0 0 24px rgba(201,168,76,.08);}
+/* ── BOOKING form enhanced focus ── */
+.fi:focus,.fs:focus,.fta:focus{box-shadow:0 0 0 3px rgba(201,168,76,.1);}
+/* ── REVIEW card hover ── */
+.rev-card{transition:var(--tr);}
+.rev-card:hover{border-color:rgba(201,168,76,.18);transform:translateY(-2px);box-shadow:0 12px 40px rgba(0,0,0,.35);}
+/* ── Testimonial card hover ── */
+.t-card:hover{border-color:rgba(201,168,76,.14);transform:translateY(-2px);box-shadow:0 12px 40px rgba(0,0,0,.35);transition:var(--tr);}
+/* ── Improved toast ── */
+.toast{border-left:3px solid var(--gold);box-shadow:0 16px 48px rgba(0,0,0,.6);}
+/* ── HERO gradient improvement ── */
+#hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 50% 50%,rgba(201,168,76,.04) 0%,transparent 70%);z-index:1;pointer-events:none;}
+/* ── SECTION title decoration ── */
+.s-ttl::after{display:none;}
+/* ── Button ripple feel ── */
+.btn-gold:active{transform:scale(.98);}
+.btn-ghost:active{transform:scale(.98);}
+/* ── Gallery item improved ── */
+.dyn-item::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(8,8,8,.5) 0%,transparent 50%);opacity:0;transition:var(--tr);}
+.dyn-item:hover::after{opacity:1;}
+/* ── Footer brand enhancement ── */
+.ft-brand-wrap svg{filter:drop-shadow(0 2px 8px rgba(201,168,76,.15));}
+/* ── Nav logo hover ── */
+.nav-logo svg{transition:filter var(--tr);}
+.nav-logo:hover svg{filter:drop-shadow(0 0 12px rgba(201,168,76,.22));}
 .bk-consultation{color:#60A5FA;border-color:rgba(96,165,250,.3);background:rgba(96,165,250,.06);}
 .bk-proposal{color:#A78BFA;border-color:rgba(167,139,250,.3);background:rgba(167,139,250,.06);}
 .bk-item-completed{border-color:rgba(34,197,94,.15);background:linear-gradient(135deg,rgba(34,197,94,.03),var(--dark2));}
@@ -451,8 +493,8 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
   <div class="intro-logo-wrap">
     <div class="intro-ring"></div>
     <div class="intro-ring intro-ring2"></div>
-    <!-- HAPPENHAUS H² Monogram — exact match to brand logo -->
-    <svg class="intro-svg-mark" width="160" height="148" viewBox="0 0 160 148" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- HAPPENHAUS Shared Crossbar Monogram (Logo 04) -->
+    <svg class="intro-svg-mark" width="260" height="160" viewBox="0 0 280 160" fill="none" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <linearGradient id="isplash" x1="0" y1="0" x2="1" y2="1">
           <stop offset="0%" stop-color="#E2C97E"/>
@@ -460,29 +502,38 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
           <stop offset="100%" stop-color="#9A7520"/>
         </linearGradient>
       </defs>
-      <!-- Left H: stems at x=4 and x=60, crossbar y=61-76 -->
-      <rect x="4"   y="8"  width="20" height="132" fill="url(#isplash)" rx="2"/>
-      <rect x="60"  y="8"  width="20" height="132" fill="url(#isplash)" rx="2"/>
-      <!-- Shared extended crossbar -->
-      <rect x="4"   y="61" width="136" height="18" fill="url(#isplash)" rx="2"/>
-      <!-- Right H: stems at x=68 and x=124 -->
-      <rect x="68"  y="8"  width="20" height="132" fill="url(#isplash)" rx="2"/>
-      <rect x="124" y="8"  width="20" height="132" fill="url(#isplash)" rx="2"/>
-      <!-- Architectural frame around right H area -->
-      <rect x="58"  y="8"  width="88" height="82"  fill="none" stroke="#C9A84C" stroke-width="1.1" opacity="0.35" rx="0"/>
-      <!-- Two horizontal grid lines at crossbar level -->
-      <line x1="4"  y1="61"  x2="156" y2="61"  stroke="#C9A84C" stroke-width="0.7" opacity="0.28"/>
-      <line x1="4"  y1="79"  x2="156" y2="79"  stroke="#C9A84C" stroke-width="0.5" opacity="0.18"/>
-      <!-- Vertical guide line inside frame -->
-      <line x1="112" y1="8"  x2="112" y2="90"  stroke="#C9A84C" stroke-width="0.6" opacity="0.22"/>
-      <!-- Superscript 2 in top-right corner of frame -->
-      <text x="147" y="26" font-family="Georgia,serif" font-size="20" fill="#C9A84C" opacity="0.85">2</text>
+      <!-- LEFT H — solid serif, left outer stem -->
+      <rect x="20"  y="18" width="22" height="118" fill="url(#isplash)"/>
+      <!-- SHARED CENTER STEM (belongs to both H's) -->
+      <rect x="92"  y="18" width="22" height="118" fill="url(#isplash)"/>
+      <!-- FULL-WIDTH CROSSBAR spanning both H's — the shared element -->
+      <rect x="20"  y="66" width="202" height="14" fill="url(#isplash)"/>
+      <!-- LEFT H serif caps top -->
+      <rect x="13"  y="18" width="36" height="6"  fill="url(#isplash)"/>
+      <rect x="85"  y="18" width="36" height="6"  fill="url(#isplash)"/>
+      <!-- LEFT H serif caps bottom -->
+      <rect x="13"  y="130" width="36" height="6" fill="url(#isplash)"/>
+      <rect x="85"  y="130" width="36" height="6" fill="url(#isplash)"/>
+      <!-- RIGHT H — wireframe/outlined box -->
+      <rect x="104" y="10" width="98" height="136" fill="none" stroke="url(#isplash)" stroke-width="1.9"/>
+      <!-- RIGHT H inner left stem -->
+      <line x1="120" y1="22" x2="120" y2="134" stroke="#C9A84C" stroke-width="1.5"/>
+      <!-- RIGHT H inner right stem -->
+      <line x1="184" y1="22" x2="184" y2="134" stroke="#C9A84C" stroke-width="1.5"/>
+      <!-- RIGHT H inner crossbar (aligns with shared) -->
+      <line x1="120" y1="73" x2="184" y2="73" stroke="#C9A84C" stroke-width="1.5"/>
+      <!-- Accent rule lines flanking the shared crossbar -->
+      <line x1="20"  y1="62"  x2="222" y2="62"  stroke="#C9A84C" stroke-width="0.7" opacity="0.45"/>
+      <line x1="20"  y1="84"  x2="222" y2="84"  stroke="#C9A84C" stroke-width="0.5" opacity="0.28"/>
+      <!-- Superscript ² -->
+      <text x="206" y="28" font-family="Cormorant Garamond,Georgia,serif" font-size="24" font-weight="300" fill="#C9A84C" opacity="0.9">2</text>
     </svg>
     <div class="intro-wordmark">HAPPEN<span>HAUS</span></div>
     <div class="intro-tagline">Every Occasion, Perfectly Crafted</div>
     <div class="intro-bar"></div>
-    <div class="intro-sub">Hyderabad · Est. 2012</div>
+    <div class="intro-sub">Decor · Photography · Music · Lighting · Events</div>
   </div>
+  <div style="position:absolute;bottom:32px;font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(201,168,76,.3);font-family:'Outfit',sans-serif;">Tap anywhere to continue</div>
 </div>
 
 <!-- FIRESTORE RULES NOTICE (remove after setup) -->
@@ -500,28 +551,40 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
 <!-- NAV -->
 <nav id="mainNav">
   <a href="#" class="nav-logo" aria-label="HAPPENHAUS Home">
-    <svg width="168" height="44" viewBox="0 0 168 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-<defs>
-  <linearGradient id="hgnav" x1="0" y1="0" x2="1" y2="1">
-    <stop offset="0%" stop-color="#E2C97E"/>
-    <stop offset="55%" stop-color="#C9A84C"/>
-    <stop offset="100%" stop-color="#9A7520"/>
-  </linearGradient>
-</defs>
-  <rect x="2.0" y="6.2" width="8.6" height="31.7" fill="url(#hgnav)" rx="1"/>
-  <rect x="26.3" y="6.2" width="8.6" height="31.7" fill="url(#hgnav)" rx="1"/>
-  <rect x="2.0" y="19.8" width="54.9" height="4.3" fill="url(#hgnav)" rx="1"/>
-  <rect x="28.8" y="6.2" width="8.6" height="31.7" fill="url(#hgnav)" rx="1"/>
-  <rect x="53.1" y="6.2" width="8.6" height="31.7" fill="url(#hgnav)" rx="1"/>
-  <rect x="25.0" y="6.2" width="40.9" height="19.6" fill="none" stroke="#C9A84C" stroke-width="0.7" opacity="0.32"/>
-  <line x1="2.0" y1="19.8" x2="65.8" y2="19.8" stroke="#C9A84C" stroke-width="0.45" opacity="0.28"/>
-  <line x1="2.0" y1="24.1" x2="65.8" y2="24.1" stroke="#C9A84C" stroke-width="0.35" opacity="0.18"/>
-  <line x1="41.6" y1="6.2" x2="41.6" y2="25.8" stroke="#C9A84C" stroke-width="0.35" opacity="0.2"/>
-  <text x="66.8" y="16.2" font-family="Georgia,serif" font-size="7" fill="#C9A84C" opacity="0.8">2</text>
-  <text x="74" y="17" font-family="Italiana,Georgia,serif" font-size="13" letter-spacing="2.6" fill="url(#hgnav)">HAPPEN</text>
-  <text x="74" y="30" font-family="Italiana,Georgia,serif" font-size="13" letter-spacing="2.6" fill="#C9A84C" opacity="0.82">HAUS</text>
-  <line x1="74" y1="24" x2="164" y2="24" stroke="#C9A84C" stroke-width="0.4" opacity="0.25"/>
-</svg>
+    <svg width="190" height="46" viewBox="0 0 320 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="hgnav" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#E2C97E"/>
+          <stop offset="55%" stop-color="#C9A84C"/>
+          <stop offset="100%" stop-color="#9A7520"/>
+        </linearGradient>
+      </defs>
+      <!-- LEFT H solid — outer stem -->
+      <rect x="4"   y="8"  width="14" height="92" fill="url(#hgnav)"/>
+      <!-- SHARED CENTER STEM -->
+      <rect x="52"  y="8"  width="14" height="92" fill="url(#hgnav)"/>
+      <!-- FULL crossbar -->
+      <rect x="4"   y="44" width="120" height="10" fill="url(#hgnav)"/>
+      <!-- serif caps -->
+      <rect x="0"   y="8"  width="22" height="5" fill="url(#hgnav)"/>
+      <rect x="48"  y="8"  width="22" height="5" fill="url(#hgnav)"/>
+      <rect x="0"   y="95" width="22" height="5" fill="url(#hgnav)"/>
+      <rect x="48"  y="95" width="22" height="5" fill="url(#hgnav)"/>
+      <!-- RIGHT H wireframe -->
+      <rect x="58"  y="4"  width="64" height="100" fill="none" stroke="url(#hgnav)" stroke-width="1.6"/>
+      <line x1="68"  y1="13" x2="68"  y2="97" stroke="#C9A84C" stroke-width="1.3"/>
+      <line x1="112" y1="13" x2="112" y2="97" stroke="#C9A84C" stroke-width="1.3"/>
+      <line x1="68"  y1="49" x2="112" y2="49" stroke="#C9A84C" stroke-width="1.3"/>
+      <!-- accent lines -->
+      <line x1="4"   y1="41" x2="124" y2="41" stroke="#C9A84C" stroke-width="0.6" opacity="0.4"/>
+      <line x1="4"   y1="57" x2="124" y2="57" stroke="#C9A84C" stroke-width="0.4" opacity="0.25"/>
+      <!-- ² -->
+      <text x="124" y="20" font-family="Cormorant Garamond,Georgia,serif" font-size="18" font-weight="300" fill="#C9A84C" opacity="0.88">2</text>
+      <!-- Wordmark -->
+      <text x="148" y="44" font-family="Italiana,Georgia,serif" font-size="22" letter-spacing="3.5" fill="url(#hgnav)">HAPPEN</text>
+      <text x="148" y="70" font-family="Italiana,Georgia,serif" font-size="22" letter-spacing="3.5" fill="#C9A84C" opacity="0.78">HAUS</text>
+      <line x1="148" y1="52" x2="316" y2="52" stroke="#C9A84C" stroke-width="0.4" opacity="0.2"/>
+    </svg>
   </a>
   <div class="nav-mid">
     <a href="#services">Services</a>
@@ -665,7 +728,7 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
         <div class="bk-contacts">
           <div class="c-item"><div class="c-icon">📍</div><span>Jubilee Hills, Hyderabad, Telangana</span></div>
           <div class="c-item"><div class="c-icon">📞</div><span>+91 7386030321</span></div>
-          <div class="c-item"><div class="c-icon">✉️</div><span>happenhaus.events@gmail.com</span></div>
+          <div class="c-item"><div class="c-icon">✉️</div><span><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="d5bdb4a5a5b0bbbdb4a0a6fbb0a3b0bba1a695b2b8b4bcb9fbb6bab8">[email&#160;protected]</a></span></div>
           <div class="c-item"><div class="c-icon">🕐</div><span>Mon–Sat: 10 AM – 7 PM</span></div>
         </div>
       </div>
@@ -778,7 +841,7 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
   <div class="con">
     <div class="ft-grid">
       <div><div class="ft-brand-wrap">
-        <svg width="148" height="36" viewBox="0 0 148 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="HAPPENHAUS">
+        <svg width="170" height="44" viewBox="0 0 320 110" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="HAPPENHAUS">
           <defs>
             <linearGradient id="flogo" x1="0" y1="0" x2="1" y2="1">
               <stop offset="0%" stop-color="#E2C97E"/>
@@ -786,22 +849,26 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
               <stop offset="100%" stop-color="#9A7520"/>
             </linearGradient>
           </defs>
-          <!-- Left H -->
-          <rect x="1"  y="2"  width="7"  height="32" fill="url(#flogo)" rx="1"/>
-          <rect x="19" y="2"  width="7"  height="32" fill="url(#flogo)" rx="1"/>
-          <rect x="1"  y="14" width="38" height="7"  fill="url(#flogo)" rx="1"/>
-          <!-- Right H (shares crossbar) -->
-          <rect x="24" y="2"  width="7"  height="32" fill="url(#flogo)" rx="1"/>
-          <rect x="43" y="2"  width="7"  height="32" fill="url(#flogo)" rx="1"/>
-          <!-- Frame + grid -->
-          <rect x="18" y="2"  width="33" height="21" fill="none" stroke="#C9A84C" stroke-width="0.6" opacity="0.3"/>
-          <line x1="1"  y1="14" x2="51" y2="14"  stroke="#C9A84C" stroke-width="0.4" opacity="0.25"/>
-          <line x1="36" y1="2"  x2="36" y2="23"  stroke="#C9A84C" stroke-width="0.4" opacity="0.2"/>
-          <text x="52" y="12" font-family="Georgia,serif" font-size="8" fill="#C9A84C" opacity="0.8">2</text>
+          <!-- LEFT H solid -->
+          <rect x="4"   y="8"  width="14" height="92" fill="url(#flogo)"/>
+          <rect x="52"  y="8"  width="14" height="92" fill="url(#flogo)"/>
+          <rect x="4"   y="44" width="120" height="10" fill="url(#flogo)"/>
+          <rect x="0"   y="8"  width="22" height="5" fill="url(#flogo)"/>
+          <rect x="48"  y="8"  width="22" height="5" fill="url(#flogo)"/>
+          <rect x="0"   y="95" width="22" height="5" fill="url(#flogo)"/>
+          <rect x="48"  y="95" width="22" height="5" fill="url(#flogo)"/>
+          <!-- RIGHT H wireframe -->
+          <rect x="58"  y="4"  width="64" height="100" fill="none" stroke="url(#flogo)" stroke-width="1.5"/>
+          <line x1="68"  y1="13" x2="68"  y2="97" stroke="#C9A84C" stroke-width="1.3"/>
+          <line x1="112" y1="13" x2="112" y2="97" stroke="#C9A84C" stroke-width="1.3"/>
+          <line x1="68"  y1="49" x2="112" y2="49" stroke="#C9A84C" stroke-width="1.3"/>
+          <line x1="4"   y1="41" x2="124" y2="41" stroke="#C9A84C" stroke-width="0.6" opacity="0.4"/>
+          <line x1="4"   y1="57" x2="124" y2="57" stroke="#C9A84C" stroke-width="0.4" opacity="0.22"/>
+          <text x="124" y="20" font-family="Cormorant Garamond,Georgia,serif" font-size="18" font-weight="300" fill="#C9A84C" opacity="0.85">2</text>
           <!-- Wordmark -->
-          <text x="63" y="16" font-family="Italiana,Georgia,serif" font-size="12" letter-spacing="2.2" fill="url(#flogo)">HAPPEN</text>
-          <text x="63" y="31" font-family="Italiana,Georgia,serif" font-size="12" letter-spacing="2.2" fill="#C9A84C" opacity="0.78">HAUS</text>
-          <line x1="63" y1="20" x2="148" y2="20" stroke="#C9A84C" stroke-width="0.3" opacity="0.2"/>
+          <text x="148" y="44" font-family="Italiana,Georgia,serif" font-size="22" letter-spacing="3.5" fill="url(#flogo)">HAPPEN</text>
+          <text x="148" y="70" font-family="Italiana,Georgia,serif" font-size="22" letter-spacing="3.5" fill="#C9A84C" opacity="0.75">HAUS</text>
+          <line x1="148" y1="52" x2="316" y2="52" stroke="#C9A84C" stroke-width="0.35" opacity="0.18"/>
         </svg>
         <p class="ft-tagline">Every Occasion, Perfectly Crafted</p>
       </div><p class="ft-about">Hyderabad's premier celebration studio — where every moment is crafted with passion, precision, and a touch of the extraordinary.</p></div>
@@ -835,7 +902,7 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
   <div class="m-box">
     <button class="m-x" onclick="closeAuth()">×</button>
 <div style="text-align:center;margin-bottom:18px;">
-      <svg width="120" height="112" viewBox="0 0 120 112" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg width="160" height="100" viewBox="0 0 280 160" fill="none" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <linearGradient id="authg" x1="0" y1="0" x2="1" y2="1">
             <stop offset="0%" stop-color="#E2C97E"/>
@@ -843,23 +910,22 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
             <stop offset="100%" stop-color="#9A7520"/>
           </linearGradient>
         </defs>
-        <!-- Left H -->
-        <rect x="4"  y="6"  width="15" height="88" fill="url(#authg)" rx="2"/>
-        <rect x="49" y="6"  width="15" height="88" fill="url(#authg)" rx="2"/>
-        <rect x="4"  y="40" width="96" height="14" fill="url(#authg)" rx="2"/>
-        <!-- Right H (shares crossbar) -->
-        <rect x="58" y="6"  width="15" height="88" fill="url(#authg)" rx="2"/>
-        <rect x="97" y="6"  width="15" height="88" fill="url(#authg)" rx="2"/>
-        <!-- Architectural frame -->
-        <rect x="47" y="6"  width="61" height="55" fill="none" stroke="#C9A84C" stroke-width="0.9" opacity="0.32"/>
-        <!-- Grid lines -->
-        <line x1="4"  y1="40" x2="116" y2="40"  stroke="#C9A84C" stroke-width="0.6" opacity="0.25"/>
-        <line x1="4"  y1="54" x2="116" y2="54"  stroke="#C9A84C" stroke-width="0.45" opacity="0.15"/>
-        <line x1="80" y1="6"  x2="80"  y2="61"  stroke="#C9A84C" stroke-width="0.5" opacity="0.2"/>
-        <!-- Superscript 2 -->
-        <text x="108" y="22" font-family="Georgia,serif" font-size="14" fill="#C9A84C" opacity="0.82">2</text>
-        <!-- Wordmark below -->
-        <text x="10" y="104" font-family="Italiana,Georgia,serif" font-size="11" letter-spacing="4.5" fill="#C9A84C" opacity="0.78">HAPPENHAUS</text>
+        <!-- LEFT H solid -->
+        <rect x="20"  y="18" width="22" height="118" fill="url(#authg)"/>
+        <rect x="92"  y="18" width="22" height="118" fill="url(#authg)"/>
+        <rect x="20"  y="66" width="202" height="14"  fill="url(#authg)"/>
+        <rect x="13"  y="18" width="36" height="6"  fill="url(#authg)"/>
+        <rect x="85"  y="18" width="36" height="6"  fill="url(#authg)"/>
+        <rect x="13"  y="130" width="36" height="6" fill="url(#authg)"/>
+        <rect x="85"  y="130" width="36" height="6" fill="url(#authg)"/>
+        <!-- RIGHT H wireframe -->
+        <rect x="104" y="10" width="98" height="136" fill="none" stroke="url(#authg)" stroke-width="1.9"/>
+        <line x1="120" y1="22" x2="120" y2="134" stroke="#C9A84C" stroke-width="1.5"/>
+        <line x1="184" y1="22" x2="184" y2="134" stroke="#C9A84C" stroke-width="1.5"/>
+        <line x1="120" y1="73" x2="184" y2="73" stroke="#C9A84C" stroke-width="1.5"/>
+        <line x1="20"  y1="62"  x2="222" y2="62"  stroke="#C9A84C" stroke-width="0.7" opacity="0.45"/>
+        <line x1="20"  y1="84"  x2="222" y2="84"  stroke="#C9A84C" stroke-width="0.5" opacity="0.28"/>
+        <text x="206" y="28" font-family="Cormorant Garamond,Georgia,serif" font-size="24" font-weight="300" fill="#C9A84C" opacity="0.9">2</text>
       </svg>
     </div>
     <div class="m-ttl">Welcome</div>
@@ -974,7 +1040,7 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
 <div class="toast" id="toast"></div>
 
 <!-- ══ FIREBASE ══ -->
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script type="module">
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, sendPasswordResetEmail, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getFirestore, collection, addDoc, query, where, getDocs, getDoc, doc, updateDoc, orderBy, serverTimestamp, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -1758,27 +1824,70 @@ window.quickBook=(svc)=>{
 };
 window.showToast=(msg)=>{const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3500);};
 
-document.addEventListener('keydown',e=>{
-  if(e.key==='Escape'){closeAuth();closeGl();closeViewer();}
-  if(e.key==='ArrowRight'&&document.getElementById('glViewer').classList.contains('open')) viewNav(1);
-  if(e.key==='ArrowLeft'&&document.getElementById('glViewer').classList.contains('open')) viewNav(-1);
+// ── SCROLL REVEAL OBSERVER ──
+function initReveal(){
+  const els = document.querySelectorAll('.reveal,.reveal-left,.reveal-right');
+  if(!els.length) return;
+  const obs = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); obs.unobserve(e.target); } });
+  },{threshold:0.12,rootMargin:'0px 0px -40px 0px'});
+  els.forEach(el=>obs.observe(el));
+}
+
+// ── INIT ALL ──
+document.addEventListener('DOMContentLoaded',()=>{
+  initServices();
+  renderDynGallery();
+  // Add reveal classes to key sections dynamically
+  setTimeout(()=>{
+    document.querySelectorAll('.proc-step').forEach((el,i)=>{ el.classList.add('reveal'); el.style.transitionDelay=(i*0.09)+'s'; });
+    document.querySelectorAll('.t-card').forEach((el,i)=>{ el.classList.add('reveal'); el.style.transitionDelay=(i*0.08)+'s'; });
+    document.querySelectorAll('.rev-card').forEach((el,i)=>{ el.classList.add('reveal'); el.style.transitionDelay=(i*0.08)+'s'; });
+    initReveal();
+  }, 200);
 });
 
 
-// ── HAPPENHAUS INTRO SPLASH ──
+// ── HAPPENHAUS INTRO SPLASH ── (FIXED: blocks events, resets overflow, guaranteed dismiss)
 (function(){
   var splash = document.getElementById('introSplash');
   if(!splash) return;
-  // Dismiss after 2.8s with fade
-  setTimeout(function(){
+  // Lock body scroll during intro
+  document.body.style.overflow = 'hidden';
+  // Allow ESC or tap to skip
+  function dismiss(){
+    clearTimeout(t1); clearTimeout(t2);
     splash.classList.add('fade-out');
-    setTimeout(function(){ splash.style.display='none'; }, 900);
-  }, 2800);
+    var t = setTimeout(function(){
+      splash.style.display = 'none';
+      splash.style.pointerEvents = 'none';
+      document.body.style.overflow = '';
+      document.body.style.overflowX = 'hidden';
+      // re-init hero after reveal
+      initHero();
+    }, 950);
+  }
+  // Auto dismiss at 3s
+  var t1 = setTimeout(function(){
+    splash.classList.add('fade-out');
+    var t2 = setTimeout(function(){
+      splash.style.display = 'none';
+      splash.style.pointerEvents = 'none';
+      document.body.style.overflow = '';
+      document.body.style.overflowX = 'hidden';
+    }, 950);
+  }, 3000);
+  // Safety net — if anything goes wrong, force-remove at 5s
+  setTimeout(function(){
+    if(splash.style.display !== 'none'){
+      splash.style.display = 'none';
+      splash.style.pointerEvents = 'none';
+      document.body.style.overflow = '';
+      document.body.style.overflowX = 'hidden';
+    }
+  }, 5000);
+  // Tap/click anywhere on splash to skip
+  splash.addEventListener('click', function(){ dismiss(); }, {once:true});
 })();
 
-initHero(); initServices(); renderDynGallery();
-setTimeout(()=>{if(window.loadFirestoreGallery) window.loadFirestoreGallery();},1000);
-
-// ── SERVICE WORKER REGISTRATION (PWA) ──
-if('serviceWorker' in navigator){
-  window.addEventListener('l
+initHero();
