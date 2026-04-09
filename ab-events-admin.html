@@ -3,7 +3,10 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>HAPPENHAUS — Admin Dashboard</title>
+<title>HAPPENHAUS Admin — Event Management Console</title>
+<meta name="description" content="HAPPENHAUS Admin Dashboard — manage bookings, pipeline, gallery and team."/>
+<meta name="robots" content="noindex, nofollow"/>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23080808' rx='3'/%3E%3C!-- Left H solid --%3E%3Crect x='2' y='3' width='4.5' height='26' fill='%23C9A84C'/%3E%3Crect x='13' y='3' width='4.5' height='26' fill='%23C9A84C'/%3E%3Crect x='2' y='13' width='28' height='6' fill='%23C9A84C'/%3E%3C!-- serif caps --%3E%3Crect x='1' y='3' width='6.5' height='2' fill='%23C9A84C'/%3E%3Crect x='12' y='3' width='6.5' height='2' fill='%23C9A84C'/%3E%3Crect x='1' y='27' width='6.5' height='2' fill='%23C9A84C'/%3E%3Crect x='12' y='27' width='6.5' height='2' fill='%23C9A84C'/%3E%3C!-- Right H wireframe --%3E%3Crect x='16' y='2' width='14' height='28' fill='none' stroke='%23C9A84C' stroke-width='1.2'/%3E%3Cline x1='19' y1='4' x2='19' y2='28' stroke='%23C9A84C' stroke-width='0.9'/%3E%3Cline x1='27' y1='4' x2='27' y2='28' stroke='%23C9A84C' stroke-width='0.9'/%3E%3Cline x1='19' y1='16' x2='27' y2='16' stroke='%23C9A84C' stroke-width='0.9'/%3E%3C!-- superscript 2 --%3E%3Ctext x='29' y='8' font-family='Georgia' font-size='5' fill='%23C9A84C' opacity='0.9'%3E2%3C/text%3E%3C/svg%3E" type="image/svg+xml"/>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
 <!-- EmailJS for notifications -->
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
@@ -32,7 +35,43 @@ body{background:var(--bg);color:var(--t1);font-family:var(--fb);font-size:14px;d
 /* AUTH */
 #loginScreen{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;align-items:center;justify-content:center;overflow-y:auto;padding:20px;}
 #loginScreen.gone{display:none;}
-.login-wrap{width:100%;max-width:440px;}
+/* Admin login card enhancement */
+.login-wrap{width:100%;max-width:440px;background:var(--s1);border:1px solid rgba(201,168,76,.12);border-radius:16px;padding:36px 40px;box-shadow:0 32px 80px rgba(0,0,0,.6);}
+/* Admin splash — cinematic, guaranteed to fully dismiss */
+#adminSplash{
+  position:fixed;inset:0;z-index:99999;
+  background:radial-gradient(ellipse 80% 65% at 50% 42%,rgba(22,17,6,.98) 0%,#0C0C0E 100%);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  pointer-events:all;overflow:hidden;
+}
+/* Grain texture */
+#adminSplash::before{
+  content:'';position:absolute;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='250' height='250' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity:.5;pointer-events:none;
+}
+/* Ambient glow */
+#adminSplash::after{
+  content:'';position:absolute;width:500px;height:500px;border-radius:50%;
+  background:radial-gradient(circle,rgba(201,168,76,.06) 0%,transparent 70%);
+  top:50%;left:50%;transform:translate(-50%,-58%);pointer-events:none;
+  animation:aGlow 3.5s ease-in-out infinite;
+}
+@keyframes aGlow{0%,100%{opacity:.6;transform:translate(-50%,-58%) scale(1);}50%{opacity:1;transform:translate(-50%,-58%) scale(1.1);}}
+/* Sweep lines */
+.a-splash-lines{position:absolute;inset:0;overflow:hidden;pointer-events:none;}
+.a-splash-line{position:absolute;width:100%;height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,.2),rgba(201,168,76,.32),rgba(201,168,76,.2),transparent);animation:aSweep 3s ease-in-out infinite;}
+.a-splash-line:nth-child(1){top:32%;animation-delay:0s;}
+.a-splash-line:nth-child(2){top:52%;animation-delay:.6s;}
+.a-splash-line:nth-child(3){top:72%;animation-delay:1.2s;}
+@keyframes aSweep{0%{transform:translateX(-110%);opacity:0;}45%{opacity:1;}100%{transform:translateX(110%);opacity:0;}}
+/* Progress bar */
+.a-splash-progress{position:absolute;bottom:0;left:0;right:0;height:2px;overflow:hidden;}
+.a-splash-progress-fill{height:100%;width:0;background:linear-gradient(90deg,transparent,rgba(201,168,76,.7),rgba(226,201,126,1));animation:aProgress 2.2s .2s cubic-bezier(.4,0,.2,1) forwards;}
+@keyframes aProgress{to{width:100%;}}
+/* Exit */
+#adminSplash.a-splash-exit{animation:aSplashExit .85s cubic-bezier(.4,0,.2,1) forwards;pointer-events:none;}
+@keyframes aSplashExit{0%{opacity:1;transform:scale(1);}100%{opacity:0;transform:scale(1.04);}}
 .login-logo{font-family:var(--fh);font-size:1.2rem;font-weight:700;color:var(--gold);margin-bottom:4px;}
 .login-sub{font-size:.8rem;color:var(--t3);margin-bottom:28px;}
 .login-chip{display:inline-flex;align-items:center;gap:6px;background:var(--gold-a);border:1px solid rgba(201,168,76,.22);padding:5px 12px;border-radius:100px;font-size:.68rem;color:var(--gold);letter-spacing:.08em;margin-bottom:22px;}
@@ -60,9 +99,8 @@ body{background:var(--bg);color:var(--t1);font-family:var(--fb);font-size:14px;d
 #main{flex:1;height:100vh;display:flex;flex-direction:column;overflow:hidden;min-width:0;}
 
 /* SIDEBAR */
-.sb-top{padding:20px 18px;border-bottom:1px solid var(--bdr);flex-shrink:0;}
-.sb-logo{font-family:var(--fh);font-weight:800;font-size:1rem;color:var(--gold);}
-.sb-tag{font-size:.65rem;color:var(--t3);margin-top:2px;}
+.sb-top{border-bottom:1px solid var(--bdr);flex-shrink:0;}
+/* sb-logo/sb-tag now use inline flex styles in HTML */
 .sb-nav{padding:12px 10px;flex:1;overflow-y:auto;}
 .sb-sec{font-size:.62rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--t4);padding:0 8px;margin:14px 0 6px;}
 .nav-item{display:flex;align-items:center;gap:9px;padding:9px 11px;border-radius:6px;cursor:pointer;color:var(--t2);font-size:.83rem;font-weight:500;transition:var(--tr);text-decoration:none;border:1px solid transparent;user-select:none;}
@@ -335,12 +373,99 @@ tbody tr:hover td{background:var(--s2);}
 </head>
 <body>
 
+<!-- ═══ ADMIN SPLASH — cinematic, guaranteed dismiss ═══ -->
+<div id="adminSplash" role="presentation" aria-hidden="true">
+  <!-- Sweep lines -->
+  <div class="a-splash-lines">
+    <div class="a-splash-line"></div>
+    <div class="a-splash-line"></div>
+    <div class="a-splash-line"></div>
+  </div>
+
+  <!-- Logo mark — scale + fade -->
+  <svg width="220" height="136" viewBox="0 0 280 160" fill="none" xmlns="http://www.w3.org/2000/svg"
+    style="opacity:0;transform:scale(.75);animation:aSplashLogo .9s .18s cubic-bezier(.22,1,.36,1) forwards;filter:drop-shadow(0 0 28px rgba(201,168,76,.28)) drop-shadow(0 4px 16px rgba(0,0,0,.5));">
+    <defs>
+      <linearGradient id="asg" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%"   stop-color="#E8D48A"/>
+        <stop offset="45%"  stop-color="#C9A84C"/>
+        <stop offset="100%" stop-color="#8B6914"/>
+      </linearGradient>
+    </defs>
+    <!-- Left H solid -->
+    <rect x="18"  y="16" width="24" height="122" fill="url(#asg)"/>
+    <rect x="90"  y="16" width="24" height="122" fill="url(#asg)"/>
+    <rect x="18"  y="64" width="204" height="16" fill="url(#asg)"/>
+    <rect x="11"  y="16" width="38" height="7" fill="url(#asg)"/>
+    <rect x="83"  y="16" width="38" height="7" fill="url(#asg)"/>
+    <rect x="11"  y="131" width="38" height="7" fill="url(#asg)"/>
+    <rect x="83"  y="131" width="38" height="7" fill="url(#asg)"/>
+    <!-- Right H wireframe -->
+    <rect x="102" y="8"  width="102" height="140" fill="none" stroke="url(#asg)" stroke-width="2.2"/>
+    <line x1="118" y1="20" x2="118" y2="136" stroke="#C9A84C" stroke-width="1.8"/>
+    <line x1="186" y1="20" x2="186" y2="136" stroke="#C9A84C" stroke-width="1.8"/>
+    <line x1="118" y1="72" x2="186" y2="72"  stroke="#C9A84C" stroke-width="1.8"/>
+    <!-- Accent lines -->
+    <line x1="18"  y1="60"  x2="224" y2="60"  stroke="#C9A84C" stroke-width="0.8" opacity="0.36"/>
+    <line x1="18"  y1="84"  x2="224" y2="84"  stroke="#C9A84C" stroke-width="0.6" opacity="0.22"/>
+    <!-- ² superscript -->
+    <text x="204" y="30" font-family="Cormorant Garamond,Georgia,serif" font-size="26" font-weight="300" fill="#C9A84C" opacity="0.88">2</text>
+  </svg>
+
+  <!-- Brand name -->
+  <div style="font-family:'Syne',sans-serif;font-size:1.08rem;font-weight:600;letter-spacing:.46em;color:#C9A84C;margin-top:20px;opacity:0;animation:aSplashWord .7s .82s cubic-bezier(.22,1,.36,1) forwards;">HAPPENHAUS</div>
+  <div style="font-family:'DM Sans',sans-serif;font-size:.62rem;letter-spacing:.36em;text-transform:uppercase;color:rgba(201,168,76,.38);margin-top:9px;opacity:0;animation:aSplashWord .6s 1.1s ease forwards;">Admin Console</div>
+
+  <!-- Progress bar -->
+  <div class="a-splash-progress">
+    <div class="a-splash-progress-fill"></div>
+  </div>
+</div>
+
+<style>
+@keyframes fadeUp      {from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:none;}}
+@keyframes aSplashLogo {0%{opacity:0;transform:scale(.75);}60%{opacity:1;transform:scale(1.04);}100%{opacity:1;transform:scale(1);}}
+@keyframes aSplashWord {from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+</style>
+
 <!-- ═══ AUTH SCREEN ═══ -->
 <div id="loginScreen">
   <div class="login-wrap">
     <div class="login-chip">⚡ Admin Portal</div>
-    <div class="login-logo">HAPPENHAUS</div>
-    <div class="login-sub">Administration Dashboard</div>
+    <div style="text-align:center;margin-bottom:24px;">
+      <svg width="180" height="112" viewBox="0 0 280 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="admlog" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#E2C97E"/>
+            <stop offset="55%" stop-color="#C9A84C"/>
+            <stop offset="100%" stop-color="#9A7520"/>
+          </linearGradient>
+        </defs>
+        <!-- LEFT H solid — outer stem -->
+        <rect x="20"  y="18" width="22" height="118" fill="url(#admlog)"/>
+        <!-- SHARED CENTER STEM -->
+        <rect x="92"  y="18" width="22" height="118" fill="url(#admlog)"/>
+        <!-- FULL crossbar -->
+        <rect x="20"  y="66" width="202" height="14"  fill="url(#admlog)"/>
+        <!-- Serif caps top -->
+        <rect x="13"  y="18" width="36" height="6"  fill="url(#admlog)"/>
+        <rect x="85"  y="18" width="36" height="6"  fill="url(#admlog)"/>
+        <!-- Serif caps bottom -->
+        <rect x="13"  y="130" width="36" height="6" fill="url(#admlog)"/>
+        <rect x="85"  y="130" width="36" height="6" fill="url(#admlog)"/>
+        <!-- RIGHT H wireframe -->
+        <rect x="104" y="10" width="98" height="136" fill="none" stroke="url(#admlog)" stroke-width="1.9"/>
+        <line x1="120" y1="22" x2="120" y2="134" stroke="#C9A84C" stroke-width="1.5"/>
+        <line x1="184" y1="22" x2="184" y2="134" stroke="#C9A84C" stroke-width="1.5"/>
+        <line x1="120" y1="73" x2="184" y2="73"  stroke="#C9A84C" stroke-width="1.5"/>
+        <!-- Accent lines -->
+        <line x1="20"  y1="62"  x2="222" y2="62"  stroke="#C9A84C" stroke-width="0.7" opacity="0.45"/>
+        <line x1="20"  y1="84"  x2="222" y2="84"  stroke="#C9A84C" stroke-width="0.5" opacity="0.28"/>
+        <!-- ² superscript -->
+        <text x="206" y="28" font-family="Cormorant Garamond,Georgia,serif" font-size="24" font-weight="300" fill="#C9A84C" opacity="0.9">2</text>
+      </svg>
+    </div>
+    <div class="login-sub">Admin · HAPPENHAUS</div>
     <div class="auth-tabs" id="adminAuthTabs">
       <button class="auth-tab active" onclick="switchAdminTab('login')">Sign In</button>
       <button class="auth-tab" onclick="switchAdminTab('register')">Register</button>
@@ -386,7 +511,42 @@ tbody tr:hover td{background:var(--s2);}
 
 <!-- ═══ SIDEBAR ═══ -->
 <aside id="sidebar">
-  <div class="sb-top"><div class="sb-logo">AB Events</div><div class="sb-tag">Administration Dashboard</div></div>
+  <div class="sb-top" style="display:flex;align-items:center;gap:11px;padding:16px 16px;border-bottom:1px solid var(--bdr);flex-shrink:0;min-height:0;overflow:hidden;">
+    <!-- H² Monogram mark (compact, mark-only) -->
+    <svg width="38" height="38" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;" aria-hidden="true">
+      <defs>
+        <linearGradient id="sbmark" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#E2C97E"/>
+          <stop offset="55%" stop-color="#C9A84C"/>
+          <stop offset="100%" stop-color="#9A7520"/>
+        </linearGradient>
+      </defs>
+      <!-- Left H -->
+      <rect x="4"  y="6"  width="18" height="88" fill="url(#sbmark)"/>
+      <rect x="38" y="6"  width="18" height="88" fill="url(#sbmark)"/>
+      <rect x="4"  y="42" width="86" height="14" fill="url(#sbmark)"/>
+      <!-- serif caps -->
+      <rect x="0"  y="6"  width="26" height="6" fill="url(#sbmark)"/>
+      <rect x="34" y="6"  width="26" height="6" fill="url(#sbmark)"/>
+      <rect x="0"  y="88" width="26" height="6" fill="url(#sbmark)"/>
+      <rect x="34" y="88" width="26" height="6" fill="url(#sbmark)"/>
+      <!-- Right H wireframe -->
+      <rect x="48" y="2"  width="50" height="96" fill="none" stroke="url(#sbmark)" stroke-width="3"/>
+      <line x1="58" y1="10" x2="58" y2="90" stroke="#C9A84C" stroke-width="2.2"/>
+      <line x1="88" y1="10" x2="88" y2="90" stroke="#C9A84C" stroke-width="2.2"/>
+      <line x1="58" y1="49" x2="88" y2="49" stroke="#C9A84C" stroke-width="2.2"/>
+      <!-- Accent lines -->
+      <line x1="4"  y1="42" x2="96" y2="42" stroke="#C9A84C" stroke-width="1" opacity="0.35"/>
+      <line x1="4"  y1="56" x2="96" y2="56" stroke="#C9A84C" stroke-width="0.7" opacity="0.2"/>
+      <!-- ² -->
+      <text x="90" y="18" font-family="Georgia,serif" font-size="16" fill="#C9A84C" opacity="0.86">2</text>
+    </svg>
+    <!-- Wordmark text — single line, no wrap -->
+    <div style="min-width:0;overflow:hidden;">
+      <div style="font-family:'Syne',sans-serif;font-size:.92rem;font-weight:700;color:var(--gold);letter-spacing:.12em;white-space:nowrap;line-height:1.2;">HAPPENHAUS</div>
+      <div style="font-family:'DM Sans',sans-serif;font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--t3);margin-top:2px;white-space:nowrap;">Admin Console</div>
+    </div>
+  </div>
   <nav class="sb-nav">
     <div class="sb-sec">Overview</div>
     <a class="nav-item active" href="#" onclick="showPanel('dashboard',this)"><span class="nav-icon">📊</span>Dashboard</a>
@@ -703,12 +863,57 @@ tbody tr:hover td{background:var(--s2);}
 
 <script>
 // ════════════════════════════════════════════════════
-//  AB EVENTS & DECORS — ADMIN DASHBOARD
+//  HAPPENHAUS — EVENT MANAGEMENT ADMIN
 //  Uses Firebase Compat (no ES modules) for reliability
 // ════════════════════════════════════════════════════
 
+// ═══════════════════════════════════════════════════
+// HAPPENHAUS ADMIN SPLASH — guaranteed dismiss
+// Fully removes from DOM + pointer-events after exit
+// ═══════════════════════════════════════════════════
+(function () {
+  'use strict';
+  var sp = document.getElementById('adminSplash');
+  if (!sp) return;
+
+  var dismissed = false;
+
+  function hideSplash() {
+    // Belt-and-suspenders: display:none + visibility:hidden + pointer-events:none
+    sp.style.display        = 'none';
+    sp.style.visibility     = 'hidden';
+    sp.style.pointerEvents  = 'none';
+    sp.setAttribute('aria-hidden', 'true');
+    // Also clear any inline z-index that might linger
+    sp.style.zIndex = '-1';
+  }
+
+  function dismiss() {
+    if (dismissed) return;
+    dismissed = true;
+    sp.style.pointerEvents = 'none'; // immediately stop blocking
+    sp.classList.add('a-splash-exit');
+    setTimeout(hideSplash, 870);
+  }
+
+  // Auto-dismiss at 2.4s (progress bar animation is 2.2s)
+  var autoT = setTimeout(dismiss, 2400);
+
+  // Safety net at 4s — force kill
+  setTimeout(function () {
+    if (!dismissed) { dismissed = true; hideSplash(); }
+  }, 4000);
+
+  // Click anywhere to skip
+  sp.addEventListener('click', function () {
+    clearTimeout(autoT);
+    dismiss();
+  }, { once: true });
+})();
 // ── FIREBASE CONFIG ──
-const firebaseConfig = {
+// Production: GitHub Secrets → Actions generates config.js → window.__HH_CFG__
+// Local dev:  create config.js: window.__HH_CFG__ = { apiKey:"...", ... }
+const firebaseConfig = (typeof window.__HH_CFG__ !== 'undefined' && window.__HH_CFG__) || {
   apiKey:            "AIzaSyDo8u-SZMHPXBLdJV4oq5rNiPz6p33KSF4",
   authDomain:        "abevents-38a91.firebaseapp.com",
   projectId:         "abevents-38a91",
@@ -722,8 +927,9 @@ const db   = firebase.firestore();
 
 // ── CLOUDINARY CONFIG ──
 // Replace YOUR_CLOUD_NAME with your Cloudinary cloud name from cloudinary.com
-var CLOUDINARY_CLOUD  = 'di0ihwmg0';
-var CLOUDINARY_PRESET = 'ab_events_gallery';
+// SECURITY: Load from config.js → window.__HH_MEDIA__
+var CLOUDINARY_CLOUD  = (window.__HH_MEDIA__ && window.__HH_MEDIA__.cloud)  || 'di0ihwmg0';
+var CLOUDINARY_PRESET = (window.__HH_MEDIA__ && window.__HH_MEDIA__.preset) || 'ab_events_gallery';
 
 // ── EMAILJS CONFIG (optional) ──
 var EMAILJS_SERVICE_ID  = 'YOUR_EMAILJS_SERVICE_ID';
@@ -732,11 +938,13 @@ var EMAILJS_PUBLIC_KEY  = 'YOUR_EMAILJS_PUBLIC_KEY';
 
 // ── ADMIN WHITELIST ──
 // Add YOUR email address here to gain access
-var ADMIN_EMAILS = [
+// SECURITY: Admin emails should be stored in Firestore 'admin_roles' collection
+// or loaded via window.__HH_ADMINS__ from config.js
+// Example config.js: window.__HH_ADMINS__ = ['<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="3b5a5f5652557b535a4b4b5e55535a4e48155255">[email&#160;protected]</a>']
+var ADMIN_EMAILS = (window.__HH_ADMINS__) || [
+  // ADD YOUR ADMIN EMAIL VIA config.js — do not hardcode here
   'srikanth.ambati4957@gmail.com',
-  'owner@abevents.in',
-  'abevents@gmail.com'
-  // 'youremail@gmail.com'  ← ADD YOUR EMAIL HERE
+  '<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f18283989a909f8599df909c93908598c5c8c4c6b1969c90989ddf929e9c">[email&#160;protected]</a>'  // ← REMOVE after adding config.js
 ];
 
 // ── PIPELINE STAGES ──
@@ -1651,7 +1859,7 @@ window.saveSettings = function() {
 window.showToast = showToast;
 </script>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // ── AUTH TAB SWITCHER ──
 window.switchAdminTab=function(t){
   var panelMap={login:'adminLoginPanel',register:'adminRegPanel',forgot:'adminForgotPanel'};
@@ -1692,8 +1900,9 @@ document.addEventListener('click',function(e){
   }
 });
 window.showPanel=showPanel;
-window.toggleSidebar=toggleSidebar;
-// ── PHONE VALIDATION ──
+ebar;
+
+// ── PHONE VALIDATION (admin forms) ──
 window.blockNonPhone = function(e) {
   if(e.key && e.key.length===1 && !/[0-9+\- ]/.test(e.key)){ e.preventDefault(); return false; }
   return true;
@@ -1702,7 +1911,6 @@ window.filterAdminPhone = function(el) {
   var cleaned = el.value.replace(/[^0-9+\- ]/g,'');
   if(el.value !== cleaned) el.value = cleaned;
 };
-
 </script>
 </body>
 </html>

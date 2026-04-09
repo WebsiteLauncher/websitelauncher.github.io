@@ -1,0 +1,50 @@
+name: Deploy HAPPENHAUS to GitHub Pages
+ 
+on:
+  push:
+    branches: [develop]
+ 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+ 
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+ 
+      - name: Generate Firebase config from Secrets
+        run: |
+          cat > config.js << EOF
+          window.__HH_CFG__ = {
+            apiKey:            "${{ secrets.FB_API_KEY }}",
+            authDomain:        "${{ secrets.FB_AUTH_DOMAIN }}",
+            projectId:         "${{ secrets.FB_PROJECT_ID }}",
+            storageBucket:     "${{ secrets.FB_STORAGE_BUCKET }}",
+            messagingSenderId: "${{ secrets.FB_MESSAGING_SENDER_ID }}",
+            appId:             "${{ secrets.FB_APP_ID }}"
+          };
+          window.__HH_ADMINS__ = ["${{ secrets.ADMIN_EMAIL_1 }}", "${{ secrets.ADMIN_EMAIL_2 }}"];
+          window.__HH_MEDIA__  = {
+            cloud:  "${{ secrets.CLOUDINARY_CLOUD }}",
+            preset: "${{ secrets.CLOUDINARY_PRESET }}"
+          };
+          EOF
+ 
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+ 
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+ 
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
