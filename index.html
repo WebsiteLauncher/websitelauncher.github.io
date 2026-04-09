@@ -999,13 +999,14 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
         <div class="bk-svc-chips">
           <div class="bk-svc-label">What We Offer</div>
           <div class="bk-svc-list">
-            <span class="bk-svc-chip">🌸 Luxury Decor</span>
+            <span class="bk-svc-chip">🌸 Luxury Decor &amp; Styling</span>
+            <span class="bk-svc-chip" style="border-color:rgba(253,196,0,.2);color:rgba(253,196,0,.8);">🌼 Haldi Decor <span style="font-size:.55rem;opacity:.7;">✦ Under Decor</span></span>
             <span class="bk-svc-chip">📷 Photography</span>
             <span class="bk-svc-chip">🎵 Live Music</span>
             <span class="bk-svc-chip">✨ Lighting Design</span>
+            <span class="bk-svc-chip">🚚 Logistics Services</span>
             <span class="bk-svc-chip">🎊 Full Event Management</span>
             <span class="bk-svc-chip">💍 Wedding Planning</span>
-            <span class="bk-svc-chip">🎂 Birthday &amp; Celebrations</span>
             <span class="bk-svc-chip">🏢 Corporate Events</span>
           </div>
         </div>
@@ -1045,8 +1046,10 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
               <label class="fl">Service Required *</label>
               <select class="fs" id="bkService" required onchange="checkDuplicate()">
                 <option value="">Select a service</option>
-                <option>Luxury Decor &amp; Styling</option>
-                <option>Haldi Decor</option>
+                <optgroup label="Decor &amp; Styling">
+                  <option value="Luxury Decor &amp; Styling">Luxury Decor &amp; Styling</option>
+                  <option value="Luxury Decor &amp; Styling">🌼 Haldi Decor (under Decor &amp; Styling)</option>
+                </optgroup>
                 <option>Professional Photography</option>
                 <option>Live Music &amp; Entertainment</option>
                 <option>Premium Lighting Design</option>
@@ -1553,7 +1556,7 @@ window.submitBooking = async (ev) => {
     const _svcCodeMap = {
       'Luxury Decor & Styling':'DCR', 'Professional Photography':'PHT',
       'Live Music & Entertainment':'MUS', 'Premium Lighting Design':'LGT',
-      'Complete Event Management':'MGT', 'Multiple Services':'MUL'
+      'Logistics Services':'LOG', 'Complete Event Management':'MGT', 'Multiple Services':'MUL'
     };
     const _months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
     const _now = new Date();
@@ -1614,7 +1617,7 @@ function renderBookingsList(docs) {
     list.innerHTML='<div class="empty-st">No bookings yet. <a href="#booking" style="color:var(--gold)">Make your first request →</a></div>';
     return;
   }
-  const icons={'Luxury Decor & Styling':'🌸','Professional Photography':'📷','Live Music & Entertainment':'🎵','Premium Lighting Design':'✨','Gourmet Catering':'🍽️','Complete Event Management':'🎊','Multiple Services':'🎉'};
+  const icons={'Luxury Decor & Styling':'🌸','Haldi Decor':'🌼','Professional Photography':'📷','Live Music & Entertainment':'🎵','Premium Lighting Design':'✨','Logistics Services':'🚚','Gourmet Catering':'🍽️','Complete Event Management':'🎊','Multiple Services':'🎉'};
   // Status pipeline labels — covers ALL admin pipeline stages
   const statusMap={
     'New Enquiry':'🔔 New Enquiry','pending':'🔔 New Enquiry',
@@ -1827,10 +1830,9 @@ function fe(c){const m={'auth/user-not-found':'No account with that email.','aut
 <script>
 // ── SERVICE DATA ──
 const SVCS=[
-  {name:'Luxury Decor & Styling',icon:'🌸',desc:'Transformative lotus floral arrangements, kalyana mandapam setups, table settings and draperies that turn any venue into a masterpiece.',tags:['Floral','Drapery','Mandapam','Centerpieces'],
+  {name:'Luxury Decor & Styling',icon:'🌸',desc:'Transformative floral arrangements, kalyana mandapam setups, vibrant Haldi decor with marigold installations, table settings and draperies that turn any venue into a masterpiece.',tags:['Floral','Drapery','Mandapam','Haldi Decor ✦','Centerpieces'],
    photos:['https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=800&q=80','https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=800&q=80','https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=800&q=80','https://images.unsplash.com/photo-1529543544282-ea669407fca3?w=800&q=80','https://images.unsplash.com/photo-1561489413-985b06da5bee?w=800&q=80']},
-  {name:'Haldi Decor',icon:'🌼',desc:'Vibrant marigold showers, turmeric-tone draping, folk installations and joyful stage setups that capture the energy of your most cherished pre-wedding rituals.',tags:['Marigold','Turmeric Theme','Folk','Stage Setup'],
-   photos:['https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80','https://images.unsplash.com/photo-1529543544282-ea669407fca3?w=800&q=80','https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=800&q=80','https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=800&q=80']},
+
   {name:'Professional Photography',icon:'📷',desc:'Cinematic photography and videography capturing every raw emotion, candid moment, and curated detail.',tags:['Photo','Videography','Drone','Album'],
    photos:['https://images.unsplash.com/photo-1606216794074-735e91aa2c92?w=800&q=80','https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=800&q=80','https://images.unsplash.com/photo-1591604466107-ec97de577aff?w=800&q=80','https://images.unsplash.com/photo-1532712938310-34cb3982ef74?w=800&q=80']},
   {name:'Live Music & Entertainment',icon:'🎵',desc:'From classical ensembles and folk performances to high-energy DJs — the perfect sound for your celebration.',tags:['DJ','Live Band','Classical','Shehnai'],
@@ -1847,6 +1849,8 @@ const SVCS=[
 ];
 window._svcPhotos={};
 SVCS.forEach(s=>{window._svcPhotos[s.name]=s.photos;});
+// Haldi Decor is a subtype — add its photos to Luxury Decor & Styling
+window._svcPhotos['Haldi Decor'] = window._svcPhotos['Luxury Decor & Styling'];
 
 // ── HERO SLIDESHOW ──
 const heroPhotos=[
@@ -1930,10 +1934,10 @@ const STATIC_GALLERY=[
   {url:'https://images.unsplash.com/photo-1555244162-803834f70033?w=800&q=80',caption:'Corporate Catering',eventCategory:'Corporate',service:'Gourmet Catering'},
   {url:'https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=800&q=80',caption:'Corporate Live Stage',eventCategory:'Corporate',service:'Live Music & Entertainment'},
   // Haldi
-  {url:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80',caption:'Marigold Haldi Stage',eventCategory:'Haldi',service:'Haldi Decor'},
-  {url:'https://images.unsplash.com/photo-1529543544282-ea669407fca3?w=800&q=80',caption:'Haldi Floral Canopy',eventCategory:'Haldi',service:'Haldi Decor'},
-  {url:'https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=800&q=80',caption:'Folk Haldi Decor',eventCategory:'Haldi',service:'Haldi Decor'},
-  {url:'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=800&q=80',caption:'Vibrant Haldi Setup',eventCategory:'Haldi',service:'Haldi Decor'},
+  {url:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80',caption:'Marigold Haldi Stage',eventCategory:'Haldi',service:'Luxury Decor & Styling'},
+  {url:'https://images.unsplash.com/photo-1529543544282-ea669407fca3?w=800&q=80',caption:'Haldi Floral Canopy',eventCategory:'Haldi',service:'Luxury Decor & Styling'},
+  {url:'https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=800&q=80',caption:'Folk Haldi Decor',eventCategory:'Haldi',service:'Luxury Decor & Styling'},
+  {url:'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=800&q=80',caption:'Vibrant Haldi Setup',eventCategory:'Haldi',service:'Luxury Decor & Styling'},
   // Logistics
   {url:'https://images.unsplash.com/photo-1520854221256-17452cc3a785?w=800&q=80',caption:'Event Setup Crew',eventCategory:'Logistics',service:'Logistics Services'},
   {url:'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=800&q=80',caption:'Venue Preparation',eventCategory:'Logistics',service:'Logistics Services'},
@@ -2234,6 +2238,8 @@ window.validatePhoneInput = (el) => {
 
 window.quickBook=(svc)=>{
   if(svc==='Gourmet Catering'){showToast('🍽️ Catering is coming soon! Please choose another service.');return;}
+  // Haldi Decor is a subtype of Luxury Decor & Styling
+  if(svc==='Haldi Decor'){svc='Luxury Decor & Styling';}
   document.getElementById('bkService').value=svc;
   document.getElementById('booking').scrollIntoView({behavior:'smooth'});
 };
@@ -2328,87 +2334,105 @@ document.addEventListener('DOMContentLoaded',()=>{
 
 // ════════════════════════════════════════════════════════
 // HAPPENHAUS — CINEMATIC INTRO SPLASH CONTROLLER
+// Fixed: guaranteed dismiss, no stuck overflow, no double initHero
 // ════════════════════════════════════════════════════════
 (function () {
   'use strict';
 
-  var splash     = document.getElementById('introSplash');
-  var dismissed  = false;
+  var splash    = document.getElementById('introSplash');
+  var dismissed = false;
+  var autoTimer, safetyTimer;
 
-  if (!splash) { bootSite(); return; }
-
-  // Lock scroll while splash is showing
-  document.body.style.overflow = 'hidden';
-
-  /* ── Core dismiss function ─────────────────────────── */
-  function dismiss(immediate) {
-    if (dismissed) return;
-    dismissed = true;
-
-    // Clear all pending timers by using a single flag
-    splash.style.pointerEvents = 'none'; // Stop any further interaction
-
-    if (immediate) {
-      // Hard cut — no animation (e.g. safety-net path)
-      hideSplash();
-    } else {
-      // Cinematic exit: scale + fade
-      splash.classList.add('splash-exit');
-      setTimeout(hideSplash, 920); // matches animation duration
-    }
-  }
-
-  function hideSplash() {
-    splash.style.display    = 'none';
-    splash.style.visibility = 'hidden';
-    // Restore body scroll & allow horizontal scroll prevention
-    document.body.style.overflow   = '';
-    document.body.style.overflowX  = 'hidden';
-    bootSite();
-  }
-
+  // ── Boot the main site (idempotent — safe to call multiple times) ──
   function bootSite() {
-    // Always safe to call multiple times (idempotent)
+    // Ensure scroll is always restored
+    document.body.style.overflow  = '';
+    document.body.style.overflowX = 'hidden';
+    // Init hero exactly once
     if (typeof initHero === 'function' && !window._heroInit) {
       window._heroInit = true;
       initHero();
     }
   }
 
-  /* ── Timers ──────────────────────────────────────────── */
-  // Auto-dismiss: animation lasts ~2.4s → dismiss starts at 3s → hidden at ~3.9s
-  var autoTimer = setTimeout(function () {
-    dismiss(false);
-  }, 3000);
+  // ── No splash element? Boot immediately ──
+  if (!splash) { bootSite(); return; }
 
-  // Absolute safety-net: force-remove at 5.5s regardless
-  var safetyTimer = setTimeout(function () {
-    dismiss(true);
-  }, 5500);
+  // Lock scroll while splash shows
+  document.body.style.overflow = 'hidden';
 
-  /* ── User interaction: tap/click anywhere to skip ────── */
-  splash.addEventListener('click', function () {
+  // ── Hide splash completely (belt-and-suspenders) ──
+  function hideSplash() {
+    if (!splash) return;
+    splash.style.display       = 'none';
+    splash.style.visibility    = 'hidden';
+    splash.style.pointerEvents = 'none';
+    splash.style.zIndex        = '-1';
+    bootSite();
+  }
+
+  // ── Dismiss with optional cinematic exit ──
+  function dismiss(immediate) {
+    if (dismissed) return;
+    dismissed = true;
+    clearTimeout(autoTimer);
+    clearTimeout(safetyTimer);
+    splash.style.pointerEvents = 'none';
+    if (immediate) {
+      hideSplash();
+    } else {
+      splash.classList.add('splash-exit');
+      // Match .splash-exit animation (0.9s) + small buffer
+      setTimeout(hideSplash, 950);
+    }
+  }
+
+  // ── Auto-dismiss at 3 seconds ──
+  autoTimer = setTimeout(function() { dismiss(false); }, 3000);
+
+  // ── Absolute safety net at 5.5 seconds ──
+  safetyTimer = setTimeout(function() { dismiss(true); }, 5500);
+
+  // ── Click/tap anywhere to skip ──
+  splash.addEventListener('click', function() {
     clearTimeout(autoTimer);
     clearTimeout(safetyTimer);
     dismiss(false);
-  }, { once: true });
+  }, { once: true, passive: true });
 
-  /* ── Keyboard: ESC to skip ───────────────────────────── */
-  document.addEventListener('keydown', function escHandler(e) {
+  // ── ESC key to skip ──
+  document.addEventListener('keydown', function escSkip(e) {
     if (e.key === 'Escape') {
-      document.removeEventListener('keydown', escHandler);
+      document.removeEventListener('keydown', escSkip);
       clearTimeout(autoTimer);
       clearTimeout(safetyTimer);
       dismiss(false);
     }
   });
 
-})();
+  // ── Extra guard: if body scroll is still locked after 6s, force-release ──
+  setTimeout(function() {
+    if (document.body.style.overflow === 'hidden') {
+      document.body.style.overflow  = '';
+      document.body.style.overflowX = 'hidden';
+    }
+    if (splash && splash.style.display !== 'none') {
+      hideSplash();
+    }
+  }, 6000);
 
-// ── INIT SITE (called after splash OR immediately if no splash) ──
-initHero();
+})();
+// NOTE: initHero() is called inside bootSite() above — NOT here.
+// Calling it again here would cause a double-init race condition.
 
 // ── SERVICE WORKER (PWA) ──
 if('serviceWorker' in navigator){
   window.addEventListener('load', function(){
-    navigator.serv
+    navigator.serviceWorker.register('./sw.js')
+      .then(function(reg){ console.log('[HAPPENHAUS] SW registered:', reg.scope); })
+      .catch(function(err){ console.log('[HAPPENHAUS] SW failed:', err); });
+  });
+}
+</script>
+</body>
+</html>

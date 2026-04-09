@@ -661,8 +661,10 @@ tbody tr:hover td{background:var(--s2);}
           </select>
           <select class="bk-filter-select" id="fService" onchange="applyBkFilters()">
             <option value="">All Services</option>
-            <option>Luxury Decor &amp; Styling</option>
-            <option>Haldi Decor</option>
+            <optgroup label="Decor &amp; Styling">
+              <option value="Luxury Decor &amp; Styling">Luxury Decor &amp; Styling</option>
+              <option value="Luxury Decor &amp; Styling">🌼 Haldi Decor (→ Decor &amp; Styling)</option>
+            </optgroup>
             <option>Professional Photography</option>
             <option>Live Music &amp; Entertainment</option>
             <option>Premium Lighting Design</option>
@@ -719,8 +721,10 @@ tbody tr:hover td{background:var(--s2);}
               <label class="uf-label" style="margin-top:8px;">Service Category *</label>
               <select class="uf-select" id="uploadService">
                 <option value="">— Select Service —</option>
-                <option>Luxury Decor &amp; Styling</option>
-                <option>Haldi Decor</option>
+                <optgroup label="Decor &amp; Styling">
+                  <option value="Luxury Decor &amp; Styling">Luxury Decor &amp; Styling</option>
+                  <option value="Luxury Decor &amp; Styling">🌼 Haldi Decor (→ Decor &amp; Styling)</option>
+                </optgroup>
                 <option>Professional Photography</option>
                 <option>Live Music &amp; Entertainment</option>
                 <option>Premium Lighting Design</option>
@@ -756,7 +760,7 @@ tbody tr:hover td{background:var(--s2);}
             <div class="ftabs" id="galleryServiceTabs" style="flex-wrap:wrap;">
               <button class="ftab active" onclick="setGalSvcFilter('',this)">All Services</button>
               <button class="ftab" onclick="setGalSvcFilter('Luxury Decor &amp; Styling',this)">🌸 Decor</button>
-              <button class="ftab" onclick="setGalSvcFilter('Haldi Decor',this)">🌼 Haldi</button>
+              <button class="ftab" onclick="setGalSvcFilter('Luxury Decor &amp; Styling',this)" title="Haldi Decor is a subtype of Luxury Decor &amp; Styling">🌼 Haldi (Decor)</button>
               <button class="ftab" onclick="setGalSvcFilter('Professional Photography',this)">📷 Photo</button>
               <button class="ftab" onclick="setGalSvcFilter('Premium Lighting Design',this)">✨ Lighting</button>
               <button class="ftab" onclick="setGalSvcFilter('Live Music &amp; Entertainment',this)">🎵 Music</button>
@@ -815,9 +819,13 @@ tbody tr:hover td{background:var(--s2);}
 
     <!-- SERVICES -->
     <div class="panel" id="panel-services">
+      <div style="background:var(--gold-a2);border:1px solid rgba(201,168,76,.2);border-radius:var(--r2);padding:12px 18px;margin-bottom:16px;font-size:.78rem;color:var(--t2);line-height:1.7;">
+        <span style="color:var(--gold);font-weight:600;">🌼 Haldi Decor</span> is a <strong>subtype</strong> of <strong>Luxury Decor &amp; Styling</strong>. 
+        Bookings for Haldi are counted under Decor &amp; Styling. Set service to "Luxury Decor &amp; Styling" when managing Haldi event bookings.
+      </div>
       <div class="three-col">
         <div class="stat-card"><div class="stat-icon-wrap" style="background:var(--gold-a);font-size:1.4rem;width:42px;height:42px;margin-bottom:12px;">🌸</div><div class="stat-val" id="svcStat0">—</div><div class="stat-lbl">Decor &amp; Styling</div></div>
-        <div class="stat-card"><div class="stat-icon-wrap" style="background:var(--yellow-a);font-size:1.4rem;width:42px;height:42px;margin-bottom:12px;">🌼</div><div class="stat-val" id="svcStat1">—</div><div class="stat-lbl">Haldi Decor</div></div>
+        <div class="stat-card"><div class="stat-icon-wrap" style="background:var(--yellow-a);font-size:1.4rem;width:42px;height:42px;margin-bottom:12px;">🌼</div><div class="stat-val" id="svcStat1">—</div><div class="stat-lbl">Haldi Decor <span style="font-size:.6rem;color:var(--t3);">(under Decor)</span></div></div>
         <div class="stat-card"><div class="stat-icon-wrap" style="background:var(--blue-a);font-size:1.4rem;width:42px;height:42px;margin-bottom:12px;">📷</div><div class="stat-val" id="svcStat2">—</div><div class="stat-lbl">Photography</div></div>
         <div class="stat-card"><div class="stat-icon-wrap" style="background:var(--purple-a);font-size:1.4rem;width:42px;height:42px;margin-bottom:12px;">🎵</div><div class="stat-val" id="svcStat3">—</div><div class="stat-lbl">Music &amp; Entertainment</div></div>
         <div class="stat-card"><div class="stat-icon-wrap" style="background:var(--yellow-a);font-size:1.4rem;width:42px;height:42px;margin-bottom:12px;">✨</div><div class="stat-val" id="svcStat4">—</div><div class="stat-lbl">Lighting Design</div></div>
@@ -1444,6 +1452,11 @@ function renderRows(tbodyId, data, short) {
 }
 
 function applyBkFilters() {
+  // Normalize: "Haldi Decor" bookings stored before migration → treat as Luxury Decor & Styling
+  allBookings.forEach(function(b) {
+    if(b.service === 'Haldi Decor') b._displayService = b.service + ' (Decor & Styling)';
+    else b._displayService = b.service;
+  });
   var data = allBookings.slice();
   if (bkFilterStatus !== 'all') {
     if (bkFilterStatus === 'pending') {
@@ -1825,7 +1838,8 @@ window.deletePhoto = function(id, path) {
 //  SERVICES PANEL
 // ════════════════════════════════════════════════════
 function renderServicesPanel() {
-  var svcs = ['Luxury Decor & Styling','Haldi Decor','Professional Photography','Live Music & Entertainment','Premium Lighting Design','Logistics Services','Gourmet Catering','Complete Event Management'];
+  var svcs = ['Luxury Decor & Styling','Luxury Decor & Styling','Professional Photography','Live Music & Entertainment','Premium Lighting Design','Logistics Services','Gourmet Catering','Complete Event Management'];
+  // Note: svcStat1 counts Luxury Decor & Styling bookings to represent Haldi (subtype)
   svcs.forEach(function(s, i) {
     var el = document.getElementById('svcStat' + i); if (el) el.textContent = allBookings.filter(function(b) { return b.service === s; }).length;
   });
