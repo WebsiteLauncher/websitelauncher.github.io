@@ -43,10 +43,13 @@ img{display:block;width:100%;height:100%;object-fit:cover;}
 .hidden{display:none!important;}
 
 /* ── NAV ── */
-nav{position:fixed;top:0;left:0;right:0;z-index:900;height:66px;padding:0 40px;display:flex;align-items:center;justify-content:space-between;background:rgba(8,8,8,.94);backdrop-filter:blur(20px);border-bottom:1px solid rgba(201,168,76,.1);transition:var(--tr);}
+nav{position:fixed;top:0;left:0;right:0;z-index:900;height:70px;padding:0 40px;display:flex;align-items:center;justify-content:space-between;background:rgba(8,8,8,.96);backdrop-filter:blur(24px) saturate(180%);border-bottom:1px solid rgba(201,168,76,.12);transition:var(--tr);}
 nav.maintenance-on{border-bottom:2px solid var(--gold);}
-.nav-logo{font-family:"Italiana",var(--fd);font-size:1.55rem;letter-spacing:.18em;color:var(--gold);text-decoration:none;white-space:nowrap;flex-shrink:0;font-weight:400;transition:var(--tr);}
-.nav-logo:hover{color:var(--gold2);letter-spacing:.22em;}
+.nav-logo{display:inline-flex;align-items:center;gap:14px;text-decoration:none;flex-shrink:0;white-space:nowrap;transition:var(--tr);}
+.nav-logo:hover{opacity:.85;}
+.nav-brand{display:flex;flex-direction:column;line-height:1.1;flex-shrink:0;}
+.nav-brand-name{font-family:"Italiana",var(--fd);font-size:1.45rem;letter-spacing:.22em;color:var(--gold);white-space:nowrap;font-weight:400;line-height:1;}
+.nav-brand-tagline{font-size:.52rem;letter-spacing:.28em;text-transform:uppercase;color:rgba(201,168,76,.45);white-space:nowrap;margin-top:2px;}
 .nav-mid{display:flex;gap:28px;}
 .nav-mid a{font-size:.76rem;letter-spacing:.12em;text-transform:uppercase;color:var(--cream);text-decoration:none;opacity:.65;transition:var(--tr);}
 .nav-mid a:hover{opacity:1;color:var(--gold);}
@@ -155,19 +158,74 @@ section{padding:88px 0;}
 .soon-msg{font-size:.75rem;color:rgba(255,255,255,.7);text-align:center;padding:0 20px;}
 
 /* ── GALLERY ── */
-#gallery-section{background:var(--black);padding:80px 0;}
+#gallery-section{background:var(--black);padding:88px 0;}
 .cat-filter-wrap{display:flex;flex-wrap:wrap;gap:8px;margin-top:28px;}
-.cat-btn{background:transparent;border:1px solid rgba(201,168,76,.2);color:var(--muted);padding:8px 18px;border-radius:100px;font-size:.72rem;cursor:pointer;font-family:var(--fb);transition:var(--tr);white-space:nowrap;}
-.cat-btn:hover,.cat-btn.active{border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,.07);}
-.dyn-gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:3px;margin-top:0;}
-.dyn-item{aspect-ratio:4/3;overflow:hidden;position:relative;background:var(--dark3);cursor:pointer;}
-.dyn-item img{width:100%;height:100%;object-fit:cover;transition:transform .5s var(--ease);}
-.dyn-item:hover img{transform:scale(1.05);}
-.dyn-lbl{position:absolute;bottom:0;left:0;right:0;padding:10px 14px;background:linear-gradient(to top,rgba(0,0,0,.85),transparent);display:flex;justify-content:space-between;align-items:flex-end;opacity:0;transition:var(--tr);}
+.cat-btn{background:transparent;border:1px solid rgba(201,168,76,.18);color:var(--muted);padding:8px 18px;border-radius:100px;font-size:.72rem;cursor:pointer;font-family:var(--fb);transition:all .3s var(--ease);white-space:nowrap;letter-spacing:.06em;}
+.cat-btn:hover,.cat-btn.active{border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,.08);box-shadow:0 0 18px rgba(201,168,76,.1);}
+
+/* Masonry grid */
+.dyn-gallery-grid{columns:4;column-gap:4px;margin-top:28px;}
+.dyn-item{break-inside:avoid;margin-bottom:4px;overflow:hidden;position:relative;background:var(--dark3);cursor:pointer;display:block;}
+.dyn-item img{width:100%;height:auto;object-fit:cover;transition:transform .6s var(--ease);display:block;}
+.dyn-item:hover img{transform:scale(1.07);}
+/* Dark overlay on hover */
+.dyn-item::before{content:'';position:absolute;inset:0;background:rgba(8,8,8,0);transition:background .35s var(--ease);z-index:1;}
+.dyn-item:hover::before{background:rgba(8,8,8,.55);}
+/* Hover info panel */
+.dyn-lbl{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;opacity:0;transition:opacity .35s var(--ease);z-index:2;padding:16px;}
 .dyn-item:hover .dyn-lbl{opacity:1;}
-.dyn-caption{font-size:.7rem;color:var(--cream);}
-.dyn-cat{font-size:.62rem;color:var(--gold);letter-spacing:.1em;text-transform:uppercase;}
+.dyn-caption{font-size:.78rem;color:var(--white);text-align:center;font-weight:500;}
+.dyn-cat{font-size:.62rem;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;}
+.dyn-view-btn{font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--black);background:var(--gold);border:none;padding:6px 16px;border-radius:100px;cursor:pointer;font-family:var(--fb);font-weight:600;transition:var(--tr);margin-top:4px;}
+.dyn-view-btn:hover{background:var(--gold2);}
+
+/* Reveal animation for gallery items */
+.dyn-item.gal-hidden{opacity:0;transform:scale(.96);transition:opacity .4s ease,transform .4s ease;}
+.dyn-item.gal-visible{opacity:1;transform:none;}
+
+/* View More button */
+.gal-view-more-wrap{text-align:center;margin-top:32px;}
+.gal-view-more-btn{background:transparent;border:1px solid rgba(201,168,76,.3);color:var(--gold);padding:12px 36px;font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;font-family:var(--fb);transition:var(--tr);border-radius:100px;}
+.gal-view-more-btn:hover{background:rgba(201,168,76,.08);border-color:var(--gold);}
+
 .gal-empty-msg{text-align:center;padding:48px;color:var(--muted);font-size:.85rem;}
+
+/* ── FEATURED PROJECTS SECTION ── */
+#featured-projects{background:var(--dark);padding:88px 0;}
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;margin-top:48px;}
+.feat-card{position:relative;overflow:hidden;cursor:pointer;aspect-ratio:3/4;background:var(--dark3);}
+.feat-card:first-child{grid-column:span 2;aspect-ratio:auto;}
+.feat-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease);}
+.feat-card:hover img{transform:scale(1.06);}
+.feat-ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(8,8,8,.95) 0%,rgba(8,8,8,.2) 50%,transparent 100%);transition:var(--tr);}
+.feat-card:hover .feat-ov{background:linear-gradient(to top,rgba(8,8,8,.98) 0%,rgba(8,8,8,.45) 60%,rgba(8,8,8,.05) 100%);}
+.feat-body{position:absolute;bottom:0;left:0;right:0;padding:32px;}
+.feat-cat{font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+.feat-title{font-family:var(--fd);font-size:1.6rem;color:var(--white);line-height:1.15;margin-bottom:8px;}
+.feat-card:first-child .feat-title{font-size:2.2rem;}
+.feat-desc{font-size:.76rem;color:rgba(245,240,232,.6);line-height:1.7;max-height:0;overflow:hidden;transition:.4s var(--ease);}
+.feat-card:hover .feat-desc{max-height:80px;}
+.feat-link{display:inline-flex;align-items:center;gap:6px;color:var(--gold);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;margin-top:12px;opacity:0;transform:translateY(8px);transition:var(--tr);}
+.feat-card:hover .feat-link{opacity:1;transform:none;}
+
+/* ── FULLSCREEN MODAL SLIDER (for View More) ── */
+.gal-modal{position:fixed;inset:0;background:rgba(0,0,0,.98);z-index:3500;display:none;flex-direction:column;}
+.gal-modal.open{display:flex;}
+.gal-modal-hdr{padding:16px 28px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(201,168,76,.1);flex-shrink:0;}
+.gal-modal-ttl{font-family:var(--fd);font-size:1.1rem;color:var(--cream);}
+.gal-modal-x{background:none;border:1px solid rgba(201,168,76,.25);color:var(--gold);padding:6px 16px;border-radius:var(--r);cursor:pointer;font-size:.85rem;font-family:var(--fb);transition:var(--tr);}
+.gal-modal-x:hover{background:rgba(201,168,76,.1);}
+.gal-modal-body{flex:1;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+.gal-modal-img{max-width:88vw;max-height:82vh;object-fit:contain;display:block;transition:opacity .3s ease,transform .3s ease;box-shadow:0 32px 96px rgba(0,0,0,.8);}
+.gal-modal-img.sliding{opacity:0;transform:scale(.97);}
+.gal-modal-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(8,8,8,.7);border:1px solid rgba(201,168,76,.2);color:var(--cream);font-size:2rem;cursor:pointer;padding:16px 22px;border-radius:var(--r);transition:var(--tr);line-height:1;z-index:2;}
+.gal-modal-nav:hover{background:rgba(201,168,76,.15);color:var(--gold);}
+.gal-modal-prev{left:18px;}.gal-modal-next{right:18px;}
+.gal-modal-footer{padding:16px;display:flex;align-items:center;justify-content:center;gap:16px;flex-shrink:0;}
+.gal-modal-dots{display:flex;gap:6px;align-items:center;}
+.gal-mdot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.2);cursor:pointer;transition:var(--tr);}
+.gal-mdot.active{background:var(--gold);width:20px;border-radius:3px;}
+.gal-modal-counter{font-size:.72rem;color:var(--muted);}
 
 /* ── SERVICE GALLERY OVERLAY ── */
 .gl-ov{position:fixed;inset:0;background:rgba(0,0,0,.96);z-index:2000;display:none;flex-direction:column;}
@@ -275,26 +333,46 @@ section{padding:88px 0;}
 
 /* ── REVIEWS ── */
 #reviews{background:var(--black);}
-.rev-summary{display:flex;align-items:center;gap:28px;margin-bottom:48px;flex-wrap:wrap;}
+.rev-summary{display:flex;align-items:center;gap:28px;margin-bottom:56px;flex-wrap:wrap;}
 .rev-avg-num{font-family:var(--fd);font-size:4rem;font-weight:300;color:var(--gold);line-height:1;}
 .rev-avg-stars{display:flex;gap:3px;margin:4px 0;}
 .rev-avg-stars span{color:var(--gold);font-size:1.2rem;}
 .rev-avg-count{font-size:.78rem;color:var(--muted);}
-.rev-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
-.rev-card{background:var(--dark2);padding:28px;border:1px solid rgba(201,168,76,.07);border-radius:var(--r);}
-.rev-stars{display:flex;gap:2px;margin-bottom:10px;}
+
+/* Carousel container */
+.rev-carousel-wrap{position:relative;overflow:hidden;margin:0 -40px;padding:0 40px;}
+.rev-carousel{display:flex;gap:18px;transition:transform .5s cubic-bezier(.4,0,.2,1);cursor:grab;user-select:none;}
+.rev-carousel.dragging{cursor:grabbing;transition:none;}
+.rev-card{background:var(--dark2);padding:32px;border:1px solid rgba(201,168,76,.08);border-radius:var(--r);flex:0 0 calc(33.333% - 12px);min-width:280px;position:relative;transition:border-color .3s ease,transform .3s ease,box-shadow .3s ease;}
+.rev-card:hover{border-color:rgba(201,168,76,.22);transform:translateY(-3px);box-shadow:0 16px 48px rgba(0,0,0,.4);}
+.rev-card::before{content:'"';font-family:var(--fd);font-size:5rem;color:var(--gold);opacity:.08;position:absolute;top:-8px;left:18px;line-height:1;}
+.rev-stars{display:flex;gap:2px;margin-bottom:14px;}
 .rev-stars span{color:var(--gold);font-size:.9rem;}
 .rev-stars span.empty{color:var(--dark3);}
-.rev-txt{font-size:.82rem;color:var(--cream);line-height:1.8;font-style:italic;margin-bottom:14px;}
+.rev-txt{font-size:.84rem;color:var(--cream);line-height:1.85;font-style:italic;margin-bottom:18px;}
 .rev-auth{display:flex;align-items:center;gap:10px;}
-.rev-av{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--gd),var(--gold));display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:.9rem;color:var(--black);}
+.rev-av{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--gd),var(--gold));display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:.9rem;color:var(--black);flex-shrink:0;}
 .rev-nm{font-size:.8rem;font-weight:500;}
 .rev-ev{font-size:.7rem;color:var(--muted);}
 .rev-empty{text-align:center;padding:48px;color:var(--muted);font-size:.86rem;}
+
+/* Carousel nav */
+.rev-nav{display:flex;align-items:center;justify-content:space-between;margin-top:28px;}
+.rev-arrows{display:flex;gap:10px;}
+.rev-arrow{background:transparent;border:1px solid rgba(201,168,76,.25);color:var(--gold);width:42px;height:42px;border-radius:50%;cursor:pointer;font-size:1.2rem;transition:var(--tr);display:flex;align-items:center;justify-content:center;}
+.rev-arrow:hover{background:rgba(201,168,76,.1);border-color:var(--gold);}
+.rev-dots{display:flex;gap:6px;align-items:center;}
+.rev-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.15);cursor:pointer;transition:var(--tr);border:none;}
+.rev-dot.active{background:var(--gold);width:22px;border-radius:3px;}
+
+/* Thank you success state */
+.rev-thank-you{text-align:center;padding:24px;background:rgba(76,175,80,.06);border:1px solid rgba(76,175,80,.2);border-radius:var(--r);color:#4CAF50;font-size:.88rem;display:none;animation:fu .5s ease;}
+.rev-thank-you.show{display:block;}
+
 /* star-picker used only in review modal */
 .star-picker{display:flex;gap:6px;margin:12px 0 18px;}
 .star-picker span{font-size:1.8rem;cursor:pointer;color:var(--dark3);transition:var(--tr);}
-.star-picker span.sel{color:var(--gold);}
+.star-picker span.sel{color:var(--gold);text-shadow:0 0 12px rgba(201,168,76,.4);}
 
 /* ── TESTIMONIALS (hardcoded) ── */
 #testimonials{background:var(--dark);}
@@ -382,9 +460,9 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
 .toast.show{transform:translateX(-50%) translateY(0);}
 
 /* ── RESPONSIVE ── */
-@media(max-width:1024px){.svc-grid{grid-template-columns:1fr 1fr;}.bk-wrap{grid-template-columns:1fr;gap:40px;}.t-grid{grid-template-columns:1fr 1fr;}.ft-grid{grid-template-columns:1fr 1fr;}.rev-grid{grid-template-columns:1fr 1fr;}}
-@media(max-width:768px){nav{padding:0 18px;height:60px;}.mob-nav{top:60px;}.nav-mid,.nav-right .btn{display:none;}.hamburger{display:flex;}section{padding:64px 0;}.con{padding:0 20px;}.svc-grid{grid-template-columns:1fr;}.proc{grid-template-columns:1fr 1fr;gap:32px;}.proc::before{display:none;}.t-grid,.rev-grid{grid-template-columns:1fr;}.ft-grid{grid-template-columns:1fr 1fr;}.bk-form-box{padding:22px 18px;}.fr{grid-template-columns:1fr;}.dyn-gallery-grid{grid-template-columns:1fr 1fr;}}
-@media(max-width:520px){.dyn-gallery-grid{grid-template-columns:1fr;}.ft-grid{grid-template-columns:1fr;}.proc{grid-template-columns:1fr;}.bk-wrap{gap:28px;}.wa-fab{bottom:16px;right:16px;width:50px;height:50px;}}
+@media(max-width:1024px){.svc-grid{grid-template-columns:1fr 1fr;}.bk-wrap{grid-template-columns:1fr;gap:40px;}.t-grid{grid-template-columns:1fr 1fr;}.ft-grid{grid-template-columns:1fr 1fr;}.rev-card{flex:0 0 calc(50% - 9px);}.feat-grid{grid-template-columns:1fr 1fr;}.feat-card:first-child{grid-column:span 2;}.dyn-gallery-grid{columns:3;}}
+@media(max-width:768px){nav{padding:0 18px;height:60px;}.mob-nav{top:60px;}.nav-mid,.nav-right .btn{display:none;}.hamburger{display:flex;}section{padding:64px 0;}.con{padding:0 20px;}.svc-grid{grid-template-columns:1fr;}.proc{grid-template-columns:1fr 1fr;gap:32px;}.proc::before{display:none;}.t-grid{grid-template-columns:1fr;}.ft-grid{grid-template-columns:1fr 1fr;}.bk-form-box{padding:22px 18px;}.fr{grid-template-columns:1fr;}.dyn-gallery-grid{columns:2;}.rev-card{flex:0 0 calc(100% - 0px);}.rev-carousel-wrap{margin:0 -20px;padding:0 20px;}.feat-grid{grid-template-columns:1fr;}.feat-card:first-child{grid-column:span 1;}}
+@media(max-width:520px){.dyn-gallery-grid{columns:1;}.ft-grid{grid-template-columns:1fr;}.proc{grid-template-columns:1fr;}.bk-wrap{gap:28px;}.wa-fab{bottom:16px;right:16px;width:50px;height:50px;}.nav-brand-tagline{display:none;}}
 
 /* ══════════════════════════════════════════════════════
    HAPPENHAUS — CINEMATIC INTRO SPLASH
@@ -688,40 +766,35 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
 <!-- NAV -->
 <nav id="mainNav">
   <a href="#" class="nav-logo" aria-label="HAPPENHAUS Home">
-    <svg width="190" height="46" viewBox="0 0 320 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg width="44" height="44" viewBox="0 0 280 160" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" flex-shrink="0">
       <defs>
         <linearGradient id="hgnav" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#E8D48A"/>
+          <stop offset="40%" stop-color="#C9A84C"/>
+          <stop offset="100%" stop-color="#8B6914"/>
+        </linearGradient>
+        <linearGradient id="hgnav2" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0%" stop-color="#E2C97E"/>
-          <stop offset="55%" stop-color="#C9A84C"/>
-          <stop offset="100%" stop-color="#9A7520"/>
+          <stop offset="100%" stop-color="#A8821E"/>
         </linearGradient>
       </defs>
-      <!-- LEFT H solid — outer stem -->
-      <rect x="4"   y="8"  width="14" height="92" fill="url(#hgnav)"/>
-      <!-- SHARED CENTER STEM -->
-      <rect x="52"  y="8"  width="14" height="92" fill="url(#hgnav)"/>
-      <!-- FULL crossbar -->
-      <rect x="4"   y="44" width="120" height="10" fill="url(#hgnav)"/>
-      <!-- serif caps -->
-      <rect x="0"   y="8"  width="22" height="5" fill="url(#hgnav)"/>
-      <rect x="48"  y="8"  width="22" height="5" fill="url(#hgnav)"/>
-      <rect x="0"   y="95" width="22" height="5" fill="url(#hgnav)"/>
-      <rect x="48"  y="95" width="22" height="5" fill="url(#hgnav)"/>
-      <!-- RIGHT H wireframe -->
-      <rect x="58"  y="4"  width="64" height="100" fill="none" stroke="url(#hgnav)" stroke-width="1.6"/>
-      <line x1="68"  y1="13" x2="68"  y2="97" stroke="#C9A84C" stroke-width="1.3"/>
-      <line x1="112" y1="13" x2="112" y2="97" stroke="#C9A84C" stroke-width="1.3"/>
-      <line x1="68"  y1="49" x2="112" y2="49" stroke="#C9A84C" stroke-width="1.3"/>
-      <!-- accent lines -->
-      <line x1="4"   y1="41" x2="124" y2="41" stroke="#C9A84C" stroke-width="0.6" opacity="0.4"/>
-      <line x1="4"   y1="57" x2="124" y2="57" stroke="#C9A84C" stroke-width="0.4" opacity="0.25"/>
-      <!-- ² -->
-      <text x="124" y="20" font-family="Cormorant Garamond,Georgia,serif" font-size="18" font-weight="300" fill="#C9A84C" opacity="0.88">2</text>
-      <!-- Wordmark -->
-      <text x="148" y="44" font-family="Italiana,Georgia,serif" font-size="22" letter-spacing="3.5" fill="url(#hgnav)">HAPPEN</text>
-      <text x="148" y="70" font-family="Italiana,Georgia,serif" font-size="22" letter-spacing="3.5" fill="#C9A84C" opacity="0.78">HAUS</text>
-      <line x1="148" y1="52" x2="316" y2="52" stroke="#C9A84C" stroke-width="0.4" opacity="0.2"/>
+      <rect x="18"  y="16" width="24" height="122" fill="url(#hgnav)"/>
+      <rect x="90"  y="16" width="24" height="122" fill="url(#hgnav)"/>
+      <rect x="18"  y="64" width="204" height="16" fill="url(#hgnav)"/>
+      <rect x="11"  y="16" width="38" height="7" fill="url(#hgnav)"/>
+      <rect x="83"  y="16" width="38" height="7" fill="url(#hgnav)"/>
+      <rect x="11"  y="131" width="38" height="7" fill="url(#hgnav)"/>
+      <rect x="83"  y="131" width="38" height="7" fill="url(#hgnav)"/>
+      <rect x="102" y="8"  width="102" height="140" fill="none" stroke="url(#hgnav2)" stroke-width="2.2"/>
+      <line x1="118" y1="20" x2="118" y2="136" stroke="#C9A84C" stroke-width="1.8"/>
+      <line x1="186" y1="20" x2="186" y2="136" stroke="#C9A84C" stroke-width="1.8"/>
+      <line x1="118" y1="72" x2="186" y2="72"  stroke="#C9A84C" stroke-width="1.8"/>
+      <text x="204" y="30" font-family="Cormorant Garamond,Georgia,serif" font-size="26" font-weight="300" fill="#C9A84C" opacity="0.88">2</text>
     </svg>
+    <div class="nav-brand">
+      <span class="nav-brand-name">HAPPENHAUS</span>
+      <span class="nav-brand-tagline">Hyderabad's Premier Studio</span>
+    </div>
   </a>
   <div class="nav-mid">
     <a href="#services">Services</a>
@@ -812,19 +885,93 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
       <button class="cat-btn" onclick="filterGallery('Engagement',this)">💝 Engagement</button>
       <button class="cat-btn" onclick="filterGallery('Sangeet',this)">🎶 Sangeet</button>
       <button class="cat-btn" onclick="filterGallery('Mehendi',this)">🌿 Mehendi</button>
+      <button class="cat-btn" onclick="filterGallery('Haldi',this)">🌼 Haldi</button>
       <button class="cat-btn" onclick="filterGallery('Baby Shower',this)">👶 Baby Shower</button>
       <button class="cat-btn" onclick="filterGallery('Birthday',this)">🎂 Birthday</button>
       <button class="cat-btn" onclick="filterGallery('Anniversary',this)">🌹 Anniversary</button>
       <button class="cat-btn" onclick="filterGallery('Housewarming',this)">🏠 Housewarming</button>
       <button class="cat-btn" onclick="filterGallery('Corporate',this)">🏢 Corporate</button>
       <button class="cat-btn" onclick="filterGallery('Farewell',this)">👋 Farewell</button>
-      <button class="cat-btn" onclick="filterGallery('Naming Ceremony',this)">🍼 Naming Ceremony</button>
+      <button class="cat-btn" onclick="filterGallery('Naming Ceremony',this)">🍼 Naming</button>
+      <button class="cat-btn" onclick="filterGallery('Logistics',this)">🚚 Logistics</button>
     </div>
   </div>
   <div class="con" style="margin-top:28px;">
     <div class="dyn-gallery-grid" id="dynGalleryGrid"></div>
+    <div class="gal-view-more-wrap" id="galViewMoreWrap" style="display:none;">
+      <button class="gal-view-more-btn" onclick="openGalleryModal()">View All Photos ↗</button>
+    </div>
   </div>
 </section>
+
+<!-- FEATURED PROJECTS -->
+<section id="featured-projects">
+  <div class="con">
+    <div class="s-lbl">Signature Work</div>
+    <h2 class="s-ttl">Featured <em>Projects</em></h2>
+    <div class="divider"></div>
+  </div>
+  <div class="con">
+    <div class="feat-grid" id="featGrid">
+      <div class="feat-card" onclick="openViewer(0)">
+        <img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=1200&q=80" alt="Grand Wedding Mandapam" loading="lazy"/>
+        <div class="feat-ov"></div>
+        <div class="feat-body">
+          <div class="feat-cat">Wedding · Jubilee Hills</div>
+          <div class="feat-title">The Grand Lotus Mandapam</div>
+          <div class="feat-desc">A breathtaking 2,000-guest wedding with a 40-ft lotus floral mandapam, custom draping, and synchronized LED chandelier drop.</div>
+          <div class="feat-link">View Project ↗</div>
+        </div>
+      </div>
+      <div class="feat-card" onclick="openViewer(3)">
+        <img src="https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=800&q=80" alt="Fairy Light Reception" loading="lazy"/>
+        <div class="feat-ov"></div>
+        <div class="feat-body">
+          <div class="feat-cat">Reception · Taj Falaknuma</div>
+          <div class="feat-title">Celestial Fairy Light Reception</div>
+          <div class="feat-desc">10,000 warm fairy lights suspended over 800 guests at the iconic Taj Falaknuma Palace.</div>
+          <div class="feat-link">View Project ↗</div>
+        </div>
+      </div>
+      <div class="feat-card" onclick="openViewer(9)">
+        <img src="https://images.unsplash.com/photo-1543269865-cbf427effbad?w=800&q=80" alt="Birthday Celebration" loading="lazy"/>
+        <div class="feat-ov"></div>
+        <div class="feat-body">
+          <div class="feat-cat">Birthday · Gachibowli</div>
+          <div class="feat-title">Royal First Birthday</div>
+          <div class="feat-desc">An enchanted garden theme for a first birthday, complete with floral arches and live music.</div>
+          <div class="feat-link">View Project ↗</div>
+        </div>
+      </div>
+      <div class="feat-card" onclick="openViewer(22)">
+        <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=800&q=80" alt="Corporate Gala" loading="lazy"/>
+        <div class="feat-ov"></div>
+        <div class="feat-body">
+          <div class="feat-cat">Corporate · HICC</div>
+          <div class="feat-title">Annual Gala — 400 Guests</div>
+          <div class="feat-desc">Full-spectrum production including custom staging, AV, canapé catering, and live performances.</div>
+          <div class="feat-link">View Project ↗</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FULLSCREEN GALLERY MODAL -->
+<div class="gal-modal" id="galModal">
+  <div class="gal-modal-hdr">
+    <span class="gal-modal-ttl">📸 HAPPENHAUS Gallery <span id="galModalCounter" style="font-size:.78rem;color:var(--muted);margin-left:8px;"></span></span>
+    <button class="gal-modal-x" onclick="closeGalleryModal()">✕ Close</button>
+  </div>
+  <div class="gal-modal-body">
+    <button class="gal-modal-nav gal-modal-prev" onclick="galModalNav(-1)">‹</button>
+    <img class="gal-modal-img" id="galModalImg" src="" alt=""/>
+    <button class="gal-modal-nav gal-modal-next" onclick="galModalNav(1)">›</button>
+  </div>
+  <div class="gal-modal-footer">
+    <div class="gal-modal-dots" id="galModalDots"></div>
+  </div>
+</div>
 
 <!-- PROCESS -->
 <section id="process">
@@ -865,7 +1012,7 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
         <div class="bk-contacts">
           <div class="c-item"><div class="c-icon">📍</div><span>Jubilee Hills, Hyderabad, Telangana</span></div>
           <div class="c-item"><div class="c-icon">📞</div><span>+91 7386030321</span></div>
-          <div class="c-item"><div class="c-icon">✉️</div><span>happenhaus.events@gmail.com</span></div>
+          <div class="c-item"><div class="c-icon">✉️</div><span><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="86eee7f6f6e3e8eee7f3f5a8e3f0e3e8f2f5c6e1ebe7efeaa8e5e9eb">[email&#160;protected]</a></span></div>
           <div class="c-item"><div class="c-icon">🕐</div><span>Mon–Sat: 10 AM – 7 PM</span></div>
         </div>
       </div>
@@ -899,9 +1046,11 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
               <select class="fs" id="bkService" required onchange="checkDuplicate()">
                 <option value="">Select a service</option>
                 <option>Luxury Decor &amp; Styling</option>
+                <option>Haldi Decor</option>
                 <option>Professional Photography</option>
                 <option>Live Music &amp; Entertainment</option>
                 <option>Premium Lighting Design</option>
+                <option>Logistics Services</option>
                 <option>Complete Event Management</option>
                 <option>Multiple Services</option>
               </select>
@@ -958,8 +1107,20 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
     <div class="rev-summary">
       <div><div class="rev-avg-num" id="revAvgNum">—</div><div class="rev-avg-stars" id="revAvgStars"></div><div class="rev-avg-count" id="revAvgCount">Loading reviews…</div></div>
     </div>
-    <div class="rev-grid" id="revGrid"><div class="rev-empty">Loading reviews…</div></div>
-    <!-- Review submissions are handled via the booking completion modal -->
+    <!-- Thank you message -->
+    <div class="rev-thank-you" id="revThankYou">🌟 Thank you for your feedback! Your review has been submitted and will appear after approval.</div>
+    <!-- Carousel wrapper -->
+    <div class="rev-carousel-wrap" id="revCarouselWrap">
+      <div class="rev-carousel" id="revGrid"><div class="rev-empty">Loading reviews…</div></div>
+    </div>
+    <!-- Carousel controls -->
+    <div class="rev-nav" id="revNav" style="display:none;">
+      <div class="rev-dots" id="revDots"></div>
+      <div class="rev-arrows">
+        <button class="rev-arrow" id="revPrev" aria-label="Previous">‹</button>
+        <button class="rev-arrow" id="revNext" aria-label="Next">›</button>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -1177,7 +1338,7 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
 <div class="toast" id="toast"></div>
 
 <!-- ══ FIREBASE ══ -->
-<script type="module">
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, sendPasswordResetEmail, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getFirestore, collection, addDoc, query, where, getDocs, getDoc, doc, updateDoc, orderBy, serverTimestamp, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -1197,6 +1358,16 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 window._db = db; window._auth = auth;
+// ── Expose Firestore helpers to non-module scripts (fixes "addDoc is not defined") ──
+window._addDoc = addDoc;
+window._collection = collection;
+window._serverTimestamp = serverTimestamp;
+window._query = query;
+window._where = where;
+window._getDocs = getDocs;
+window._doc = doc;
+window._updateDoc = updateDoc;
+window._onSnapshot = onSnapshot;
 
 let currentUser = null;
 let myBookings = [];
@@ -1585,36 +1756,43 @@ window.loadSvcGallery = async (name) => {
 };
 
 // ── REVIEWS ──
+function makeRevCard(r){
+  const stars=Array.from({length:5},(_,i)=>`<span class="${i<r.rating?'':'empty'}">★</span>`).join('');
+  return `<div class="rev-card"><div class="rev-stars">${stars}</div><p class="rev-txt">${r.text||''}</p><div class="rev-auth"><div class="rev-av">${(r.name||'A')[0].toUpperCase()}</div><div><div class="rev-nm">${r.name||'Anonymous'}</div><div class="rev-ev">${r.event||''}</div></div></div></div>`;
+}
+const FALLBACK_REVS=[
+  {rating:5,text:'HAPPENHAUS transformed our wedding into an absolute fairytale. Every detail was perfect — from the floral mandap to the candlelit reception. Truly unforgettable.',name:'Priya & Rahul Sharma',event:'Wedding · Taj Falaknuma'},
+  {rating:5,text:'Our daughter\'s first birthday was beyond magical. The decor, the photography — everything handled with such care and professionalism. We will be back!',name:'Anita Reddy',event:'Birthday · Gachibowli'},
+  {rating:5,text:'For our corporate gala, HAPPENHAUS delivered an experience that left 400 guests speechless. An outstanding team through and through.',name:'Vikram Nair',event:'Corporate Gala · HICC'},
+  {rating:5,text:'The Haldi decor was a riot of colour and joy. Our guests are still talking about the marigold installations. Absolutely wonderful service!',name:'Meera & Karthik',event:'Haldi · Jubilee Hills'},
+  {rating:5,text:'Logistics were seamless. They coordinated 12 vendors without a single hitch. I could actually enjoy my own wedding!',name:'Sanjana Reddy',event:'Wedding · Hyderabad'},
+  {rating:5,text:'The engagement photography was cinematic and emotional. They captured moments I didn\'t even know happened. Worth every rupee.',name:'Anjali & Rohan',event:'Engagement · Banjara Hills'},
+];
 async function loadReviews(){
   try{
-    // Fetch without orderBy to avoid composite index requirement, sort client-side
     const snap=await getDocs(query(collection(db,'reviews'),where('approved','==',true)));
     const revs=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
-    // Stars avg
     if(revs.length){
       const avg=(revs.reduce((a,r)=>a+r.rating,0)/revs.length).toFixed(1);
       document.getElementById('revAvgNum').textContent=avg;
       document.getElementById('revAvgCount').textContent=`Based on ${revs.length} verified review${revs.length!==1?'s':''}`;
-      const starsHtml=Array.from({length:5},(_,i)=>`<span>${i<Math.round(avg)?'★':'☆'}</span>`).join('');
-      document.getElementById('revAvgStars').innerHTML=starsHtml;
-      document.getElementById('revGrid').innerHTML=revs.slice(0,6).map(r=>{
-        const stars=Array.from({length:5},(_,i)=>`<span class="${i<r.rating?'':'empty'}">★</span>`).join('');
-        return `<div class="rev-card"><div class="rev-stars">${stars}</div><p class="rev-txt">${r.text}</p><div class="rev-auth"><div class="rev-av">${(r.name||'A')[0].toUpperCase()}</div><div><div class="rev-nm">${r.name||'Anonymous'}</div><div class="rev-ev">${r.event||''}</div></div></div></div>`;
-      }).join('');
+      document.getElementById('revAvgStars').innerHTML=Array.from({length:5},(_,i)=>`<span>${i<Math.round(avg)?'★':'☆'}</span>`).join('');
+      document.getElementById('revGrid').innerHTML=revs.map(r=>makeRevCard(r)).join('');
+      initRevCarousel(revs.length);
     } else {
-      document.getElementById('revAvgNum').textContent='—';
-      document.getElementById('revAvgCount').textContent='No reviews yet — be the first!';
-      document.getElementById('revGrid').innerHTML='<div class="rev-empty">No reviews yet. Be the first to share your experience!</div>';
+      document.getElementById('revAvgNum').textContent='5.0';
+      document.getElementById('revAvgCount').textContent='Based on verified reviews';
+      document.getElementById('revGrid').innerHTML=FALLBACK_REVS.map(r=>makeRevCard(r)).join('');
+      initRevCarousel(FALLBACK_REVS.length);
     }
   }catch(e){
-    // Fallback static reviews
     document.getElementById('revAvgNum').textContent='5.0';
     document.getElementById('revAvgCount').textContent='Based on verified reviews';
-    document.getElementById('revGrid').innerHTML=`<div class="rev-card"><div class="rev-stars">★★★★★</div><p class="rev-txt">AB Events transformed our wedding into an absolute fairytale. Every detail was perfect — from the floral mandap to the candlelit reception. Truly unforgettable.</p><div class="rev-auth"><div class="rev-av">P</div><div><div class="rev-nm">Priya &amp; Rahul Sharma</div><div class="rev-ev">Wedding · Taj Falaknuma</div></div></div></div>
-    <div class="rev-card"><div class="rev-stars">★★★★★</div><p class="rev-txt">Our daughter's first birthday was beyond magical. The decor, the photography — everything handled with such care and professionalism.</p><div class="rev-auth"><div class="rev-av">A</div><div><div class="rev-nm">Anita Reddy</div><div class="rev-ev">Birthday · Gachibowli</div></div></div></div>
-    <div class="rev-card"><div class="rev-stars">★★★★★</div><p class="rev-txt">For our corporate gala, AB Events delivered an experience that left 400 guests speechless. An outstanding team through and through.</p><div class="rev-auth"><div class="rev-av">V</div><div><div class="rev-nm">Vikram Nair</div><div class="rev-ev">Corporate Gala · HICC</div></div></div></div>`;
+    document.getElementById('revGrid').innerHTML=FALLBACK_REVS.map(r=>makeRevCard(r)).join('');
+    initRevCarousel(FALLBACK_REVS.length);
   }
 }
+window.loadReviews=loadReviews;
 
 // Review submission handled via per-booking modal (openReviewModal / submitModalReview)
 
@@ -1651,12 +1829,16 @@ function fe(c){const m={'auth/user-not-found':'No account with that email.','aut
 const SVCS=[
   {name:'Luxury Decor & Styling',icon:'🌸',desc:'Transformative lotus floral arrangements, kalyana mandapam setups, table settings and draperies that turn any venue into a masterpiece.',tags:['Floral','Drapery','Mandapam','Centerpieces'],
    photos:['https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=800&q=80','https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=800&q=80','https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=800&q=80','https://images.unsplash.com/photo-1529543544282-ea669407fca3?w=800&q=80','https://images.unsplash.com/photo-1561489413-985b06da5bee?w=800&q=80']},
+  {name:'Haldi Decor',icon:'🌼',desc:'Vibrant marigold showers, turmeric-tone draping, folk installations and joyful stage setups that capture the energy of your most cherished pre-wedding rituals.',tags:['Marigold','Turmeric Theme','Folk','Stage Setup'],
+   photos:['https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80','https://images.unsplash.com/photo-1529543544282-ea669407fca3?w=800&q=80','https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=800&q=80','https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=800&q=80']},
   {name:'Professional Photography',icon:'📷',desc:'Cinematic photography and videography capturing every raw emotion, candid moment, and curated detail.',tags:['Photo','Videography','Drone','Album'],
    photos:['https://images.unsplash.com/photo-1606216794074-735e91aa2c92?w=800&q=80','https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=800&q=80','https://images.unsplash.com/photo-1591604466107-ec97de577aff?w=800&q=80','https://images.unsplash.com/photo-1532712938310-34cb3982ef74?w=800&q=80']},
   {name:'Live Music & Entertainment',icon:'🎵',desc:'From classical ensembles and folk performances to high-energy DJs — the perfect sound for your celebration.',tags:['DJ','Live Band','Classical','Shehnai'],
    photos:['https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=800&q=80','https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=800&q=80','https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=800&q=80','https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?w=800&q=80']},
   {name:'Premium Lighting Design',icon:'✨',desc:'Fairy lights, LED installations, diya arrangements, and intelligent wash systems that set the perfect mood.',tags:['Fairy Lights','LED','Diya Decor','Uplighting'],
    photos:['https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=800&q=80','https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800&q=80','https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=800&q=80','https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=800&q=80']},
+  {name:'Logistics Services',icon:'🚚',desc:'End-to-end event logistics including vendor coordination, transportation, equipment rental, setup crews, teardown, and on-site management — so nothing is left to chance.',tags:['Transport','Setup','Vendor Mgmt','Equipment'],
+   photos:['https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=800&q=80','https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=800&q=80','https://images.unsplash.com/photo-1520854221256-17452cc3a785?w=800&q=80']},
   {name:'Gourmet Catering',icon:'🍽️',desc:'Multi-cuisine Indian menus by award-winning chefs. Lavish buffets, live chaat stations & elegant plated dinners.',tags:['Coming Soon'],
    comingSoon:true,
    photos:['https://images.unsplash.com/photo-1567337710282-00832b415979?w=800&q=80','https://images.unsplash.com/photo-1555244162-803834f70033?w=800&q=80']},
@@ -1747,25 +1929,112 @@ const STATIC_GALLERY=[
   {url:'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=800&q=80',caption:'Corporate Gala Setup',eventCategory:'Corporate',service:'Complete Event Management'},
   {url:'https://images.unsplash.com/photo-1555244162-803834f70033?w=800&q=80',caption:'Corporate Catering',eventCategory:'Corporate',service:'Gourmet Catering'},
   {url:'https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=800&q=80',caption:'Corporate Live Stage',eventCategory:'Corporate',service:'Live Music & Entertainment'},
+  // Haldi
+  {url:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80',caption:'Marigold Haldi Stage',eventCategory:'Haldi',service:'Haldi Decor'},
+  {url:'https://images.unsplash.com/photo-1529543544282-ea669407fca3?w=800&q=80',caption:'Haldi Floral Canopy',eventCategory:'Haldi',service:'Haldi Decor'},
+  {url:'https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=800&q=80',caption:'Folk Haldi Decor',eventCategory:'Haldi',service:'Haldi Decor'},
+  {url:'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=800&q=80',caption:'Vibrant Haldi Setup',eventCategory:'Haldi',service:'Haldi Decor'},
+  // Logistics
+  {url:'https://images.unsplash.com/photo-1520854221256-17452cc3a785?w=800&q=80',caption:'Event Setup Crew',eventCategory:'Logistics',service:'Logistics Services'},
+  {url:'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=800&q=80',caption:'Venue Preparation',eventCategory:'Logistics',service:'Logistics Services'},
+  {url:'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=800&q=80',caption:'Equipment Coordination',eventCategory:'Logistics',service:'Logistics Services'},
 ];
 window._firestoreGallery=[];
 let activeCatFilter='all';
+const GAL_INITIAL_COUNT = 15;
+
 function renderDynGallery(){
   const combined=[...window._firestoreGallery,...STATIC_GALLERY];
   const filtered=activeCatFilter==='all'?combined:combined.filter(i=>i.eventCategory===activeCatFilter);
   const grid=document.getElementById('dynGalleryGrid');
+  const moreBtn=document.getElementById('galViewMoreWrap');
   window._glImgs=filtered.map(i=>({url:i.url,caption:(i.caption||'')+(i.eventCategory?' · '+i.eventCategory:'')}));
-  if(!filtered.length){grid.innerHTML='<div class="gal-empty-msg">No photos in this category yet. Check back soon! 📸</div>';return;}
-  grid.innerHTML=filtered.map((item,i)=>`<div class="dyn-item" onclick="openViewer(${i})"><img src="${item.url}" alt="${item.caption||''}" loading="lazy"/><div class="dyn-lbl"><span class="dyn-caption">${item.caption||''}</span><span class="dyn-cat">${item.eventCategory||''}</span></div></div>`).join('');
+  if(!filtered.length){grid.innerHTML='<div class="gal-empty-msg">No photos in this category yet. Check back soon! 📸</div>';if(moreBtn)moreBtn.style.display='none';return;}
+  // Show first 15, rest hidden
+  const shown=filtered.slice(0,GAL_INITIAL_COUNT);
+  const hasMore=filtered.length>GAL_INITIAL_COUNT;
+  grid.innerHTML=shown.map((item,i)=>`
+    <div class="dyn-item gal-visible" onclick="openViewer(${i})" style="transition-delay:${(i%6)*0.04}s">
+      <img src="${item.url}" alt="${item.caption||''}" loading="lazy"/>
+      <div class="dyn-lbl">
+        <span class="dyn-caption">${item.caption||''}</span>
+        <span class="dyn-cat">${item.eventCategory||''}</span>
+        <button class="dyn-view-btn" onclick="event.stopPropagation();openViewer(${i})">View Project</button>
+      </div>
+    </div>`).join('');
+  if(moreBtn) moreBtn.style.display=hasMore?'block':'none';
 }
+
 window.filterGallery=(cat,btn)=>{
   activeCatFilter=cat;
   document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));
   if(btn)btn.classList.add('active');
-  renderDynGallery();
+  // Animate out
+  const grid=document.getElementById('dynGalleryGrid');
+  grid.style.opacity='0';grid.style.transform='scale(.98)';
+  setTimeout(()=>{
+    renderDynGallery();
+    grid.style.transition='opacity .4s ease,transform .4s ease';
+    grid.style.opacity='1';grid.style.transform='none';
+  },220);
 };
 
-// ── GALLERY & VIEWER ──
+// ── FULLSCREEN GALLERY MODAL ──
+let galModalIdx=0;
+window.openGalleryModal=()=>{
+  galModalIdx=0;
+  document.getElementById('galModal').classList.add('open');
+  document.body.style.overflow='hidden';
+  galModalShow();
+};
+window.closeGalleryModal=()=>{document.getElementById('galModal').classList.remove('open');document.body.style.overflow='';};
+window.galModalNav=(dir)=>{
+  galModalIdx=(galModalIdx+dir+window._glImgs.length)%window._glImgs.length;
+  galModalShow();
+};
+function galModalShow(){
+  const img=window._glImgs[galModalIdx];if(!img)return;
+  const el=document.getElementById('galModalImg');
+  el.classList.add('sliding');
+  setTimeout(()=>{
+    el.src=img.url;
+    el.alt=img.caption||'';
+    el.classList.remove('sliding');
+  },200);
+  document.getElementById('galModalCounter').textContent=`${galModalIdx+1} / ${window._glImgs.length}`;
+  // Dots (show up to 7)
+  const dotsEl=document.getElementById('galModalDots');
+  if(dotsEl && window._glImgs.length<=20){
+    dotsEl.innerHTML=window._glImgs.map((_,i)=>`<div class="gal-mdot${i===galModalIdx?' active':''}" onclick="galModalIdx=${i};galModalShow()"></div>`).join('');
+  } else if(dotsEl){ dotsEl.innerHTML=''; }
+}
+// Keyboard nav for modal
+document.addEventListener('keydown',e=>{
+  if(document.getElementById('galModal').classList.contains('open')){
+    if(e.key==='ArrowRight') galModalNav(1);
+    if(e.key==='ArrowLeft') galModalNav(-1);
+    if(e.key==='Escape') closeGalleryModal();
+  }
+  if(document.getElementById('glViewer').classList.contains('open')){
+    if(e.key==='ArrowRight') viewNav(1);
+    if(e.key==='ArrowLeft') viewNav(-1);
+    if(e.key==='Escape') closeViewer();
+  }
+});
+// Touch/swipe for gallery modal
+(()=>{
+  let ts=0,tx=0;
+  const m=document.getElementById('galModal');
+  if(!m)return;
+  m.addEventListener('touchstart',e=>{ts=Date.now();tx=e.touches[0].clientX;},{passive:true});
+  m.addEventListener('touchend',e=>{
+    if(Date.now()-ts>500)return;
+    const dx=e.changedTouches[0].clientX-tx;
+    if(Math.abs(dx)>50)galModalNav(dx<0?1:-1);
+  },{passive:true});
+})();
+
+// ── SERVICE GALLERY OVERLAY ──
 function openGl(){document.getElementById('glOv').classList.add('open');document.body.style.overflow='hidden';}
 window.closeGl=()=>{document.getElementById('glOv').classList.remove('open');document.body.style.overflow='';}
 window._glImgs=[];let vIdx=0;
@@ -1918,6 +2187,12 @@ window.submitModalReview = async () => {
   const text = document.getElementById('modalRevText').value.trim();
   if(!text){ st.innerHTML='<span class="a-err">Please write your experience.</span>'; return; }
   st.innerHTML='<span style="color:var(--gold)">Submitting…</span>';
+  const db = window._db;
+  const addDoc = window._addDoc;
+  const collection = window._collection;
+  const serverTimestamp = window._serverTimestamp;
+  const currentUser = window._auth?.currentUser;
+  if(!db || !addDoc){ st.innerHTML='<span class="a-err">Not connected. Please reload and try again.</span>'; return; }
   try {
     await addDoc(collection(db,'reviews'),{
       rating: modalSelectedRating,
@@ -1930,6 +2205,9 @@ window.submitModalReview = async () => {
       createdAt: serverTimestamp()
     });
     st.innerHTML='<span class="a-ok">✓ Thank you! Your review will appear after admin approval.</span>';
+    // Show thank you state in reviews section
+    const ty = document.getElementById('revThankYou');
+    if(ty){ ty.classList.add('show'); setTimeout(()=>ty.classList.remove('show'), 5000); }
     showToast('Review submitted! Thank you 🌟');
     setTimeout(closeReviewModal, 2200);
   } catch(e){ st.innerHTML=`<span class="a-err">${e.message}</span>`; }
@@ -1961,6 +2239,67 @@ window.quickBook=(svc)=>{
 };
 window.showToast=(msg)=>{const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3500);};
 
+// ── REVIEWS CAROUSEL ENGINE ──
+let revCarIdx=0, revCarTotal=0, revCarAutoTimer=null;
+const REV_PER_VIEW=()=>window.innerWidth>1024?3:window.innerWidth>640?2:1;
+
+function initRevCarousel(total){
+  revCarTotal=total;
+  revCarIdx=0;
+  const nav=document.getElementById('revNav');
+  const dotsEl=document.getElementById('revDots');
+  if(!nav||!dotsEl)return;
+  if(total<=REV_PER_VIEW()){nav.style.display='none';return;}
+  nav.style.display='flex';
+  // Build dots
+  const pages=Math.ceil(total/REV_PER_VIEW());
+  dotsEl.innerHTML=Array.from({length:pages},(_,i)=>`<button class="rev-dot${i===0?' active':''}" onclick="goRevCar(${i})"></button>`).join('');
+  updateRevCar();
+  startRevAutoplay();
+  // Swipe
+  const wrap=document.getElementById('revCarouselWrap');
+  if(!wrap)return;
+  let ts=0,tx=0;
+  wrap.addEventListener('touchstart',e=>{ts=Date.now();tx=e.touches[0].clientX;clearRevAutoplay();},{passive:true});
+  wrap.addEventListener('touchend',e=>{
+    if(Date.now()-ts>600)return;
+    const dx=e.changedTouches[0].clientX-tx;
+    if(Math.abs(dx)>45){dx<0?nextRevCar():prevRevCar();}
+    startRevAutoplay();
+  },{passive:true});
+  // Arrow buttons
+  document.getElementById('revPrev')?.addEventListener('click',()=>{clearRevAutoplay();prevRevCar();startRevAutoplay();});
+  document.getElementById('revNext')?.addEventListener('click',()=>{clearRevAutoplay();nextRevCar();startRevAutoplay();});
+  // Drag
+  const carousel=document.getElementById('revGrid');
+  if(!carousel)return;
+  let dragging=false,startX=0,scrollLeft=0;
+  carousel.addEventListener('mousedown',e=>{dragging=true;startX=e.pageX;scrollLeft=revCarIdx;carousel.classList.add('dragging');clearRevAutoplay();});
+  document.addEventListener('mouseup',()=>{if(!dragging)return;dragging=false;carousel.classList.remove('dragging');startRevAutoplay();});
+  carousel.addEventListener('mousemove',e=>{
+    if(!dragging)return;
+    const dx=e.pageX-startX;
+    if(Math.abs(dx)>60){dx<0?nextRevCar():prevRevCar();dragging=false;carousel.classList.remove('dragging');}
+  });
+}
+function updateRevCar(){
+  const carousel=document.getElementById('revGrid');
+  if(!carousel)return;
+  const perView=REV_PER_VIEW();
+  const cardW=carousel.parentElement?.clientWidth/perView||320;
+  const pages=Math.ceil(revCarTotal/perView);
+  revCarIdx=Math.min(revCarIdx,pages-1);
+  const offset=revCarIdx*(cardW*perView+18*perView);
+  carousel.style.transform=`translateX(-${offset}px)`;
+  document.querySelectorAll('.rev-dot').forEach((d,i)=>d.classList.toggle('active',i===revCarIdx));
+}
+window.goRevCar=(i)=>{revCarIdx=i;updateRevCar();};
+function nextRevCar(){revCarIdx=(revCarIdx+1)%Math.ceil(revCarTotal/REV_PER_VIEW());updateRevCar();}
+function prevRevCar(){revCarIdx=(revCarIdx-1+Math.ceil(revCarTotal/REV_PER_VIEW()))%Math.ceil(revCarTotal/REV_PER_VIEW());updateRevCar();}
+function startRevAutoplay(){revCarAutoTimer=setInterval(nextRevCar,4500);}
+function clearRevAutoplay(){clearInterval(revCarAutoTimer);}
+window.addEventListener('resize',()=>{ if(revCarTotal>0) updateRevCar(); });
+
 // ── SCROLL REVEAL OBSERVER ──
 function initReveal(){
   const els = document.querySelectorAll('.reveal,.reveal-left,.reveal-right');
@@ -1975,11 +2314,13 @@ function initReveal(){
 document.addEventListener('DOMContentLoaded',()=>{
   initServices();
   renderDynGallery();
+  // Load reviews for non-logged-in users too
+  if(typeof window.loadReviews==='function') window.loadReviews();
   // Add reveal classes to key sections dynamically
   setTimeout(()=>{
     document.querySelectorAll('.proc-step').forEach((el,i)=>{ el.classList.add('reveal'); el.style.transitionDelay=(i*0.09)+'s'; });
     document.querySelectorAll('.t-card').forEach((el,i)=>{ el.classList.add('reveal'); el.style.transitionDelay=(i*0.08)+'s'; });
-    document.querySelectorAll('.rev-card').forEach((el,i)=>{ el.classList.add('reveal'); el.style.transitionDelay=(i*0.08)+'s'; });
+    document.querySelectorAll('.feat-card').forEach((el,i)=>{ el.classList.add('reveal'); el.style.transitionDelay=(i*0.1)+'s'; });
     initReveal();
   }, 200);
 });
@@ -2070,11 +2411,4 @@ initHero();
 // ── SERVICE WORKER (PWA) ──
 if('serviceWorker' in navigator){
   window.addEventListener('load', function(){
-    navigator.serviceWorker.register('./sw.js')
-      .then(function(reg){ console.log('[HAPPENHAUS] SW registered:', reg.scope); })
-      .catch(function(err){ console.log('[HAPPENHAUS] SW registration failed:', err); });
-  });
-}
-</script>
-</body>
-</html>
+    navigator.serv

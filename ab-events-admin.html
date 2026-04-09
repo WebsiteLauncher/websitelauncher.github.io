@@ -654,15 +654,19 @@ tbody tr:hover td{background:var(--s2);}
           <select class="bk-filter-select" id="fEventType" onchange="applyBkFilters()">
             <option value="">All Event Types</option>
             <option>Wedding</option><option>Reception</option><option>Engagement</option>
+            <option>Sangeet</option><option>Mehendi</option><option>Haldi</option>
             <option>Birthday Party</option><option>Corporate Event</option>
-            <option>Anniversary</option><option>Baby Shower</option><option>Housewarming</option><option>Other</option>
+            <option>Anniversary</option><option>Baby Shower</option><option>Housewarming</option>
+            <option>Naming Ceremony</option><option>Farewell</option><option>Other</option>
           </select>
           <select class="bk-filter-select" id="fService" onchange="applyBkFilters()">
             <option value="">All Services</option>
             <option>Luxury Decor &amp; Styling</option>
+            <option>Haldi Decor</option>
             <option>Professional Photography</option>
             <option>Live Music &amp; Entertainment</option>
             <option>Premium Lighting Design</option>
+            <option>Logistics Services</option>
             <option>Gourmet Catering</option>
             <option>Complete Event Management</option>
           </select>
@@ -715,17 +719,26 @@ tbody tr:hover td{background:var(--s2);}
               <label class="uf-label" style="margin-top:8px;">Service Category *</label>
               <select class="uf-select" id="uploadService">
                 <option value="">— Select Service —</option>
-                <option>Luxury Decor &amp; Styling</option><option>Professional Photography</option>
-                <option>Live Music &amp; Entertainment</option><option>Premium Lighting Design</option>
-                <option>Gourmet Catering</option><option>Complete Event Management</option>
+                <option>Luxury Decor &amp; Styling</option>
+                <option>Haldi Decor</option>
+                <option>Professional Photography</option>
+                <option>Live Music &amp; Entertainment</option>
+                <option>Premium Lighting Design</option>
+                <option>Logistics Services</option>
+                <option>Gourmet Catering</option>
+                <option>Complete Event Management</option>
               </select>
               <label class="uf-label" style="margin-top:8px;">Event Category *</label>
               <select class="uf-select" id="uploadEventCat">
                 <option value="">— Select Event Type —</option>
                 <option value="Wedding">💍 Wedding</option><option value="Engagement">💝 Engagement</option>
-                <option value="Reception">🎉 Reception</option><option value="Baby Shower">👶 Baby Shower</option>
-                <option value="Birthday">🎂 Birthday</option><option value="Anniversary">🌹 Anniversary</option>
+                <option value="Reception">🎉 Reception</option><option value="Haldi">🌼 Haldi</option>
+                <option value="Mehendi">🌿 Mehendi</option><option value="Sangeet">🎶 Sangeet</option>
+                <option value="Baby Shower">👶 Baby Shower</option><option value="Birthday">🎂 Birthday</option>
+                <option value="Anniversary">🌹 Anniversary</option>
                 <option value="Housewarming">🏠 Housewarming</option><option value="Corporate">🏢 Corporate</option>
+                <option value="Farewell">👋 Farewell</option><option value="Naming Ceremony">🍼 Naming Ceremony</option>
+                <option value="Logistics">🚚 Logistics</option>
                 <option value="General">📸 General / Other</option>
               </select>
               <label class="uf-label" style="margin-top:8px;">Caption (optional)</label>
@@ -742,21 +755,26 @@ tbody tr:hover td{background:var(--s2);}
           <div style="display:flex;flex-direction:column;gap:6px;">
             <div class="ftabs" id="galleryServiceTabs" style="flex-wrap:wrap;">
               <button class="ftab active" onclick="setGalSvcFilter('',this)">All Services</button>
-              <button class="ftab" onclick="setGalSvcFilter('Luxury Decor &amp; Styling',this)">Decor</button>
-              <button class="ftab" onclick="setGalSvcFilter('Professional Photography',this)">Photo</button>
-              <button class="ftab" onclick="setGalSvcFilter('Gourmet Catering',this)">Catering</button>
-              <button class="ftab" onclick="setGalSvcFilter('Premium Lighting Design',this)">Lighting</button>
-              <button class="ftab" onclick="setGalSvcFilter('Live Music &amp; Entertainment',this)">Music</button>
+              <button class="ftab" onclick="setGalSvcFilter('Luxury Decor &amp; Styling',this)">🌸 Decor</button>
+              <button class="ftab" onclick="setGalSvcFilter('Haldi Decor',this)">🌼 Haldi</button>
+              <button class="ftab" onclick="setGalSvcFilter('Professional Photography',this)">📷 Photo</button>
+              <button class="ftab" onclick="setGalSvcFilter('Premium Lighting Design',this)">✨ Lighting</button>
+              <button class="ftab" onclick="setGalSvcFilter('Live Music &amp; Entertainment',this)">🎵 Music</button>
+              <button class="ftab" onclick="setGalSvcFilter('Logistics Services',this)">🚚 Logistics</button>
+              <button class="ftab" onclick="setGalSvcFilter('Gourmet Catering',this)">🍽️ Catering</button>
             </div>
             <div class="ftabs" id="galleryCatTabs" style="flex-wrap:wrap;">
               <button class="ftab active" onclick="setGalCatFilter('',this)">All Events</button>
               <button class="ftab" onclick="setGalCatFilter('Wedding',this)">💍 Wedding</button>
               <button class="ftab" onclick="setGalCatFilter('Engagement',this)">💝 Engagement</button>
+              <button class="ftab" onclick="setGalCatFilter('Haldi',this)">🌼 Haldi</button>
+              <button class="ftab" onclick="setGalCatFilter('Mehendi',this)">🌿 Mehendi</button>
               <button class="ftab" onclick="setGalCatFilter('Baby Shower',this)">👶 Baby Shower</button>
               <button class="ftab" onclick="setGalCatFilter('Birthday',this)">🎂 Birthday</button>
               <button class="ftab" onclick="setGalCatFilter('Anniversary',this)">🌹 Anniversary</button>
               <button class="ftab" onclick="setGalCatFilter('Housewarming',this)">🏠 Housewarming</button>
               <button class="ftab" onclick="setGalCatFilter('Corporate',this)">🏢 Corporate</button>
+              <button class="ftab" onclick="setGalCatFilter('Logistics',this)">🚚 Logistics</button>
             </div>
           </div>
         </div>
@@ -799,11 +817,13 @@ tbody tr:hover td{background:var(--s2);}
     <div class="panel" id="panel-services">
       <div class="three-col">
         <div class="stat-card"><div class="stat-icon-wrap" style="background:var(--gold-a);font-size:1.4rem;width:42px;height:42px;margin-bottom:12px;">🌸</div><div class="stat-val" id="svcStat0">—</div><div class="stat-lbl">Decor &amp; Styling</div></div>
-        <div class="stat-card"><div class="stat-icon-wrap" style="background:var(--blue-a);font-size:1.4rem;width:42px;height:42px;margin-bottom:12px;">📷</div><div class="stat-val" id="svcStat1">—</div><div class="stat-lbl">Photography</div></div>
-        <div class="stat-card"><div class="stat-icon-wrap" style="background:var(--purple-a);font-size:1.4rem;width:42px;height:42px;margin-bottom:12px;">🎵</div><div class="stat-val" id="svcStat2">—</div><div class="stat-lbl">Music &amp; Entertainment</div></div>
-        <div class="stat-card"><div class="stat-icon-wrap" style="background:var(--yellow-a);font-size:1.4rem;width:42px;height:42px;margin-bottom:12px;">✨</div><div class="stat-val" id="svcStat3">—</div><div class="stat-lbl">Lighting Design</div></div>
-        <div class="stat-card"><div class="stat-icon-wrap" style="background:var(--green-a);font-size:1.4rem;width:42px;height:42px;margin-bottom:12px;">🍽️</div><div class="stat-val" id="svcStat4">—</div><div class="stat-lbl">Catering (Coming Soon)</div></div>
-        <div class="stat-card"><div class="stat-icon-wrap" style="background:var(--red-a);font-size:1.4rem;width:42px;height:42px;margin-bottom:12px;">🎊</div><div class="stat-val" id="svcStat5">—</div><div class="stat-lbl">Event Management</div></div>
+        <div class="stat-card"><div class="stat-icon-wrap" style="background:var(--yellow-a);font-size:1.4rem;width:42px;height:42px;margin-bottom:12px;">🌼</div><div class="stat-val" id="svcStat1">—</div><div class="stat-lbl">Haldi Decor</div></div>
+        <div class="stat-card"><div class="stat-icon-wrap" style="background:var(--blue-a);font-size:1.4rem;width:42px;height:42px;margin-bottom:12px;">📷</div><div class="stat-val" id="svcStat2">—</div><div class="stat-lbl">Photography</div></div>
+        <div class="stat-card"><div class="stat-icon-wrap" style="background:var(--purple-a);font-size:1.4rem;width:42px;height:42px;margin-bottom:12px;">🎵</div><div class="stat-val" id="svcStat3">—</div><div class="stat-lbl">Music &amp; Entertainment</div></div>
+        <div class="stat-card"><div class="stat-icon-wrap" style="background:var(--yellow-a);font-size:1.4rem;width:42px;height:42px;margin-bottom:12px;">✨</div><div class="stat-val" id="svcStat4">—</div><div class="stat-lbl">Lighting Design</div></div>
+        <div class="stat-card"><div class="stat-icon-wrap" style="background:var(--blue-a);font-size:1.4rem;width:42px;height:42px;margin-bottom:12px;">🚚</div><div class="stat-val" id="svcStat5">—</div><div class="stat-lbl">Logistics Services</div></div>
+        <div class="stat-card"><div class="stat-icon-wrap" style="background:var(--green-a);font-size:1.4rem;width:42px;height:42px;margin-bottom:12px;">🍽️</div><div class="stat-val" id="svcStat6">—</div><div class="stat-lbl">Catering (Coming Soon)</div></div>
+        <div class="stat-card"><div class="stat-icon-wrap" style="background:var(--red-a);font-size:1.4rem;width:42px;height:42px;margin-bottom:12px;">🎊</div><div class="stat-val" id="svcStat7">—</div><div class="stat-lbl">Event Management</div></div>
       </div>
       <div class="card"><div class="card-hdr"><div class="card-ttl">Service Demand Breakdown</div></div><div class="card-body"><div class="mini-bar-chart" id="svcChartFull"></div></div></div>
     </div>
@@ -1805,7 +1825,7 @@ window.deletePhoto = function(id, path) {
 //  SERVICES PANEL
 // ════════════════════════════════════════════════════
 function renderServicesPanel() {
-  var svcs = ['Luxury Decor & Styling','Professional Photography','Live Music & Entertainment','Premium Lighting Design','Gourmet Catering','Complete Event Management'];
+  var svcs = ['Luxury Decor & Styling','Haldi Decor','Professional Photography','Live Music & Entertainment','Premium Lighting Design','Logistics Services','Gourmet Catering','Complete Event Management'];
   svcs.forEach(function(s, i) {
     var el = document.getElementById('svcStat' + i); if (el) el.textContent = allBookings.filter(function(b) { return b.service === s; }).length;
   });
