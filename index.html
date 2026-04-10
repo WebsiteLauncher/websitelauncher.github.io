@@ -51,8 +51,10 @@ nav.maintenance-on{border-bottom:2px solid var(--gold);}
 .nav-brand-name{font-family:"Italiana",var(--fd);font-size:1.45rem;letter-spacing:.22em;color:var(--gold);white-space:nowrap;font-weight:400;line-height:1;}
 .nav-brand-tagline{font-size:.52rem;letter-spacing:.28em;text-transform:uppercase;color:rgba(201,168,76,.45);white-space:nowrap;margin-top:2px;}
 .nav-mid{display:flex;gap:28px;}
-.nav-mid a{font-size:.76rem;letter-spacing:.12em;text-transform:uppercase;color:var(--cream);text-decoration:none;opacity:.65;transition:var(--tr);}
+.nav-mid a{font-size:.76rem;letter-spacing:.12em;text-transform:uppercase;color:var(--cream);text-decoration:none;opacity:.65;transition:var(--tr);position:relative;}
 .nav-mid a:hover{opacity:1;color:var(--gold);}
+.nav-mid a.nav-active{opacity:1;color:var(--gold);}
+.nav-mid a.nav-active::after{content:'';position:absolute;bottom:-4px;left:0;right:0;height:1px;background:var(--gold);border-radius:1px;}
 .nav-right{display:flex;align-items:center;gap:10px;}
 .btn{font-family:var(--fb);cursor:pointer;border:none;display:inline-flex;align-items:center;gap:6px;text-decoration:none;transition:var(--tr);font-weight:500;letter-spacing:.05em;border-radius:var(--r);}
 .btn-ghost{background:transparent;border:1px solid rgba(201,168,76,.4);color:var(--gold);padding:8px 18px;font-size:.75rem;}
@@ -135,15 +137,37 @@ section{padding:88px 0;}
 /* ── SERVICES ── */
 #services{background:var(--dark);}
 .svc-hdr{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:48px;gap:18px;flex-wrap:wrap;}
-.svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;}
-.svc-card{position:relative;overflow:hidden;cursor:pointer;aspect-ratio:4/3;background:var(--dark3);}
+/* 7 services: row1=4 cards, row2=3 cards centered */
+.svc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;}
+/* Row-2 centering: cards 5,6,7 start at col 1 of 4 with a col-half offset trick */
+/* We use a 12-col subgrid so 4 cards = 3 cols each, 3 cards = 4 cols each and they centre */
+@supports(display:grid){
+  .svc-grid{grid-template-columns:repeat(12,1fr);}
+  .svc-card{grid-column:span 3;}
+  .svc-card:nth-child(5){grid-column:3 / span 4;}
+  .svc-card:nth-child(6){grid-column:7 / span 4;}
+  .svc-card:nth-child(7){display:none;} /* 6 cards in clean 4+2 if only 6; adjust below */
+}
+/* If exactly 7 services (incl. catering coming soon), use 4+3 */
+.svc-grid.has-7 .svc-card:nth-child(5){grid-column:3 / span 4;}
+.svc-grid.has-7 .svc-card:nth-child(6){grid-column:7 / span 4;}
+.svc-grid.has-7 .svc-card:nth-child(7){display:block;grid-column:11 / span 4;}
+/* Simpler fallback for 7 cards — 4 then 3 centred via flexbox on second row */
+.svc-grid{display:flex;flex-wrap:wrap;gap:3px;}
+.svc-card{flex:0 0 calc(25% - 2.25px);aspect-ratio:4/3;position:relative;overflow:hidden;cursor:pointer;background:var(--dark3);}
+/* Last 3 cards form a centred row: each = 25% of 75% container + margins */
+.svc-card:nth-child(5),.svc-card:nth-child(6),.svc-card:nth-child(7){
+  flex:0 0 calc(33.333% - 2px);
+}
+/* Centre row 2 with a pseudo flex trick */
+.svc-row2-spacer{flex:0 0 calc(12.5% - 1px);} /* half-card-width buffer on each side */
 .svc-card img.svc-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .7s var(--ease);}
 .svc-card:hover img.svc-bg{transform:scale(1.07);}
 .svc-ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(8,8,8,.92) 0%,rgba(8,8,8,.25) 65%,transparent 100%);transition:var(--tr);}
 .svc-card:hover .svc-ov{background:linear-gradient(to top,rgba(8,8,8,.96) 0%,rgba(8,8,8,.5) 75%,rgba(8,8,8,.08) 100%);}
 .svc-body{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:26px;}
 .svc-ico{font-size:1.7rem;margin-bottom:8px;}
-.svc-nm{font-family:var(--fd);font-size:1.4rem;color:var(--white);margin-bottom:4px;}
+.svc-nm{font-family:var(--fd);font-size:1.35rem;color:var(--white);margin-bottom:4px;}
 .svc-ds{font-size:.76rem;color:rgba(245,240,232,.62);line-height:1.7;max-height:0;overflow:hidden;transition:.45s var(--ease);}
 .svc-card:hover .svc-ds{max-height:80px;}
 .svc-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px;}
@@ -152,7 +176,6 @@ section{padding:88px 0;}
 .svc-card:hover .svc-arr{opacity:1;transform:none;}
 .svc-gl-btn{position:absolute;top:14px;left:14px;background:rgba(0,0,0,.6);backdrop-filter:blur(8px);border:1px solid rgba(201,168,76,.3);color:var(--gold);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;padding:5px 11px;cursor:pointer;transition:var(--tr);font-family:var(--fb);border-radius:2px;}
 .svc-gl-btn:hover{background:rgba(201,168,76,.15);}
-/* Catering coming soon badge */
 .svc-soon{position:absolute;inset:0;background:rgba(0,0,0,.65);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;}
 .soon-badge{background:var(--gold);color:#000;font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:6px 16px;border-radius:100px;}
 .soon-msg{font-size:.75rem;color:rgba(255,255,255,.7);text-align:center;padding:0 20px;}
@@ -179,6 +202,20 @@ section{padding:88px 0;}
 .dyn-view-btn{font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--black);background:var(--gold);border:none;padding:6px 16px;border-radius:100px;cursor:pointer;font-family:var(--fb);font-weight:600;transition:var(--tr);margin-top:4px;}
 .dyn-view-btn:hover{background:var(--gold2);}
 
+/* Watermark overlay on each gallery image */
+.dyn-watermark{
+  position:absolute;
+  bottom:8px;right:10px;
+  font-size:.55rem;
+  letter-spacing:.08em;
+  color:rgba(255,255,255,.35);
+  font-family:var(--fb);
+  pointer-events:none;
+  z-index:3;
+  text-shadow:0 1px 3px rgba(0,0,0,.6);
+  user-select:none;
+}
+
 /* Reveal animation for gallery items */
 .dyn-item.gal-hidden{opacity:0;transform:scale(.96);transition:opacity .4s ease,transform .4s ease;}
 .dyn-item.gal-visible{opacity:1;transform:none;}
@@ -190,23 +227,7 @@ section{padding:88px 0;}
 
 .gal-empty-msg{text-align:center;padding:48px;color:var(--muted);font-size:.85rem;}
 
-/* ── FEATURED PROJECTS SECTION ── */
-#featured-projects{background:var(--dark);padding:88px 0;}
-.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;margin-top:48px;}
-.feat-card{position:relative;overflow:hidden;cursor:pointer;aspect-ratio:3/4;background:var(--dark3);}
-.feat-card:first-child{grid-column:span 2;aspect-ratio:auto;}
-.feat-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease);}
-.feat-card:hover img{transform:scale(1.06);}
-.feat-ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(8,8,8,.95) 0%,rgba(8,8,8,.2) 50%,transparent 100%);transition:var(--tr);}
-.feat-card:hover .feat-ov{background:linear-gradient(to top,rgba(8,8,8,.98) 0%,rgba(8,8,8,.45) 60%,rgba(8,8,8,.05) 100%);}
-.feat-body{position:absolute;bottom:0;left:0;right:0;padding:32px;}
-.feat-cat{font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
-.feat-title{font-family:var(--fd);font-size:1.6rem;color:var(--white);line-height:1.15;margin-bottom:8px;}
-.feat-card:first-child .feat-title{font-size:2.2rem;}
-.feat-desc{font-size:.76rem;color:rgba(245,240,232,.6);line-height:1.7;max-height:0;overflow:hidden;transition:.4s var(--ease);}
-.feat-card:hover .feat-desc{max-height:80px;}
-.feat-link{display:inline-flex;align-items:center;gap:6px;color:var(--gold);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;margin-top:12px;opacity:0;transform:translateY(8px);transition:var(--tr);}
-.feat-card:hover .feat-link{opacity:1;transform:none;}
+
 
 /* ── FULLSCREEN MODAL SLIDER (for View More) ── */
 .gal-modal{position:fixed;inset:0;background:rgba(0,0,0,.98);z-index:3500;display:none;flex-direction:column;}
@@ -333,40 +354,47 @@ section{padding:88px 0;}
 
 /* ── REVIEWS ── */
 #reviews{background:var(--black);}
-.rev-summary{display:flex;align-items:center;gap:28px;margin-bottom:56px;flex-wrap:wrap;}
+.rev-summary{display:flex;align-items:center;gap:28px;margin-bottom:48px;flex-wrap:wrap;}
 .rev-avg-num{font-family:var(--fd);font-size:4rem;font-weight:300;color:var(--gold);line-height:1;}
 .rev-avg-stars{display:flex;gap:3px;margin:4px 0;}
 .rev-avg-stars span{color:var(--gold);font-size:1.2rem;}
 .rev-avg-count{font-size:.78rem;color:var(--muted);}
 
-/* Carousel container */
-.rev-carousel-wrap{position:relative;overflow:hidden;margin:0 -40px;padding:0 40px;}
-.rev-carousel{display:flex;gap:18px;transition:transform .5s cubic-bezier(.4,0,.2,1);cursor:grab;user-select:none;}
-.rev-carousel.dragging{cursor:grabbing;transition:none;}
-.rev-card{background:var(--dark2);padding:32px;border:1px solid rgba(201,168,76,.08);border-radius:var(--r);flex:0 0 calc(33.333% - 12px);min-width:280px;position:relative;transition:border-color .3s ease,transform .3s ease,box-shadow .3s ease;}
-.rev-card:hover{border-color:rgba(201,168,76,.22);transform:translateY(-3px);box-shadow:0 16px 48px rgba(0,0,0,.4);}
+/* Single-card carousel */
+.rev-carousel-wrap{position:relative;overflow:hidden;}
+.rev-carousel-track{display:flex;transition:transform .55s cubic-bezier(.4,0,.2,1);will-change:transform;}
+.rev-card{
+  flex:0 0 100%;
+  width:100%;
+  background:var(--dark2);
+  padding:40px 44px;
+  border:1px solid rgba(201,168,76,.1);
+  border-radius:var(--r);
+  position:relative;
+  box-sizing:border-box;
+}
 .rev-card::before{content:'"';font-family:var(--fd);font-size:5rem;color:var(--gold);opacity:.08;position:absolute;top:-8px;left:18px;line-height:1;}
-.rev-stars{display:flex;gap:2px;margin-bottom:14px;}
-.rev-stars span{color:var(--gold);font-size:.9rem;}
+.rev-stars{display:flex;gap:3px;margin-bottom:16px;}
+.rev-stars span{color:var(--gold);font-size:1rem;}
 .rev-stars span.empty{color:var(--dark3);}
-.rev-txt{font-size:.84rem;color:var(--cream);line-height:1.85;font-style:italic;margin-bottom:18px;}
-.rev-auth{display:flex;align-items:center;gap:10px;}
-.rev-av{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--gd),var(--gold));display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:.9rem;color:var(--black);flex-shrink:0;}
-.rev-nm{font-size:.8rem;font-weight:500;}
-.rev-ev{font-size:.7rem;color:var(--muted);}
+.rev-txt{font-size:.95rem;color:var(--cream);line-height:1.9;font-style:italic;margin-bottom:22px;max-width:680px;}
+.rev-auth{display:flex;align-items:center;gap:12px;}
+.rev-av{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--gd),var(--gold));display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:1.1rem;color:var(--black);flex-shrink:0;}
+.rev-nm{font-size:.86rem;font-weight:500;color:var(--cream);}
+.rev-ev{font-size:.72rem;color:var(--muted);margin-top:2px;}
 .rev-empty{text-align:center;padding:48px;color:var(--muted);font-size:.86rem;}
 
-/* Carousel nav */
-.rev-nav{display:flex;align-items:center;justify-content:space-between;margin-top:28px;}
+/* Carousel controls row */
+.rev-controls{display:flex;align-items:center;justify-content:space-between;margin-top:24px;}
+.rev-dots{display:flex;gap:7px;align-items:center;}
+.rev-dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.15);cursor:pointer;transition:var(--tr);border:none;padding:0;}
+.rev-dot.active{background:var(--gold);width:24px;border-radius:3px;}
 .rev-arrows{display:flex;gap:10px;}
-.rev-arrow{background:transparent;border:1px solid rgba(201,168,76,.25);color:var(--gold);width:42px;height:42px;border-radius:50%;cursor:pointer;font-size:1.2rem;transition:var(--tr);display:flex;align-items:center;justify-content:center;}
-.rev-arrow:hover{background:rgba(201,168,76,.1);border-color:var(--gold);}
-.rev-dots{display:flex;gap:6px;align-items:center;}
-.rev-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.15);cursor:pointer;transition:var(--tr);border:none;}
-.rev-dot.active{background:var(--gold);width:22px;border-radius:3px;}
+.rev-arrow{background:transparent;border:1px solid rgba(201,168,76,.25);color:var(--gold);width:44px;height:44px;border-radius:50%;cursor:pointer;font-size:1.3rem;transition:var(--tr);display:flex;align-items:center;justify-content:center;line-height:1;}
+.rev-arrow:hover{background:rgba(201,168,76,.12);border-color:var(--gold);transform:scale(1.05);}
 
 /* Thank you success state */
-.rev-thank-you{text-align:center;padding:24px;background:rgba(76,175,80,.06);border:1px solid rgba(76,175,80,.2);border-radius:var(--r);color:#4CAF50;font-size:.88rem;display:none;animation:fu .5s ease;}
+.rev-thank-you{text-align:center;padding:24px;background:rgba(76,175,80,.06);border:1px solid rgba(76,175,80,.2);border-radius:var(--r);color:#4CAF50;font-size:.88rem;display:none;animation:fu .5s ease;margin-top:16px;}
 .rev-thank-you.show{display:block;}
 
 /* star-picker used only in review modal */
@@ -460,9 +488,55 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
 .toast.show{transform:translateX(-50%) translateY(0);}
 
 /* ── RESPONSIVE ── */
-@media(max-width:1024px){.svc-grid{grid-template-columns:1fr 1fr;}.bk-wrap{grid-template-columns:1fr;gap:40px;}.t-grid{grid-template-columns:1fr 1fr;}.ft-grid{grid-template-columns:1fr 1fr;}.rev-card{flex:0 0 calc(50% - 9px);}.feat-grid{grid-template-columns:1fr 1fr;}.feat-card:first-child{grid-column:span 2;}.dyn-gallery-grid{columns:3;}}
-@media(max-width:768px){nav{padding:0 18px;height:60px;}.mob-nav{top:60px;}.nav-mid,.nav-right .btn{display:none;}.hamburger{display:flex;}section{padding:64px 0;}.con{padding:0 20px;}.svc-grid{grid-template-columns:1fr;}.proc{grid-template-columns:1fr 1fr;gap:32px;}.proc::before{display:none;}.t-grid{grid-template-columns:1fr;}.ft-grid{grid-template-columns:1fr 1fr;}.bk-form-box{padding:22px 18px;}.fr{grid-template-columns:1fr;}.dyn-gallery-grid{columns:2;}.rev-card{flex:0 0 calc(100% - 0px);}.rev-carousel-wrap{margin:0 -20px;padding:0 20px;}.feat-grid{grid-template-columns:1fr;}.feat-card:first-child{grid-column:span 1;}}
-@media(max-width:520px){.dyn-gallery-grid{columns:1;}.ft-grid{grid-template-columns:1fr;}.proc{grid-template-columns:1fr;}.bk-wrap{gap:28px;}.wa-fab{bottom:16px;right:16px;width:50px;height:50px;}.nav-brand-tagline{display:none;}}
+@media(max-width:1200px){
+  .svc-card:nth-child(n){flex:0 0 calc(25% - 2.25px);}
+  .svc-card:nth-child(5),.svc-card:nth-child(6),.svc-card:nth-child(7){flex:0 0 calc(33.333% - 2px);}
+}
+@media(max-width:1024px){
+  .svc-card:nth-child(n){flex:0 0 calc(50% - 1.5px);}
+  .svc-card:nth-child(5),.svc-card:nth-child(6),.svc-card:nth-child(7){flex:0 0 calc(50% - 1.5px);}
+  .bk-wrap{grid-template-columns:1fr;gap:40px;}
+  .t-grid{grid-template-columns:1fr 1fr;}
+  .ft-grid{grid-template-columns:1fr 1fr;}
+  .dyn-gallery-grid{columns:3;}
+}
+@media(max-width:768px){
+  nav{padding:0 18px;height:60px;}
+  .mob-nav{top:60px;}
+  .nav-mid,.nav-right .btn{display:none;}
+  .hamburger{display:flex;}
+  section{padding:64px 0;}
+  .con{padding:0 20px;}
+  .svc-card:nth-child(n){flex:0 0 calc(50% - 1.5px);}
+  .svc-card:nth-child(5),.svc-card:nth-child(6),.svc-card:nth-child(7){flex:0 0 calc(50% - 1.5px);}
+  .proc{grid-template-columns:1fr 1fr;gap:32px;}
+  .proc::before{display:none;}
+  .t-grid{grid-template-columns:1fr;}
+  .ft-grid{grid-template-columns:1fr 1fr;}
+  .bk-form-box{padding:22px 18px;}
+  .fr{grid-template-columns:1fr;}
+  .dyn-gallery-grid{columns:2;}
+  .rev-card{padding:28px 22px;}
+  .rev-txt{font-size:.87rem;}
+}
+@media(max-width:480px){
+  .svc-card:nth-child(n){flex:0 0 100%;}
+  .svc-card:nth-child(5),.svc-card:nth-child(6),.svc-card:nth-child(7){flex:0 0 100%;}
+  .ft-grid{grid-template-columns:1fr;}
+  .dyn-gallery-grid{columns:1;}
+  .rev-card{padding:24px 18px;}
+  .rev-summary{gap:16px;}
+  .rev-avg-num{font-size:3rem;}
+}
+@media(max-width:520px){
+  .dyn-gallery-grid{columns:1;}
+  .ft-grid{grid-template-columns:1fr;}
+  .proc{grid-template-columns:1fr;}
+  .bk-wrap{gap:28px;}
+  .nav-brand-tagline{display:none;}
+  .fab-wrap{bottom:16px;right:16px;}
+  .fab-main{width:50px;height:50px;font-size:1.1rem;}
+}
 
 /* ══════════════════════════════════════════════════════
    HAPPENHAUS — CINEMATIC INTRO SPLASH
@@ -655,6 +729,26 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
 .review-box h3{font-family:var(--fd);font-size:1.7rem;color:var(--white);margin-bottom:6px;}
 .review-box-sub{font-size:.78rem;color:var(--muted);margin-bottom:24px;line-height:1.7;}
 /* ── FAB CONTACT BUTTON ── */
+/* ── WhatsApp message selection panel ── */
+.wa-msg-panel{
+  position:absolute;
+  bottom:70px;right:0;
+  background:var(--dark2);
+  border:1px solid rgba(201,168,76,.2);
+  border-radius:var(--r);
+  padding:14px;
+  width:230px;
+  display:none;
+  flex-direction:column;
+  gap:8px;
+  box-shadow:0 12px 40px rgba(0,0,0,.5);
+  animation:fabItemIn .2s ease;
+}
+.wa-msg-panel.open{display:flex;}
+.wa-msg-title{font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:4px;padding-bottom:8px;border-bottom:1px solid rgba(201,168,76,.1);}
+.wa-msg-btn{background:rgba(37,211,102,.08);border:1px solid rgba(37,211,102,.2);color:var(--cream);padding:9px 12px;border-radius:var(--r);font-size:.76rem;cursor:pointer;font-family:var(--fb);text-align:left;transition:var(--tr);}
+.wa-msg-btn:hover{background:rgba(37,211,102,.18);border-color:rgba(37,211,102,.4);color:#25D366;}
+
 .fab-wrap{position:fixed;bottom:28px;right:28px;z-index:800;display:flex;flex-direction:column;align-items:flex-end;gap:10px;}
 .fab-menu{display:flex;flex-direction:column;gap:8px;align-items:flex-end;transition:var(--tr);}
 .fab-menu.hidden-menu{opacity:0;pointer-events:none;transform:translateY(10px);}
@@ -797,10 +891,11 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
     </div>
   </a>
   <div class="nav-mid">
-    <a href="#services">Services</a>
-    <a href="#gallery-section">Gallery</a>
-    <a href="#reviews">Reviews</a>
-    <a href="#booking">Book Now</a>
+    <a href="#services" data-nav="services">Services</a>
+    <a href="#gallery-section" data-nav="gallery-section">Gallery</a>
+    <a href="#reviews" data-nav="reviews">Reviews</a>
+    <a href="#booking" data-nav="booking">Book Now</a>
+    <a href="#booking" data-nav="contact" onclick="scrollToContact(event)">Contact</a>
   </div>
   <div class="nav-right">
     <div id="guestNav">
@@ -835,6 +930,7 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
   <a href="#gallery-section" onclick="closeMob()">Gallery</a>
   <a href="#reviews" onclick="closeMob()">Reviews</a>
   <a href="#booking" onclick="closeMob()">Book Now</a>
+  <a href="#booking" onclick="scrollToContact(event);closeMob()">Contact</a>
   <div class="mob-nav-btns" id="mobGuest">
     <button class="btn btn-ghost" onclick="openAuth('login');closeMob()">Sign In</button>
     <button class="btn btn-gold" onclick="openAuth('register');closeMob()">Register</button>
@@ -904,58 +1000,7 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
   </div>
 </section>
 
-<!-- FEATURED PROJECTS -->
-<section id="featured-projects">
-  <div class="con">
-    <div class="s-lbl">Signature Work</div>
-    <h2 class="s-ttl">Featured <em>Projects</em></h2>
-    <div class="divider"></div>
-  </div>
-  <div class="con">
-    <div class="feat-grid" id="featGrid">
-      <div class="feat-card" onclick="openViewer(0)">
-        <img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=1200&q=80" alt="Grand Wedding Mandapam" loading="lazy"/>
-        <div class="feat-ov"></div>
-        <div class="feat-body">
-          <div class="feat-cat">Wedding · Jubilee Hills</div>
-          <div class="feat-title">The Grand Lotus Mandapam</div>
-          <div class="feat-desc">A breathtaking 2,000-guest wedding with a 40-ft lotus floral mandapam, custom draping, and synchronized LED chandelier drop.</div>
-          <div class="feat-link">View Project ↗</div>
-        </div>
-      </div>
-      <div class="feat-card" onclick="openViewer(3)">
-        <img src="https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=800&q=80" alt="Fairy Light Reception" loading="lazy"/>
-        <div class="feat-ov"></div>
-        <div class="feat-body">
-          <div class="feat-cat">Reception · Taj Falaknuma</div>
-          <div class="feat-title">Celestial Fairy Light Reception</div>
-          <div class="feat-desc">10,000 warm fairy lights suspended over 800 guests at the iconic Taj Falaknuma Palace.</div>
-          <div class="feat-link">View Project ↗</div>
-        </div>
-      </div>
-      <div class="feat-card" onclick="openViewer(9)">
-        <img src="https://images.unsplash.com/photo-1543269865-cbf427effbad?w=800&q=80" alt="Birthday Celebration" loading="lazy"/>
-        <div class="feat-ov"></div>
-        <div class="feat-body">
-          <div class="feat-cat">Birthday · Gachibowli</div>
-          <div class="feat-title">Royal First Birthday</div>
-          <div class="feat-desc">An enchanted garden theme for a first birthday, complete with floral arches and live music.</div>
-          <div class="feat-link">View Project ↗</div>
-        </div>
-      </div>
-      <div class="feat-card" onclick="openViewer(22)">
-        <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=800&q=80" alt="Corporate Gala" loading="lazy"/>
-        <div class="feat-ov"></div>
-        <div class="feat-body">
-          <div class="feat-cat">Corporate · HICC</div>
-          <div class="feat-title">Annual Gala — 400 Guests</div>
-          <div class="feat-desc">Full-spectrum production including custom staging, AV, canapé catering, and live performances.</div>
-          <div class="feat-link">View Project ↗</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+
 
 <!-- FULLSCREEN GALLERY MODAL -->
 <div class="gal-modal" id="galModal">
@@ -1000,7 +1045,6 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
           <div class="bk-svc-label">What We Offer</div>
           <div class="bk-svc-list">
             <span class="bk-svc-chip">🌸 Luxury Decor &amp; Styling</span>
-            <span class="bk-svc-chip" style="border-color:rgba(253,196,0,.2);color:rgba(253,196,0,.8);">🌼 Haldi Decor <span style="font-size:.55rem;opacity:.7;">✦ Under Decor</span></span>
             <span class="bk-svc-chip">📷 Photography</span>
             <span class="bk-svc-chip">🎵 Live Music</span>
             <span class="bk-svc-chip">✨ Lighting Design</span>
@@ -1046,16 +1090,13 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
               <label class="fl">Service Required *</label>
               <select class="fs" id="bkService" required onchange="checkDuplicate()">
                 <option value="">Select a service</option>
-                <optgroup label="Decor &amp; Styling">
-                  <option value="Luxury Decor &amp; Styling">Luxury Decor &amp; Styling</option>
-                  <option value="Luxury Decor &amp; Styling">🌼 Haldi Decor (under Decor &amp; Styling)</option>
-                </optgroup>
-                <option>Professional Photography</option>
-                <option>Live Music &amp; Entertainment</option>
-                <option>Premium Lighting Design</option>
-                <option>Logistics Services</option>
-                <option>Complete Event Management</option>
-                <option>Multiple Services</option>
+                <option value="Luxury Decor &amp; Styling">Luxury Decor &amp; Styling</option>
+                <option value="Professional Photography">Professional Photography</option>
+                <option value="Live Music &amp; Entertainment">Live Music &amp; Entertainment</option>
+                <option value="Premium Lighting Design">Premium Lighting Design</option>
+                <option value="Logistics Services">Logistics Services</option>
+                <option value="Complete Event Management">Complete Event Management</option>
+                <option value="Multiple Services">Multiple Services</option>
               </select>
             </div>
             <div class="fg">
@@ -1063,7 +1104,7 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
               <select class="fs" id="bkEventType">
                 <option value="">Select type</option>
                 <option>Wedding</option><option>Reception</option><option>Engagement</option>
-                <option>Sangeet</option><option>Mehendi</option>
+                <option>Sangeet</option><option>Mehendi</option><option>Haldi</option>
                 <option>Birthday Party</option><option>Corporate Event</option>
                 <option>Anniversary</option><option>Baby Shower</option>
                 <option>Housewarming</option><option>Naming Ceremony</option><option>Farewell</option><option>Other</option>
@@ -1108,22 +1149,28 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
     <h2 class="s-ttl">Reviews &amp; <em>Ratings</em></h2>
     <div class="divider"></div>
     <div class="rev-summary">
-      <div><div class="rev-avg-num" id="revAvgNum">—</div><div class="rev-avg-stars" id="revAvgStars"></div><div class="rev-avg-count" id="revAvgCount">Loading reviews…</div></div>
+      <div>
+        <div class="rev-avg-num" id="revAvgNum">—</div>
+        <div class="rev-avg-stars" id="revAvgStars"></div>
+        <div class="rev-avg-count" id="revAvgCount">Loading reviews…</div>
+      </div>
+    </div>
+    <!-- Single-card carousel -->
+    <div class="rev-carousel-wrap" id="revCarouselWrap">
+      <div class="rev-carousel-track" id="revTrack">
+        <div class="rev-card"><p class="rev-txt" style="font-style:normal;color:var(--muted);">Loading reviews…</p></div>
+      </div>
+    </div>
+    <!-- Controls: dots on left, arrows on right -->
+    <div class="rev-controls" id="revControls" style="display:none;">
+      <div class="rev-dots" id="revDots"></div>
+      <div class="rev-arrows">
+        <button class="rev-arrow" id="revPrevBtn" aria-label="Previous review">&#8249;</button>
+        <button class="rev-arrow" id="revNextBtn" aria-label="Next review">&#8250;</button>
+      </div>
     </div>
     <!-- Thank you message -->
     <div class="rev-thank-you" id="revThankYou">🌟 Thank you for your feedback! Your review has been submitted and will appear after approval.</div>
-    <!-- Carousel wrapper -->
-    <div class="rev-carousel-wrap" id="revCarouselWrap">
-      <div class="rev-carousel" id="revGrid"><div class="rev-empty">Loading reviews…</div></div>
-    </div>
-    <!-- Carousel controls -->
-    <div class="rev-nav" id="revNav" style="display:none;">
-      <div class="rev-dots" id="revDots"></div>
-      <div class="rev-arrows">
-        <button class="rev-arrow" id="revPrev" aria-label="Previous">‹</button>
-        <button class="rev-arrow" id="revNext" aria-label="Next">›</button>
-      </div>
-    </div>
   </div>
 </section>
 
@@ -1321,6 +1368,14 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
 
 <!-- ══ FLOATING ACTION BUTTON ══ -->
 <div class="fab-wrap" id="fabWrap">
+  <!-- WhatsApp pre-filled message panel -->
+  <div class="wa-msg-panel" id="waMessagePanel">
+    <div class="wa-msg-title">Choose a message to send:</div>
+    <button class="wa-msg-btn" onclick="sendWAMessage(0)">💍 Wedding Enquiry</button>
+    <button class="wa-msg-btn" onclick="sendWAMessage(1)">📸 Photography Packages</button>
+    <button class="wa-msg-btn" onclick="sendWAMessage(2)">✨ Decor &amp; Lighting</button>
+    <button class="wa-msg-btn" onclick="sendWAMessage(3)">📅 General Enquiry</button>
+  </div>
   <div class="fab-menu hidden-menu" id="fabMenu">
     <div class="fab-option" id="fabWaOpt">
       <div class="fab-option-label">Chat on WhatsApp</div>
@@ -1617,7 +1672,7 @@ function renderBookingsList(docs) {
     list.innerHTML='<div class="empty-st">No bookings yet. <a href="#booking" style="color:var(--gold)">Make your first request →</a></div>';
     return;
   }
-  const icons={'Luxury Decor & Styling':'🌸','Haldi Decor':'🌼','Professional Photography':'📷','Live Music & Entertainment':'🎵','Premium Lighting Design':'✨','Logistics Services':'🚚','Gourmet Catering':'🍽️','Complete Event Management':'🎊','Multiple Services':'🎉'};
+  const icons={'Luxury Decor & Styling':'🌸','Professional Photography':'📷','Live Music & Entertainment':'🎵','Premium Lighting Design':'✨','Logistics Services':'🚚','Gourmet Catering':'🍽️','Complete Event Management':'🎊','Multiple Services':'🎉'};
   // Status pipeline labels — covers ALL admin pipeline stages
   const statusMap={
     'New Enquiry':'🔔 New Enquiry','pending':'🔔 New Enquiry',
@@ -1759,10 +1814,6 @@ window.loadSvcGallery = async (name) => {
 };
 
 // ── REVIEWS ──
-function makeRevCard(r){
-  const stars=Array.from({length:5},(_,i)=>`<span class="${i<r.rating?'':'empty'}">★</span>`).join('');
-  return `<div class="rev-card"><div class="rev-stars">${stars}</div><p class="rev-txt">${r.text||''}</p><div class="rev-auth"><div class="rev-av">${(r.name||'A')[0].toUpperCase()}</div><div><div class="rev-nm">${r.name||'Anonymous'}</div><div class="rev-ev">${r.event||''}</div></div></div></div>`;
-}
 const FALLBACK_REVS=[
   {rating:5,text:'HAPPENHAUS transformed our wedding into an absolute fairytale. Every detail was perfect — from the floral mandap to the candlelit reception. Truly unforgettable.',name:'Priya & Rahul Sharma',event:'Wedding · Taj Falaknuma'},
   {rating:5,text:'Our daughter\'s first birthday was beyond magical. The decor, the photography — everything handled with such care and professionalism. We will be back!',name:'Anita Reddy',event:'Birthday · Gachibowli'},
@@ -1775,24 +1826,21 @@ async function loadReviews(){
   try{
     const snap=await getDocs(query(collection(db,'reviews'),where('approved','==',true)));
     const revs=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
-    if(revs.length){
-      const avg=(revs.reduce((a,r)=>a+r.rating,0)/revs.length).toFixed(1);
-      document.getElementById('revAvgNum').textContent=avg;
-      document.getElementById('revAvgCount').textContent=`Based on ${revs.length} verified review${revs.length!==1?'s':''}`;
-      document.getElementById('revAvgStars').innerHTML=Array.from({length:5},(_,i)=>`<span>${i<Math.round(avg)?'★':'☆'}</span>`).join('');
-      document.getElementById('revGrid').innerHTML=revs.map(r=>makeRevCard(r)).join('');
-      initRevCarousel(revs.length);
-    } else {
-      document.getElementById('revAvgNum').textContent='5.0';
-      document.getElementById('revAvgCount').textContent='Based on verified reviews';
-      document.getElementById('revGrid').innerHTML=FALLBACK_REVS.map(r=>makeRevCard(r)).join('');
-      initRevCarousel(FALLBACK_REVS.length);
-    }
+    const list = revs.length ? revs : FALLBACK_REVS;
+    const avg = revs.length
+      ? (revs.reduce((a,r)=>a+r.rating,0)/revs.length).toFixed(1)
+      : '5.0';
+    document.getElementById('revAvgNum').textContent = avg;
+    document.getElementById('revAvgCount').textContent = revs.length
+      ? `Based on ${revs.length} verified review${revs.length!==1?'s':''}`
+      : 'Based on verified reviews';
+    document.getElementById('revAvgStars').innerHTML = Array.from({length:5},(_,i)=>`<span>${i<Math.round(avg)?'★':'☆'}</span>`).join('');
+    if(typeof _buildRevCarousel === 'function') _buildRevCarousel(list);
   }catch(e){
     document.getElementById('revAvgNum').textContent='5.0';
     document.getElementById('revAvgCount').textContent='Based on verified reviews';
-    document.getElementById('revGrid').innerHTML=FALLBACK_REVS.map(r=>makeRevCard(r)).join('');
-    initRevCarousel(FALLBACK_REVS.length);
+    document.getElementById('revAvgStars').innerHTML='<span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>';
+    if(typeof _buildRevCarousel === 'function') _buildRevCarousel(FALLBACK_REVS);
   }
 }
 window.loadReviews=loadReviews;
@@ -1828,29 +1876,56 @@ function fe(c){const m={'auth/user-not-found':'No account with that email.','aut
 
 <!-- ══ UI JS ══ -->
 <script>
-// ── SERVICE DATA ──
+// ── SERVICE DATA — 7 services (no Haldi Decor — that is an event type) ──
 const SVCS=[
-  {name:'Luxury Decor & Styling',icon:'🌸',desc:'Transformative floral arrangements, kalyana mandapam setups, vibrant Haldi decor with marigold installations, table settings and draperies that turn any venue into a masterpiece.',tags:['Floral','Drapery','Mandapam','Haldi Decor ✦','Centerpieces'],
-   photos:['https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=800&q=80','https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=800&q=80','https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=800&q=80','https://images.unsplash.com/photo-1529543544282-ea669407fca3?w=800&q=80','https://images.unsplash.com/photo-1561489413-985b06da5bee?w=800&q=80']},
-
-  {name:'Professional Photography',icon:'📷',desc:'Cinematic photography and videography capturing every raw emotion, candid moment, and curated detail.',tags:['Photo','Videography','Drone','Album'],
-   photos:['https://images.unsplash.com/photo-1606216794074-735e91aa2c92?w=800&q=80','https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=800&q=80','https://images.unsplash.com/photo-1591604466107-ec97de577aff?w=800&q=80','https://images.unsplash.com/photo-1532712938310-34cb3982ef74?w=800&q=80']},
-  {name:'Live Music & Entertainment',icon:'🎵',desc:'From classical ensembles and folk performances to high-energy DJs — the perfect sound for your celebration.',tags:['DJ','Live Band','Classical','Shehnai'],
-   photos:['https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=800&q=80','https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=800&q=80','https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=800&q=80','https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?w=800&q=80']},
-  {name:'Premium Lighting Design',icon:'✨',desc:'Fairy lights, LED installations, diya arrangements, and intelligent wash systems that set the perfect mood.',tags:['Fairy Lights','LED','Diya Decor','Uplighting'],
-   photos:['https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=800&q=80','https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800&q=80','https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=800&q=80','https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=800&q=80']},
-  {name:'Logistics Services',icon:'🚚',desc:'End-to-end event logistics including vendor coordination, transportation, equipment rental, setup crews, teardown, and on-site management — so nothing is left to chance.',tags:['Transport','Setup','Vendor Mgmt','Equipment'],
-   photos:['https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=800&q=80','https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=800&q=80','https://images.unsplash.com/photo-1520854221256-17452cc3a785?w=800&q=80']},
-  {name:'Gourmet Catering',icon:'🍽️',desc:'Multi-cuisine Indian menus by award-winning chefs. Lavish buffets, live chaat stations & elegant plated dinners.',tags:['Coming Soon'],
-   comingSoon:true,
-   photos:['https://images.unsplash.com/photo-1567337710282-00832b415979?w=800&q=80','https://images.unsplash.com/photo-1555244162-803834f70033?w=800&q=80']},
-  {name:'Complete Event Management',icon:'🎊',desc:'Full-spectrum orchestration from concept to cleanup. Weddings, galas, birthdays, anniversaries and corporate events.',tags:['Wedding','Corporate','Birthday','Anniversary'],
-   photos:['https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=800&q=80','https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=800&q=80','https://images.unsplash.com/photo-1520854221256-17452cc3a785?w=800&q=80']}
+  {
+    name:'Luxury Decor & Styling',icon:'🌸',
+    desc:'Transformative floral arrangements, mandapam setups, bespoke draperies, centrepieces and full venue styling. Includes vibrant Haldi ceremony decor with marigold installations.',
+    tags:['Floral','Mandapam','Drapery','Centrepieces'],
+    photos:['https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=800&q=80','https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=800&q=80','https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=800&q=80','https://images.unsplash.com/photo-1529543544282-ea669407fca3?w=800&q=80','https://images.unsplash.com/photo-1561489413-985b06da5bee?w=800&q=80']
+  },
+  {
+    name:'Professional Photography',icon:'📷',
+    desc:'Cinematic photography and videography capturing every raw emotion, candid moment and curated detail — told in a timeless visual narrative.',
+    tags:['Photography','Videography','Drone','Album'],
+    photos:['https://images.unsplash.com/photo-1606216794074-735e91aa2c92?w=800&q=80','https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=800&q=80','https://images.unsplash.com/photo-1591604466107-ec97de577aff?w=800&q=80','https://images.unsplash.com/photo-1532712938310-34cb3982ef74?w=800&q=80']
+  },
+  {
+    name:'Live Music & Entertainment',icon:'🎵',
+    desc:'From classical ensembles and Shehnai to high-energy DJs and live bands — curated sound that elevates every milestone of your celebration.',
+    tags:['DJ','Live Band','Classical','Shehnai'],
+    photos:['https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=800&q=80','https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=800&q=80','https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=800&q=80','https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?w=800&q=80']
+  },
+  {
+    name:'Premium Lighting Design',icon:'✨',
+    desc:'Fairy lights, LED wash systems, intelligent uplighting, diya arrangements and atmospheric installations that set exactly the perfect mood.',
+    tags:['Fairy Lights','LED','Uplighting','Diya Decor'],
+    photos:['https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=800&q=80','https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800&q=80','https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=800&q=80','https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=800&q=80']
+  },
+  {
+    name:'Logistics Services',icon:'🚚',
+    desc:'End-to-end vendor coordination, transportation, equipment rental, setup crews, teardown and on-site management — so every detail runs flawlessly.',
+    tags:['Transport','Setup','Vendor Mgmt','On-site'],
+    photos:['https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80','https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=800&q=80','https://images.unsplash.com/photo-1520854221256-17452cc3a785?w=800&q=80']
+  },
+  {
+    name:'Gourmet Catering',icon:'🍽️',
+    desc:'Multi-cuisine Indian menus by award-winning chefs — lavish buffets, live chaat counters and elegant plated dinners for every occasion.',
+    tags:['Coming Soon'],
+    comingSoon:true,
+    photos:['https://images.unsplash.com/photo-1567337710282-00832b415979?w=800&q=80','https://images.unsplash.com/photo-1555244162-803834f70033?w=800&q=80']
+  },
+  {
+    name:'Complete Event Management',icon:'🎊',
+    desc:'Full-spectrum orchestration from initial concept to final cleanup — weddings, galas, birthdays, anniversaries and corporate events, flawlessly executed.',
+    tags:['Wedding','Corporate','Birthday','Anniversary'],
+    photos:['https://images.unsplash.com/photo-1519741497674-611481863552?w=800&q=80','https://images.unsplash.com/photo-1543269865-cbf427effbad?w=800&q=80','https://images.unsplash.com/photo-1478146059778-26028b07395a?w=800&q=80']
+  }
 ];
 window._svcPhotos={};
-SVCS.forEach(s=>{window._svcPhotos[s.name]=s.photos;});
-// Haldi Decor is a subtype — add its photos to Luxury Decor & Styling
-window._svcPhotos['Haldi Decor'] = window._svcPhotos['Luxury Decor & Styling'];
+SVCS.forEach(s=>{ window._svcPhotos[s.name]=s.photos; });
+
+// ── HERO SLIDESHOW ──
 
 // ── HERO SLIDESHOW ──
 const heroPhotos=[
@@ -1878,25 +1953,44 @@ function goSlide(n){
   curSlide=n;
 }
 
-// ── SERVICE CARDS ──
+// ── SERVICE CARDS — 7 services, 4+3 clean layout ──
 function initServices(){
-  document.getElementById('svcGrid').innerHTML=SVCS.map(s=>{
-    const safeName=s.name.replace(/'/g,"\\'");
-    const cateringNotice=s.comingSoon?`<div class="svc-soon"><div class="soon-badge">🍽️ Coming Soon</div><div class="soon-msg">Catering services are currently unavailable. We'll be launching soon!</div></div>`:'';
-    return`<div class="svc-card"${!s.comingSoon?` onclick="quickBook('${safeName}')"`:''}> 
-      <img class="svc-bg" src="${s.photos[0]}" alt="${s.name}" loading="lazy"/>
-      <div class="svc-ov"></div>
-      ${!s.comingSoon?`<button class="svc-gl-btn" onclick="event.stopPropagation();loadSvcGallery('${safeName}')">📸 View Gallery</button>`:''}
-      ${cateringNotice}
-      <span class="svc-arr">↗</span>
-      <div class="svc-body">
-        <div class="svc-ico">${s.icon}</div>
-        <div class="svc-nm">${s.name}</div>
-        <div class="svc-ds">${s.desc}</div>
-        <div class="svc-tags">${s.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
-      </div>
-    </div>`;
-  }).join('');
+  const grid = document.getElementById('svcGrid');
+  const makeCard = (s) => {
+    const safeName = s.name.replace(/'/g,"\\'");
+    const soon = s.comingSoon
+      ? `<div class="svc-soon"><div class="soon-badge">🍽️ Coming Soon</div><div class="soon-msg">Catering services launching soon!</div></div>` : '';
+    return `<div class="svc-card"${!s.comingSoon?` onclick="quickBook('${safeName}')"`:''}>\
+<img class="svc-bg" src="${s.photos[0]}" alt="${s.name}" loading="lazy"/>\
+<div class="svc-ov"></div>\
+${!s.comingSoon?`<button class="svc-gl-btn" onclick="event.stopPropagation();loadSvcGallery('${safeName}')">📸 Gallery</button>`:''}\
+${soon}<span class="svc-arr">↗</span>\
+<div class="svc-body">\
+<div class="svc-ico">${s.icon}</div>\
+<div class="svc-nm">${s.name}</div>\
+<div class="svc-ds">${s.desc}</div>\
+<div class="svc-tags">${s.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>\
+</div></div>`;
+  };
+  // Row 1: 4 cards | Row 2: 3 cards centred
+  // Use CSS: grid is flex-wrap. Row-2 cards each get flex 0 0 33.333%
+  // A single spacer div of width ~12.5% (half card) centres the 3-card row
+  const row1 = SVCS.slice(0,4);
+  const row2 = SVCS.slice(4,7);
+  // grid is flex-wrap with .svc-card { flex: 0 0 25% } and .svc-card:nth-child(5..7) { flex: 0 0 33.333% }
+  // Add a half-width spacer before row2 to centre 3×33.33% = 100%
+  grid.innerHTML =
+    row1.map(makeCard).join('') +
+    row2.map(makeCard).join('');
+  // Apply nth-child sizing via inline style since we can't use :nth-child in a generated list easily
+  const cards = grid.querySelectorAll('.svc-card');
+  cards.forEach((c,i)=>{
+    if(i < 4){
+      c.style.flex = '0 0 calc(25% - 2.25px)';
+    } else {
+      c.style.flex = '0 0 calc(33.333% - 2px)';
+    }
+  });
 }
 
 // ── CATEGORY GALLERY ──
@@ -1945,42 +2039,58 @@ const STATIC_GALLERY=[
 ];
 window._firestoreGallery=[];
 let activeCatFilter='all';
-const GAL_INITIAL_COUNT = 15;
 
 function renderDynGallery(){
-  const combined=[...window._firestoreGallery,...STATIC_GALLERY];
-  const filtered=activeCatFilter==='all'?combined:combined.filter(i=>i.eventCategory===activeCatFilter);
-  const grid=document.getElementById('dynGalleryGrid');
-  const moreBtn=document.getElementById('galViewMoreWrap');
-  window._glImgs=filtered.map(i=>({url:i.url,caption:(i.caption||'')+(i.eventCategory?' · '+i.eventCategory:'')}));
-  if(!filtered.length){grid.innerHTML='<div class="gal-empty-msg">No photos in this category yet. Check back soon! 📸</div>';if(moreBtn)moreBtn.style.display='none';return;}
-  // Show first 15, rest hidden
-  const shown=filtered.slice(0,GAL_INITIAL_COUNT);
-  const hasMore=filtered.length>GAL_INITIAL_COUNT;
-  grid.innerHTML=shown.map((item,i)=>`
-    <div class="dyn-item gal-visible" onclick="openViewer(${i})" style="transition-delay:${(i%6)*0.04}s">
-      <img src="${item.url}" alt="${item.caption||''}" loading="lazy"/>
+  // Firestore images first, then static fallback ONLY if no Firestore images at all
+  const hasFirestore = window._firestoreGallery.length > 0;
+  const combined = hasFirestore
+    ? window._firestoreGallery          // show only real uploaded images
+    : STATIC_GALLERY;                   // fallback for dev/preview only
+  const filtered = activeCatFilter==='all'
+    ? combined
+    : combined.filter(i=>i.eventCategory===activeCatFilter);
+  const grid = document.getElementById('dynGalleryGrid');
+  const moreBtn = document.getElementById('galViewMoreWrap');
+  // Store all filtered images for fullscreen viewer
+  window._glImgs = filtered.map(i=>({
+    url:i.url,
+    caption:(i.caption||'')+(i.eventCategory?' · '+i.eventCategory:'')
+  }));
+  if(!filtered.length){
+    grid.innerHTML='<div class="gal-empty-msg">No photos uploaded yet for this category. Check back soon!</div>';
+    if(moreBtn) moreBtn.style.display='none';
+    return;
+  }
+  // Show minimum 12 images or all if fewer; show View More if more than 12
+  const SHOW_COUNT = 12;
+  const shown = filtered.slice(0, Math.max(SHOW_COUNT, filtered.length <= SHOW_COUNT ? filtered.length : SHOW_COUNT));
+  const hasMore = filtered.length > SHOW_COUNT;
+  grid.innerHTML = shown.map((item,i) => `
+    <div class="dyn-item gal-visible" onclick="openViewer(${i})" style="transition-delay:${(i%4)*0.05}s">
+      <img src="${item.url}" alt="${item.caption||''}" loading="${i<4?'eager':'lazy'}"/>
+      <div class="dyn-watermark">www.happenhaus.com</div>
       <div class="dyn-lbl">
         <span class="dyn-caption">${item.caption||''}</span>
         <span class="dyn-cat">${item.eventCategory||''}</span>
         <button class="dyn-view-btn" onclick="event.stopPropagation();openViewer(${i})">View Project</button>
       </div>
     </div>`).join('');
-  if(moreBtn) moreBtn.style.display=hasMore?'block':'none';
+  if(moreBtn) moreBtn.style.display = hasMore ? 'block' : 'none';
 }
 
 window.filterGallery=(cat,btn)=>{
   activeCatFilter=cat;
   document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));
-  if(btn)btn.classList.add('active');
-  // Animate out
+  if(btn) btn.classList.add('active');
   const grid=document.getElementById('dynGalleryGrid');
-  grid.style.opacity='0';grid.style.transform='scale(.98)';
+  grid.style.opacity='0';
+  grid.style.transform='translateY(10px)';
   setTimeout(()=>{
     renderDynGallery();
     grid.style.transition='opacity .4s ease,transform .4s ease';
-    grid.style.opacity='1';grid.style.transform='none';
-  },220);
+    grid.style.opacity='1';
+    grid.style.transform='none';
+  },200);
 };
 
 // ── FULLSCREEN GALLERY MODAL ──
@@ -2123,41 +2233,62 @@ document.getElementById('profileModal').addEventListener('click',e=>{if(e.target
 document.getElementById('modifyModal').addEventListener('click',e=>{if(e.target===document.getElementById('modifyModal'))closeModify();});
 
 // ══ HAPPENHAUS FLOATING ACTION BUTTON ══
-const WA_NUMBER = '917386030321'; // ← HAPPENHAUS WhatsApp
+const WA_NUMBER = '917386030321';
 const CALL_NUMBER = '+917386030321';
+const WA_MESSAGES = [
+  { label: '💍 Wedding Enquiry',      text: 'Hi HAPPENHAUS! I\'m planning my wedding and would love to know more about your decor, photography and event management packages. Could you share pricing and availability?' },
+  { label: '📸 Photography Packages', text: 'Hi HAPPENHAUS! I\'m interested in your photography and videography services. Could you please share your packages, pricing, and portfolio?' },
+  { label: '✨ Decor & Lighting',     text: 'Hi HAPPENHAUS! I need help with decor and lighting for an upcoming event. Could you share your service offerings and give me a quote?' },
+  { label: '📅 General Enquiry',      text: 'Hi HAPPENHAUS! I would like to enquire about your event services. Could you please share your packages and availability?' },
+];
 let fabOpen = false;
 
 window.toggleFab = () => {
   fabOpen = !fabOpen;
   const menu = document.getElementById('fabMenu');
   const btn  = document.getElementById('fabMainBtn');
+  const waPanel = document.getElementById('waMessagePanel');
+  if (waPanel) waPanel.classList.remove('open'); // close WA panel when toggling
   menu.classList.toggle('hidden-menu', !fabOpen);
   btn.classList.toggle('open', fabOpen);
   btn.textContent = fabOpen ? '×' : '✦';
-  // Stagger animation on items
   if(fabOpen){
     document.querySelectorAll('.fab-option').forEach((el,i)=>{
-      el.style.animationDelay = (i*0.06)+'s';
+      el.style.animationDelay=(i*0.06)+'s';
       el.style.animation='none';
       void el.offsetWidth;
       el.style.animation='fabItemIn .22s ease both';
     });
   }
 };
+
 window.openFabWA = () => {
-  const msg = 'Hi HAPPENHAUS! I would like to enquire about your event services. Could you please share your packages and pricing?';
-  window.open('https://wa.me/'+WA_NUMBER+'?text='+encodeURIComponent(msg),'_blank');
-  toggleFab();
+  // Show message selection panel instead of opening directly
+  const panel = document.getElementById('waMessagePanel');
+  if (!panel) return;
+  panel.classList.toggle('open');
 };
+
+window.sendWAMessage = (idx) => {
+  const msg = WA_MESSAGES[idx];
+  if (!msg) return;
+  window.open('https://wa.me/'+WA_NUMBER+'?text='+encodeURIComponent(msg.text),'_blank');
+  document.getElementById('waMessagePanel')?.classList.remove('open');
+  if(fabOpen) toggleFab();
+};
+
 window.openFabCall = () => {
   window.location.href = 'tel:' + CALL_NUMBER;
-  toggleFab();
+  if(fabOpen) toggleFab();
 };
 
 // Close FAB on outside click
 document.addEventListener('click', e => {
   if(fabOpen && !e.target.closest('.fab-wrap')) {
     fabOpen = true; toggleFab();
+  }
+  if(!e.target.closest('.fab-wrap')) {
+    document.getElementById('waMessagePanel')?.classList.remove('open');
   }
 });
 
@@ -2238,73 +2369,136 @@ window.validatePhoneInput = (el) => {
 
 window.quickBook=(svc)=>{
   if(svc==='Gourmet Catering'){showToast('🍽️ Catering is coming soon! Please choose another service.');return;}
-  // Haldi Decor is a subtype of Luxury Decor & Styling
-  if(svc==='Haldi Decor'){svc='Luxury Decor & Styling';}
   document.getElementById('bkService').value=svc;
   document.getElementById('booking').scrollIntoView({behavior:'smooth'});
 };
 window.showToast=(msg)=>{const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3500);};
 
-// ── REVIEWS CAROUSEL ENGINE ──
-let revCarIdx=0, revCarTotal=0, revCarAutoTimer=null;
-const REV_PER_VIEW=()=>window.innerWidth>1024?3:window.innerWidth>640?2:1;
+// ── REVIEWS CAROUSEL — single card at a time ──
+let _revIdx = 0;
+let _revTotal = 0;
+let _revTimer = null;
+const REV_INTERVAL = 5000;
 
-function initRevCarousel(total){
-  revCarTotal=total;
-  revCarIdx=0;
-  const nav=document.getElementById('revNav');
-  const dotsEl=document.getElementById('revDots');
-  if(!nav||!dotsEl)return;
-  if(total<=REV_PER_VIEW()){nav.style.display='none';return;}
-  nav.style.display='flex';
-  // Build dots
-  const pages=Math.ceil(total/REV_PER_VIEW());
-  dotsEl.innerHTML=Array.from({length:pages},(_,i)=>`<button class="rev-dot${i===0?' active':''}" onclick="goRevCar(${i})"></button>`).join('');
-  updateRevCar();
-  startRevAutoplay();
-  // Swipe
-  const wrap=document.getElementById('revCarouselWrap');
-  if(!wrap)return;
-  let ts=0,tx=0;
-  wrap.addEventListener('touchstart',e=>{ts=Date.now();tx=e.touches[0].clientX;clearRevAutoplay();},{passive:true});
-  wrap.addEventListener('touchend',e=>{
-    if(Date.now()-ts>600)return;
-    const dx=e.changedTouches[0].clientX-tx;
-    if(Math.abs(dx)>45){dx<0?nextRevCar():prevRevCar();}
-    startRevAutoplay();
-  },{passive:true});
-  // Arrow buttons
-  document.getElementById('revPrev')?.addEventListener('click',()=>{clearRevAutoplay();prevRevCar();startRevAutoplay();});
-  document.getElementById('revNext')?.addEventListener('click',()=>{clearRevAutoplay();nextRevCar();startRevAutoplay();});
-  // Drag
-  const carousel=document.getElementById('revGrid');
-  if(!carousel)return;
-  let dragging=false,startX=0,scrollLeft=0;
-  carousel.addEventListener('mousedown',e=>{dragging=true;startX=e.pageX;scrollLeft=revCarIdx;carousel.classList.add('dragging');clearRevAutoplay();});
-  document.addEventListener('mouseup',()=>{if(!dragging)return;dragging=false;carousel.classList.remove('dragging');startRevAutoplay();});
-  carousel.addEventListener('mousemove',e=>{
-    if(!dragging)return;
-    const dx=e.pageX-startX;
-    if(Math.abs(dx)>60){dx<0?nextRevCar():prevRevCar();dragging=false;carousel.classList.remove('dragging');}
+function _buildRevCarousel(revs) {
+  const track = document.getElementById('revTrack');
+  const dotsEl = document.getElementById('revDots');
+  const controls = document.getElementById('revControls');
+  if (!track) return;
+  _revTotal = revs.length;
+  _revIdx = 0;
+  // Render all cards in the track — only translate to show one at a time
+  track.innerHTML = revs.map(r => {
+    const stars = Array.from({length:5},(_,i) => `<span class="${i < r.rating ? '' : 'empty'}">★</span>`).join('');
+    return `<div class="rev-card">
+      <div class="rev-stars">${stars}</div>
+      <p class="rev-txt">"${r.text || ''}"</p>
+      <div class="rev-auth">
+        <div class="rev-av">${(r.name || 'A')[0].toUpperCase()}</div>
+        <div><div class="rev-nm">${r.name || 'Anonymous'}</div><div class="rev-ev">${r.event || ''}</div></div>
+      </div>
+    </div>`;
+  }).join('');
+  if (_revTotal > 1) {
+    controls.style.display = 'flex';
+    dotsEl.innerHTML = revs.map((_,i) =>
+      `<button class="rev-dot${i===0?' active':''}" onclick="revGoTo(${i})" aria-label="Review ${i+1}"></button>`
+    ).join('');
+    document.getElementById('revPrevBtn').onclick = () => revStep(-1);
+    document.getElementById('revNextBtn').onclick = () => revStep(1);
+    _revAutoStart();
+    // Touch swipe
+    let _sx = 0;
+    const wrap = document.getElementById('revCarouselWrap');
+    wrap.addEventListener('touchstart', e => { _sx = e.touches[0].clientX; _revAutoStop(); }, {passive:true});
+    wrap.addEventListener('touchend', e => {
+      const dx = e.changedTouches[0].clientX - _sx;
+      if (Math.abs(dx) > 45) revStep(dx < 0 ? 1 : -1);
+      _revAutoStart();
+    }, {passive:true});
+  } else {
+    controls.style.display = 'none';
+  }
+  _revRender(false);
+}
+
+function _revRender(animate) {
+  const track = document.getElementById('revTrack');
+  if (!track) return;
+  if (animate) {
+    track.style.transition = 'transform .55s cubic-bezier(.4,0,.2,1)';
+  } else {
+    track.style.transition = 'none';
+  }
+  track.style.transform = `translateX(-${_revIdx * 100}%)`;
+  document.querySelectorAll('.rev-dot').forEach((d,i) => d.classList.toggle('active', i === _revIdx));
+}
+
+window.revGoTo = (i) => { _revIdx = i; _revRender(true); _revAutoStop(); _revAutoStart(); };
+function revStep(dir) {
+  _revIdx = (_revIdx + dir + _revTotal) % _revTotal;
+  _revRender(true);
+}
+function _revAutoStart() {
+  _revAutoStop();
+  if (_revTotal > 1) _revTimer = setInterval(() => { revStep(1); }, REV_INTERVAL);
+}
+function _revAutoStop() { clearInterval(_revTimer); }
+
+// ── SMOOTH SCROLL TO CONTACT / BOOKING ──
+window.scrollToContact = (e) => {
+  if (e) e.preventDefault();
+  const el = document.getElementById('booking');
+  if (!el) return;
+  el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+};
+
+// ── ACTIVE NAV HIGHLIGHT — IntersectionObserver based ──
+(function initNavHighlight() {
+  const sections = ['services','gallery-section','reviews','booking','process'];
+  const navLinks = document.querySelectorAll('.nav-mid a[data-nav]');
+  if (!navLinks.length) return;
+
+  // Map data-nav values to section IDs
+  const sectionMap = {
+    'services':        'services',
+    'gallery-section': 'gallery-section',
+    'reviews':         'reviews',
+    'booking':         'booking',
+    'contact':         'booking',   // Contact link targets booking section
+    'process':         'process',
+  };
+
+  function setActive(sectionId) {
+    navLinks.forEach(a => {
+      const nav = a.dataset.nav;
+      const targetId = sectionMap[nav];
+      a.classList.toggle('nav-active', targetId === sectionId);
+    });
+  }
+
+  // Use IntersectionObserver on each tracked section
+  const tracked = Object.values(sectionMap).filter((v,i,a) => a.indexOf(v) === i);
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) setActive(entry.target.id);
+    });
+  }, { threshold: 0.25, rootMargin: '-60px 0px -40% 0px' });
+
+  tracked.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) obs.observe(el);
   });
-}
-function updateRevCar(){
-  const carousel=document.getElementById('revGrid');
-  if(!carousel)return;
-  const perView=REV_PER_VIEW();
-  const cardW=carousel.parentElement?.clientWidth/perView||320;
-  const pages=Math.ceil(revCarTotal/perView);
-  revCarIdx=Math.min(revCarIdx,pages-1);
-  const offset=revCarIdx*(cardW*perView+18*perView);
-  carousel.style.transform=`translateX(-${offset}px)`;
-  document.querySelectorAll('.rev-dot').forEach((d,i)=>d.classList.toggle('active',i===revCarIdx));
-}
-window.goRevCar=(i)=>{revCarIdx=i;updateRevCar();};
-function nextRevCar(){revCarIdx=(revCarIdx+1)%Math.ceil(revCarTotal/REV_PER_VIEW());updateRevCar();}
-function prevRevCar(){revCarIdx=(revCarIdx-1+Math.ceil(revCarTotal/REV_PER_VIEW()))%Math.ceil(revCarTotal/REV_PER_VIEW());updateRevCar();}
-function startRevAutoplay(){revCarAutoTimer=setInterval(nextRevCar,4500);}
-function clearRevAutoplay(){clearInterval(revCarAutoTimer);}
-window.addEventListener('resize',()=>{ if(revCarTotal>0) updateRevCar(); });
+
+  // Also clear active when at hero (top of page)
+  const hero = document.getElementById('hero');
+  if (hero) {
+    const heroObs = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) setActive('');
+    }, { threshold: 0.3 });
+    heroObs.observe(hero);
+  }
+})();
 
 // ── SCROLL REVEAL OBSERVER ──
 function initReveal(){
@@ -2326,7 +2520,6 @@ document.addEventListener('DOMContentLoaded',()=>{
   setTimeout(()=>{
     document.querySelectorAll('.proc-step').forEach((el,i)=>{ el.classList.add('reveal'); el.style.transitionDelay=(i*0.09)+'s'; });
     document.querySelectorAll('.t-card').forEach((el,i)=>{ el.classList.add('reveal'); el.style.transitionDelay=(i*0.08)+'s'; });
-    document.querySelectorAll('.feat-card').forEach((el,i)=>{ el.classList.add('reveal'); el.style.transitionDelay=(i*0.1)+'s'; });
     initReveal();
   }, 200);
 });
