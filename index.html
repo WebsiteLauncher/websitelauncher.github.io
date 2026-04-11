@@ -372,7 +372,7 @@ section{padding:88px 0;}
 /* duplicate booking warning */
 .dup-warn{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.25);color:#F59E0B;padding:10px 14px;border-radius:var(--r);font-size:.78rem;margin-bottom:14px;display:none;}
 
-/* ── REVIEWS ── */
+/* ── REVIEWS — improved equal-height cards with line-clamp ── */
 #reviews{background:var(--black);}
 .rev-summary{display:flex;align-items:center;gap:32px;margin-bottom:56px;flex-wrap:wrap;}
 .rev-avg-num{font-family:var(--fd);font-size:4.5rem;font-weight:300;color:var(--gold);line-height:1;}
@@ -383,26 +383,44 @@ section{padding:88px 0;}
 /* Single-card slideshow container */
 .rev-carousel-wrap{position:relative;width:100%;max-width:820px;margin:0 auto;}
 /* The stage that shows one review at a time */
-.rev-stage{position:relative;}
+.rev-stage{position:relative;min-height:240px;}
 .rev-card{
   background:var(--dark2);
-  padding:40px 44px;
-  border:1px solid rgba(201,168,76,.1);
-  border-radius:8px;
+  padding:44px 48px;
+  border:1px solid rgba(201,168,76,.12);
+  border-radius:12px;
   position:relative;
   display:none;
+  min-height:240px;
+  transition:border-color .35s var(--ease),box-shadow .35s var(--ease),transform .35s var(--ease);
+  box-shadow:0 4px 32px rgba(0,0,0,.25);
 }
-.rev-card.active,.rev-card:first-child{display:block;}
+.rev-card.active,.rev-card:first-child{display:flex;flex-direction:column;}
+.rev-card.active{
+  border-color:rgba(201,168,76,.22);
+  transform:translateY(-2px);
+  box-shadow:0 12px 48px rgba(0,0,0,.38),0 0 0 1px rgba(201,168,76,.06);
+}
 .rev-card::before{
-  content:'"';font-family:var(--fd);font-size:6rem;
+  content:'"';font-family:var(--fd);font-size:7rem;
   color:var(--gold);opacity:.07;
-  position:absolute;top:-12px;left:22px;line-height:1;pointer-events:none;
+  position:absolute;top:-16px;left:22px;line-height:1;pointer-events:none;
 }
-.rev-stars{display:flex;gap:3px;margin-bottom:16px;}
-.rev-stars span{color:var(--gold);font-size:1rem;}
-.rev-stars span.empty{color:var(--dark3);}
-.rev-txt{font-size:.95rem;color:var(--cream);line-height:1.9;font-style:italic;margin-bottom:24px;}
-.rev-auth{display:flex;align-items:center;gap:14px;}
+/* Star rating icons — filled/empty */
+.rev-stars{display:flex;gap:4px;margin-bottom:18px;}
+.rev-stars svg{width:18px;height:18px;}
+.rev-star-filled{fill:#C9A84C;}
+.rev-star-empty{fill:none;stroke:#C9A84C;stroke-width:1.5;opacity:.35;}
+
+.rev-txt-wrap{flex:1;margin-bottom:24px;}
+.rev-txt{font-size:.96rem;color:var(--cream);line-height:1.95;font-style:italic;
+  display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;}
+.rev-txt.expanded{-webkit-line-clamp:unset;overflow:visible;}
+.rev-read-more{background:none;border:none;color:var(--gold);font-size:.74rem;cursor:pointer;padding:0;margin-top:8px;font-family:var(--fb);letter-spacing:.06em;opacity:.85;transition:opacity .2s;display:none;}
+.rev-read-more:hover{opacity:1;}
+.rev-read-more.visible{display:inline-block;}
+
+.rev-auth{display:flex;align-items:center;gap:14px;margin-top:auto;}
 .rev-av{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--gd),var(--gold));display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:1rem;color:var(--black);flex-shrink:0;font-weight:600;}
 .rev-nm{font-size:.85rem;font-weight:500;color:var(--cream);}
 .rev-ev{font-size:.72rem;color:var(--muted);margin-top:2px;}
@@ -422,8 +440,8 @@ section{padding:88px 0;}
 .rev-thank-you.show{display:block;}
 
 /* Review slide animations */
-@keyframes revSlideOut{from{opacity:1;transform:translateX(0);}to{opacity:0;transform:translateX(-32px);}}
-@keyframes revSlideIn{from{opacity:0;transform:translateX(32px);}to{opacity:1;transform:none;}}
+@keyframes revSlideOut{from{opacity:1;transform:translateX(0) scale(1);}to{opacity:0;transform:translateX(-40px) scale(.97);}}
+@keyframes revSlideIn{from{opacity:0;transform:translateX(40px) scale(.97);}to{opacity:1;transform:none;scale:1;}}
 
 /* star-picker used only in review modal */
 .star-picker{display:flex;gap:6px;margin:12px 0 18px;}
@@ -705,20 +723,23 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
 .intro-ring,.intro-ring2{display:none;}
 
 
-/* ── SCROLL REVEAL ANIMATIONS ── */
-.reveal{opacity:0;transform:translateY(28px);transition:opacity .7s var(--ease),transform .7s var(--ease);}
+/* ── SCROLL REVEAL ANIMATIONS — enhanced ── */
+.reveal{opacity:0;transform:translateY(32px);transition:opacity .75s var(--ease),transform .75s var(--ease);}
 .reveal.in{opacity:1;transform:none;}
-.reveal-left{opacity:0;transform:translateX(-28px);transition:opacity .7s var(--ease),transform .7s var(--ease);}
+.reveal-left{opacity:0;transform:translateX(-32px);transition:opacity .75s var(--ease),transform .75s var(--ease);}
 .reveal-left.in{opacity:1;transform:none;}
-.reveal-right{opacity:0;transform:translateX(28px);transition:opacity .7s var(--ease),transform .7s var(--ease);}
+.reveal-right{opacity:0;transform:translateX(32px);transition:opacity .75s var(--ease),transform .75s var(--ease);}
 .reveal-right.in{opacity:1;transform:none;}
+.reveal-scale{opacity:0;transform:scale(.95);transition:opacity .7s var(--ease),transform .7s var(--ease);}
+.reveal-scale.in{opacity:1;transform:none;}
 /* Stagger children */
 .stagger>*:nth-child(1){transition-delay:.05s;}
-.stagger>*:nth-child(2){transition-delay:.12s;}
-.stagger>*:nth-child(3){transition-delay:.19s;}
-.stagger>*:nth-child(4){transition-delay:.26s;}
-.stagger>*:nth-child(5){transition-delay:.33s;}
-.stagger>*:nth-child(6){transition-delay:.40s;}
+.stagger>*:nth-child(2){transition-delay:.13s;}
+.stagger>*:nth-child(3){transition-delay:.21s;}
+.stagger>*:nth-child(4){transition-delay:.29s;}
+.stagger>*:nth-child(5){transition-delay:.37s;}
+.stagger>*:nth-child(6){transition-delay:.45s;}
+.stagger>*:nth-child(7){transition-delay:.53s;}
 /* ── SECTION GOLD ACCENT LINE ── */
 .s-accent{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
 .s-accent::before{content:'';width:28px;height:1px;background:var(--gold);flex-shrink:0;}
@@ -728,7 +749,7 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
 .fi:focus,.fs:focus,.fta:focus{box-shadow:0 0 0 3px rgba(201,168,76,.1);}
 /* ── REVIEW card hover ── */
 .rev-card{transition:var(--tr);}
-.rev-card:hover{border-color:rgba(201,168,76,.18);transform:translateY(-2px);box-shadow:0 12px 40px rgba(0,0,0,.35);}
+.rev-card.active:hover{border-color:rgba(201,168,76,.28);box-shadow:0 16px 56px rgba(0,0,0,.42);}
 /* ── Testimonial card hover ── */
 .t-card:hover{border-color:rgba(201,168,76,.14);transform:translateY(-2px);box-shadow:0 12px 40px rgba(0,0,0,.35);transition:var(--tr);}
 /* ── Improved toast ── */
@@ -976,8 +997,8 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
 <section id="services">
   <div class="con">
     <div class="svc-hdr">
-      <div><div class="s-lbl">What We Do</div><h2 class="s-ttl">Curated <em>Services</em><br>For Every Occasion</h2></div>
-      <a href="#booking" class="btn btn-ghost">Request a Quote →</a>
+      <div class="reveal"><div class="s-lbl">What We Do</div><h2 class="s-ttl">Curated <em>Services</em><br>For Every Occasion</h2></div>
+      <a href="#booking" class="btn btn-ghost reveal" style="transition-delay:.15s">Request a Quote →</a>
     </div>
     <div class="svc-grid" id="svcGrid"></div>
   </div>
@@ -986,9 +1007,9 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
 <!-- GALLERY -->
 <section id="gallery-section">
   <div class="con">
-    <div class="s-lbl">Our Portfolio</div>
-    <h2 class="s-ttl">Moments We've <em>Crafted</em></h2>
-    <div class="divider"></div>
+    <div class="s-lbl reveal">Our Portfolio</div>
+    <h2 class="s-ttl reveal" style="transition-delay:.08s">Moments We've <em>Crafted</em></h2>
+    <div class="divider reveal" style="transition-delay:.16s"></div>
     <div class="cat-filter-wrap">
       <button class="cat-btn active" onclick="filterGallery('all',this)">🎊 All</button>
       <button class="cat-btn" onclick="filterGallery('Wedding',this)">💍 Wedding</button>
@@ -1005,6 +1026,8 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
       <button class="cat-btn" onclick="filterGallery('Farewell',this)">👋 Farewell</button>
       <button class="cat-btn" onclick="filterGallery('Naming Ceremony',this)">🍼 Naming</button>
       <button class="cat-btn" onclick="filterGallery('Logistics',this)">🚚 Logistics</button>
+      <button class="cat-btn" onclick="filterGallery('Photography',this)">📷 Photography</button>
+      <button class="cat-btn" onclick="filterGallery('Cradle Ceremony',this)">🌸 Cradle Ceremony</button>
     </div>
   </div>
   <div class="con" style="margin-top:28px;">
@@ -1035,7 +1058,7 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
 <!-- PROCESS -->
 <section id="process">
   <div class="con">
-    <div style="text-align:center;"><div class="s-lbl">How It Works</div><h2 class="s-ttl">Simple Steps to Your <em>Dream Event</em></h2></div>
+    <div style="text-align:center;"><div class="s-lbl reveal">How It Works</div><h2 class="s-ttl reveal" style="transition-delay:.1s">Simple Steps to Your <em>Dream Event</em></h2></div>
     <div class="proc">
       <div class="proc-step"><div class="proc-n">01</div><div class="proc-t">Enquire</div><div class="proc-d">Fill out our booking form with your event details and vision.</div></div>
       <div class="proc-step"><div class="proc-n">02</div><div class="proc-t">Consult</div><div class="proc-d">Our specialist calls within 24 hours to craft your perfect plan.</div></div>
@@ -1050,10 +1073,10 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
   <div class="con">
     <div class="bk-wrap">
       <div class="bk-info">
-        <div class="s-lbl">Get In Touch</div>
-        <h2 class="s-ttl">Let's Create<br>Something <em>Beautiful</em></h2>
-        <div class="divider"></div>
-        <p>Ready to turn your vision into reality? Sign in or create an account. Our HAPPENHAUS specialists reach out within 24 hours.</p>
+        <div class="s-lbl reveal">Get In Touch</div>
+        <h2 class="s-ttl reveal" style="transition-delay:.1s">Let's Create<br>Something <em>Beautiful</em></h2>
+        <div class="divider reveal" style="transition-delay:.18s"></div>
+        <p class="reveal" style="transition-delay:.26s">Ready to turn your vision into reality? Sign in or create an account. Our HAPPENHAUS specialists reach out within 24 hours.</p>
         <!-- Services We Offer -->
         <div class="bk-svc-chips">
           <div class="bk-svc-label">What We Offer</div>
@@ -1066,6 +1089,7 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
             <span class="bk-svc-chip">🎊 Complete Event Management</span>
             <span class="bk-svc-chip">💍 Wedding Planning</span>
             <span class="bk-svc-chip">🏢 Corporate Events</span>
+            <span class="bk-svc-chip">🌸 Cradle Ceremony</span>
           </div>
         </div>
         <div class="bk-contacts">
@@ -1121,7 +1145,7 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
                 <option>Haldi</option><option>Sangeet</option><option>Mehendi</option>
                 <option>Birthday Party</option><option>Corporate Event</option>
                 <option>Anniversary</option><option>Baby Shower</option>
-                <option>Housewarming</option><option>Naming Ceremony</option><option>Farewell</option><option>Other</option>
+                <option>Housewarming</option><option>Naming Ceremony</option><option>Cradle Ceremony</option><option>Farewell</option><option>Other</option>
               </select>
             </div>
           </div>
@@ -1159,9 +1183,9 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
 <!-- REVIEWS -->
 <section id="reviews">
   <div class="con">
-    <div class="s-lbl">Client Stories</div>
-    <h2 class="s-ttl">Reviews &amp; <em>Ratings</em></h2>
-    <div class="divider"></div>
+    <div class="s-lbl reveal">Client Stories</div>
+    <h2 class="s-ttl reveal" style="transition-delay:.1s">Reviews &amp; <em>Ratings</em></h2>
+    <div class="divider reveal" style="transition-delay:.18s"></div>
     <div class="rev-summary">
       <div><div class="rev-avg-num" id="revAvgNum">—</div><div class="rev-avg-stars" id="revAvgStars"></div><div class="rev-avg-count" id="revAvgCount">Loading reviews…</div></div>
     </div>
@@ -1682,7 +1706,7 @@ window.submitBooking = async (ev) => {
 // ── LOAD MY BOOKINGS (real-time onSnapshot) ──
 let _bookingsUnsubscribe = null;
 
-function renderBookingsList(docs) {
+async function renderBookingsList(docs) {
   const list = document.getElementById('bkList');
   if(!list) return;
   myBookings = docs.map(d=>({id:d.id,...d.data()}));
@@ -1709,19 +1733,41 @@ function renderBookingsList(docs) {
     'consultation':'bk-consultation','Consultation Scheduled':'bk-consultation',
     'proposal':'bk-proposal','Proposal Sent':'bk-proposal',
   };
+
+  // ── Check which completed bookings already have a review ──
+  let reviewedBookingIds = new Set();
+  try {
+    const currentUser = window._auth?.currentUser;
+    if(currentUser && window._db) {
+      const revSnap = await window._getDocs(
+        window._query(window._collection(window._db,'reviews'), window._where('userId','==',currentUser.uid))
+      );
+      revSnap.docs.forEach(d => {
+        const bkId = d.data().bookingId;
+        if(bkId) reviewedBookingIds.add(bkId);
+      });
+    }
+  } catch(e){ /* silently fail — still render bookings */ }
+
   list.innerHTML = myBookings.map(b=>{
-    // Use pipeline for display when set by admin; else fall back to status
     const displayStatus = b.pipeline && b.pipeline !== 'New Enquiry' ? b.pipeline : (b.status || 'pending');
     const sc = scMap[b.status] || scMap[b.pipeline] || 'bk-pending';
     const sl = statusMap[b.pipeline] || statusMap[b.status] || '🔔 New Enquiry';
     const dt = b.eventDate?new Date(b.eventDate).toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'}):'Date TBD';
     const canModify = b.status==='pending' || b.status==='New Enquiry';
     const priceHtml = b.finalPrice?`<div class="bk-price">💰 Final Price: ${b.finalPrice}</div>`:'';
-    // "Share Your Experience" button — only for completed bookings
-    const reviewBtn = (b.status==='completed' || b.pipeline==='Completed')
-      ? `<button class="bk-review-btn" onclick="openReviewModal('${b.id}','${(b.service||'').replace(/'/g,"\\'")}','${(b.eventType||'').replace(/'/g,"\\'")}')">⭐ Share Your Experience</button>`
-      : '';
-    return `<div class="bk-item ${b.status==='completed'||b.pipeline==='Completed'?'bk-item-completed':''}">
+    // "Share Your Experience" button — only for completed bookings that haven't been reviewed yet
+    const isCompleted = b.status==='completed' || b.pipeline==='Completed';
+    const alreadyReviewed = reviewedBookingIds.has(b.id);
+    let reviewBtn = '';
+    if(isCompleted){
+      if(alreadyReviewed){
+        reviewBtn = `<span class="bk-review-btn" style="opacity:.55;cursor:default;pointer-events:none;background:rgba(201,168,76,.25);">✓ Review Submitted</span>`;
+      } else {
+        reviewBtn = `<button class="bk-review-btn" onclick="openReviewModal('${b.id}','${(b.service||'').replace(/'/g,"\\'")}','${(b.eventType||'').replace(/'/g,"\\'")}')">⭐ Share Your Experience</button>`;
+      }
+    }
+    return `<div class="bk-item ${isCompleted?'bk-item-completed':''}">
       <div class="bk-ico">${icons[b.service]||'🎊'}</div>
       <div class="bk-det">
         <div class="bk-svc">${b.service||'Event Service'}</div>
@@ -1737,10 +1783,6 @@ function renderBookingsList(docs) {
       <div class="bk-stat ${sc}">${sl}</div>
     </div>`;
   }).join('');
-  // Check for completed bookings to allow reviews
-  const hasCompleted = myBookings.some(b=>b.status==='completed'||b.pipeline==='Completed');
-  const hasConfirmed = myBookings.some(b=>b.status==='confirmed'||b.pipeline==='Confirmed');
-  // Review buttons appear inline on completed booking cards
 }
 
 async function loadMyBookings(uid) {
@@ -1752,7 +1794,7 @@ async function loadMyBookings(uid) {
     const q = query(collection(db,'bookings'),where('userId','==',uid));
     // onSnapshot gives real-time updates — status changes from admin reflect instantly
     _bookingsUnsubscribe = onSnapshot(q, (snap) => {
-      renderBookingsList(snap.docs);
+      renderBookingsList(snap.docs);  // async, runs in background — safe
     }, (err) => {
       console.error('Bookings snapshot error:', err);
       list.innerHTML='<div class="empty-st">Could not load bookings.<br><small style="color:#888;font-size:.7rem;">'+err.message+'</small></div>';
@@ -1834,8 +1876,13 @@ window.loadSvcGallery = async (name) => {
 
 // ── REVIEWS ──
 function makeRevCard(r){
-  const stars=Array.from({length:5},(_,i)=>`<span class="${i<r.rating?'':'empty'}">★</span>`).join('');
-  return `<div class="rev-card"><div class="rev-stars">${stars}</div><p class="rev-txt">${r.text||''}</p><div class="rev-auth"><div class="rev-av">${(r.name||'A')[0].toUpperCase()}</div><div><div class="rev-nm">${r.name||'Anonymous'}</div><div class="rev-ev">${r.event||''}</div></div></div></div>`;
+  const starSVG = (filled) => filled
+    ? `<svg viewBox="0 0 24 24" class="rev-star-filled"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>`
+    : `<svg viewBox="0 0 24 24" class="rev-star-empty"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>`;
+  const stars = Array.from({length:5},(_,i)=>starSVG(i<r.rating)).join('');
+  const longText = (r.text||'').length > 200;
+  const readMoreBtn = longText ? `<button class="rev-read-more visible" onclick="toggleRevText(this)">Read More ↓</button>` : '';
+  return `<div class="rev-card"><div class="rev-stars">${stars}</div><div class="rev-txt-wrap"><p class="rev-txt">${r.text||''}</p>${readMoreBtn}</div><div class="rev-auth"><div class="rev-av">${(r.name||'A')[0].toUpperCase()}</div><div><div class="rev-nm">${r.name||'Anonymous'}</div><div class="rev-ev">${r.event||''}</div></div></div></div>`;
 }
 const FALLBACK_REVS=[
   {rating:5,text:'HAPPENHAUS transformed our wedding into an absolute fairytale. Every detail was perfect — from the floral mandap to the candlelit reception. Truly unforgettable.',name:'Priya & Rahul Sharma',event:'Wedding · Taj Falaknuma'},
@@ -2013,6 +2060,17 @@ const STATIC_GALLERY=[
   {url:'https://images.unsplash.com/photo-1520854221256-17452cc3a785?w=800&q=80',caption:'Event Setup Crew',eventCategory:'Logistics',service:'Logistics Services'},
   {url:'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=800&q=80',caption:'Venue Preparation',eventCategory:'Logistics',service:'Logistics Services'},
   {url:'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=800&q=80',caption:'Equipment Coordination',eventCategory:'Logistics',service:'Logistics Services'},
+  // Photography
+  {url:'https://images.unsplash.com/photo-1606216794074-735e91aa2c92?w=800&q=80',caption:'Wedding Candid Photography',eventCategory:'Photography',service:'Professional Photography'},
+  {url:'https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=800&q=80',caption:'Portrait Session',eventCategory:'Photography',service:'Professional Photography'},
+  {url:'https://images.unsplash.com/photo-1591604466107-ec97de577aff?w=800&q=80',caption:'Event Videography',eventCategory:'Photography',service:'Professional Photography'},
+  {url:'https://images.unsplash.com/photo-1532712938310-34cb3982ef74?w=800&q=80',caption:'Drone Aerial Shot',eventCategory:'Photography',service:'Professional Photography'},
+  {url:'https://images.unsplash.com/photo-1537633552985-df8429e8048b?w=800&q=80',caption:'Reception Candids',eventCategory:'Photography',service:'Professional Photography'},
+  // Cradle Ceremony
+  {url:'https://images.unsplash.com/photo-1555252333-9f8e92e65df9?w=800&q=80',caption:'Cradle Ceremony Decor',eventCategory:'Cradle Ceremony',service:'Luxury Decor & Styling'},
+  {url:'https://images.unsplash.com/photo-1519689373023-dd07c7988603?w=800&q=80',caption:'Baby\'s First Celebration',eventCategory:'Cradle Ceremony',service:'Complete Event Management'},
+  {url:'https://images.unsplash.com/photo-1544126592-807ade215a0b?w=800&q=80',caption:'Floral Cradle Setup',eventCategory:'Cradle Ceremony',service:'Luxury Decor & Styling'},
+  {url:'https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?w=800&q=80',caption:'Naming & Cradle Celebration',eventCategory:'Cradle Ceremony',service:'Complete Event Management'},
 ];
 window._firestoreGallery=[];
 let activeCatFilter='all';
@@ -2336,6 +2394,14 @@ window.quickBook=(svc)=>{
 };
 window.showToast=(msg)=>{const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3500);};
 
+// ── READ MORE / READ LESS for review cards ──
+window.toggleRevText = (btn) => {
+  const p = btn.previousElementSibling;
+  const isExpanded = p.classList.contains('expanded');
+  p.classList.toggle('expanded', !isExpanded);
+  btn.textContent = isExpanded ? 'Read More ↓' : 'Read Less ↑';
+};
+
 // ── REVIEWS SLIDESHOW — ONE CARD AT A TIME, FADE TRANSITION ──
 let revIdx=0, revCards=[], revAutoTimer=null;
 
@@ -2347,9 +2413,10 @@ function initRevCarousel(total){
   revCards=Array.from(stage.querySelectorAll('.rev-card'));
   revIdx=0;
   if(!revCards.length){nav.style.display='none';return;}
-  // Show first card, hide rest
+  // Show first card as flex (active), hide rest
   revCards.forEach((c,i)=>{
-    c.style.display = i===0 ? 'block' : 'none';
+    c.style.display = i===0 ? 'flex' : 'none';
+    c.style.flexDirection = i===0 ? 'column' : '';
     c.classList.toggle('active',i===0);
   });
   if(revCards.length<=1){nav.style.display='none';return;}
@@ -2389,11 +2456,14 @@ function goRevSlide(n){
   // Animate out current
   const curr=revCards[revIdx];
   curr.style.animation='revSlideOut .4s ease forwards';
+  curr.classList.remove('active');
   setTimeout(()=>{curr.style.display='none';curr.style.animation='';},400);
   // Animate in new
   revIdx=(n+revCards.length)%revCards.length;
   const next=revCards[revIdx];
-  next.style.display='block';
+  next.style.display='flex';
+  next.style.flexDirection='column';
+  next.classList.add('active');
   next.style.animation='revSlideIn .45s ease forwards';
   setTimeout(()=>{next.style.animation='';},450);
   // Update dots
@@ -2444,10 +2514,16 @@ document.addEventListener('DOMContentLoaded',()=>{
   if(typeof window.loadReviews==='function') window.loadReviews();
   // Add reveal classes to key sections dynamically
   setTimeout(()=>{
-    document.querySelectorAll('.proc-step').forEach((el,i)=>{ el.classList.add('reveal'); el.style.transitionDelay=(i*0.09)+'s'; });
-    document.querySelectorAll('.t-card').forEach((el,i)=>{ el.classList.add('reveal'); el.style.transitionDelay=(i*0.08)+'s'; });
-    
+    document.querySelectorAll('.proc-step').forEach((el,i)=>{ el.classList.add('reveal'); el.style.transitionDelay=(i*0.11)+'s'; });
+    document.querySelectorAll('.t-card').forEach((el,i)=>{ el.classList.add('reveal'); el.style.transitionDelay=(i*0.09)+'s'; });
+    document.querySelectorAll('.svc-grid .svc-card').forEach((el,i)=>{ el.classList.add('reveal'); el.style.transitionDelay=(Math.min(i,5)*0.07)+'s'; });
+    document.querySelectorAll('.bk-info .bk-contacts').forEach(el=>{ el.classList.add('reveal'); el.style.transitionDelay='.3s'; });
+    document.querySelectorAll('.bk-form-box').forEach(el=>{ el.classList.add('reveal-right'); el.style.transitionDelay='.12s'; });
+    document.querySelectorAll('.rev-summary').forEach(el=>{ el.classList.add('reveal'); });
+    document.querySelectorAll('.rev-carousel-wrap').forEach(el=>{ el.classList.add('reveal'); el.style.transitionDelay='.15s'; });
+    document.querySelectorAll('.ft-grid > div').forEach((el,i)=>{ el.classList.add('reveal'); el.style.transitionDelay=(i*0.08)+'s'; });
     initReveal();
+    initNavHighlight();
   }, 200);
 });
 
