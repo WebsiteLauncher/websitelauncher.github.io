@@ -656,16 +656,14 @@ tbody tr:hover td{background:var(--s2);}
             <option>Wedding</option><option>Reception</option><option>Engagement</option>
             <option>Sangeet</option><option>Mehendi</option><option>Haldi</option>
             <option>Birthday Party</option><option>Corporate Event</option>
-            <option>Anniversary</option><option>Baby Shower</option>
-            <option>Cradle Ceremony</option><option>Housewarming</option>
+            <option>Anniversary</option><option>Baby Shower</option><option>Housewarming</option>
             <option>Naming Ceremony</option><option>Farewell</option><option>Other</option>
           </select>
           <select class="bk-filter-select" id="fService" onchange="applyBkFilters()">
             <option value="">All Services</option>
             <optgroup label="Decor &amp; Styling">
               <option value="Luxury Decor &amp; Styling">Luxury Decor &amp; Styling</option>
-              <option value="Luxury Decor &amp; Styling">🌼 Haldi Decor (→ Decor &amp; Styling)</option>
-            </optgroup>
+              </optgroup>
             <option>Professional Photography</option>
             <option>Live Music &amp; Entertainment</option>
             <option>Premium Lighting Design</option>
@@ -720,7 +718,7 @@ tbody tr:hover td{background:var(--s2);}
               <div id="uploadPreview">No image selected</div>
               <div class="upload-progress" id="uploadProgress"><div class="upload-progress-bar" id="uploadProgressBar"></div></div>
               <label class="uf-label" style="margin-top:8px;">Service Category *</label>
-              <select class="uf-select" id="uploadService" onchange="onUploadServiceChange(this.value)">
+              <select class="uf-select" id="uploadService" onchange="HH_Admin.onSvcChange(this.value)">
                 <option value="">— Select Service —</option>
                 <option value="Luxury Decor &amp; Styling">🌸 Luxury Decor &amp; Styling</option>
                 <option value="Professional Photography">📷 Professional Photography</option>
@@ -730,31 +728,24 @@ tbody tr:hover td{background:var(--s2);}
                 <option value="Gourmet Catering">🍽️ Gourmet Catering</option>
                 <option value="Complete Event Management">🎊 Complete Event Management</option>
               </select>
-              <!-- Event category: shown ONLY for Luxury Decor & Styling -->
-              <div id="uploadEventCatWrap" style="display:none;">
-                <label class="uf-label" style="margin-top:8px;">Event Category <span style="color:var(--t3);font-size:.65rem;">(for Decor &amp; Styling only)</span></label>
+              <div id="uploadEventCatGroup" style="display:none;">
+                <label class="uf-label" style="margin-top:8px;">Event Category
+                  <span style="font-weight:400;font-size:.65rem;color:var(--t3);">(required for Decor &amp; Styling)</span>
+                </label>
                 <select class="uf-select" id="uploadEventCat">
-                  <option value="">— Select Event Type —</option>
-                  <option value="Wedding">💍 Wedding</option>
-                  <option value="Engagement">💝 Engagement</option>
-                  <option value="Reception">🎉 Reception</option>
-                  <option value="Haldi">🌼 Haldi</option>
-                  <option value="Mehendi">🌿 Mehendi</option>
-                  <option value="Sangeet">🎶 Sangeet</option>
-                  <option value="Baby Shower">👶 Baby Shower</option>
-                  <option value="Birthday">🎂 Birthday</option>
-                  <option value="Anniversary">🌹 Anniversary</option>
-                  <option value="Housewarming">🏠 Housewarming</option>
-                  <option value="Corporate">🏢 Corporate</option>
-                  <option value="Cradle Ceremony">🍼 Cradle Ceremony</option>
-                  <option value="Naming Ceremony">🍼 Naming Ceremony</option>
-                  <option value="Farewell">👋 Farewell</option>
-                  <option value="Logistics">🚚 Logistics</option>
-                  <option value="Photography">📷 Photography</option>
-                  <option value="Cradle Ceremony">🍼 Cradle Ceremony</option>
-                  <option value="Photography">📷 Photography</option>
-                  <option value="General">📸 General / Other</option>
-                </select>
+                <option value="">— Select Event Type —</option>
+                <option value="Wedding">💍 Wedding</option><option value="Engagement">💝 Engagement</option>
+                <option value="Reception">🎉 Reception</option><option value="Haldi">🌼 Haldi</option>
+                <option value="Mehendi">🌿 Mehendi</option><option value="Sangeet">🎶 Sangeet</option>
+                <option value="Baby Shower">👶 Baby Shower</option><option value="Birthday">🎂 Birthday</option>
+                <option value="Anniversary">🌹 Anniversary</option>
+                <option value="Housewarming">🏠 Housewarming</option><option value="Corporate">🏢 Corporate</option>
+                <option value="Farewell">👋 Farewell</option><option value="Naming Ceremony">🍼 Naming Ceremony</option>
+                <option value="Cradle Ceremony">🍼 Cradle Ceremony</option>
+                <option value="Photography">📷 Photography</option>
+                <option value="Logistics">🚚 Logistics</option>
+                <option value="General">📸 General / Other</option>
+              </select>
               </div>
               <label class="uf-label" style="margin-top:8px;">Caption (optional)</label>
               <input class="uf-input" id="uploadCaption" placeholder="e.g. Lotus floral mandap at HICC"/>
@@ -771,7 +762,6 @@ tbody tr:hover td{background:var(--s2);}
             <div class="ftabs" id="galleryServiceTabs" style="flex-wrap:wrap;">
               <button class="ftab active" onclick="setGalSvcFilter('',this)">All Services</button>
               <button class="ftab" onclick="setGalSvcFilter('Luxury Decor &amp; Styling',this)">🌸 Decor</button>
-              <button class="ftab" onclick="setGalSvcFilter('Luxury Decor &amp; Styling',this)" title="Haldi Decor is a subtype of Luxury Decor &amp; Styling">🌼 Haldi (Decor)</button>
               <button class="ftab" onclick="setGalSvcFilter('Professional Photography',this)">📷 Photo</button>
               <button class="ftab" onclick="setGalSvcFilter('Premium Lighting Design',this)">✨ Lighting</button>
               <button class="ftab" onclick="setGalSvcFilter('Live Music &amp; Entertainment',this)">🎵 Music</button>
@@ -782,16 +772,18 @@ tbody tr:hover td{background:var(--s2);}
               <button class="ftab active" onclick="setGalCatFilter('',this)">All Events</button>
               <button class="ftab" onclick="setGalCatFilter('Wedding',this)">💍 Wedding</button>
               <button class="ftab" onclick="setGalCatFilter('Engagement',this)">💝 Engagement</button>
+              <button class="ftab" onclick="setGalCatFilter('Reception',this)">🎉 Reception</button>
               <button class="ftab" onclick="setGalCatFilter('Haldi',this)">🌼 Haldi</button>
               <button class="ftab" onclick="setGalCatFilter('Mehendi',this)">🌿 Mehendi</button>
+              <button class="ftab" onclick="setGalCatFilter('Sangeet',this)">🎶 Sangeet</button>
               <button class="ftab" onclick="setGalCatFilter('Baby Shower',this)">👶 Baby Shower</button>
               <button class="ftab" onclick="setGalCatFilter('Birthday',this)">🎂 Birthday</button>
               <button class="ftab" onclick="setGalCatFilter('Anniversary',this)">🌹 Anniversary</button>
               <button class="ftab" onclick="setGalCatFilter('Housewarming',this)">🏠 Housewarming</button>
               <button class="ftab" onclick="setGalCatFilter('Corporate',this)">🏢 Corporate</button>
-              <button class="ftab" onclick="setGalCatFilter('Logistics',this)">🚚 Logistics</button>
               <button class="ftab" onclick="setGalCatFilter('Cradle Ceremony',this)">🍼 Cradle Ceremony</button>
               <button class="ftab" onclick="setGalCatFilter('Photography',this)">📷 Photography</button>
+              <button class="ftab" onclick="setGalCatFilter('Logistics',this)">🚚 Logistics</button>
             </div>
           </div>
         </div>
@@ -1749,12 +1741,14 @@ window.onDrop = function(e) {
 window.uploadPhoto = function() {
   if (!selectedFile)           { showToast('Please select an image first.'); return; }
   var svc      = document.getElementById('uploadService').value;
-  var rawCat   = document.getElementById('uploadEventCat').value;
-  if (!svc) { showToast('Please select a service category.'); return; }
+  var eventCat = document.getElementById('uploadEventCat').value;
+  if (!svc)      { showToast('Please select a service category.'); return; }
   // Event category required ONLY for Luxury Decor & Styling
-  var needsCat = (svc === 'Luxury Decor & Styling');
-  if (needsCat && !rawCat) { showToast('Please select an event category for Decor & Styling.'); return; }
-  var eventCat = needsCat ? rawCat : 'General';
+  if (svc === 'Luxury Decor & Styling' && !eventCat) {
+    showToast('Please select an event category for Decor & Styling.');
+    return;
+  }
+  if (!eventCat) eventCat = 'General'; // default for other services
   if (selectedFile.size > 5 * 1024 * 1024) { showToast('File too large. Max 5MB.'); return; }
   if (CLOUDINARY_CLOUD === 'YOUR_CLOUD_NAME') {
     document.getElementById('uploadMsg').innerHTML = '<span class="msg-err">Set CLOUDINARY_CLOUD in the code to your Cloudinary cloud name.</span>';
@@ -1957,20 +1951,21 @@ window.blockNonPhone = function(e) {
   if(e.key && e.key.length===1 && !/[0-9+\- ]/.test(e.key)){ e.preventDefault(); return false; }
   return true;
 };
-
-// ── GALLERY UPLOAD — show event category only for Luxury Decor & Styling ──
-window.onUploadServiceChange = function(svc) {
-  var wrap = document.getElementById('uploadEventCatWrap');
-  var catSel = document.getElementById('uploadEventCat');
-  if(!wrap) return;
-  var showCat = (svc === 'Luxury Decor & Styling');
-  wrap.style.display = showCat ? 'block' : 'none';
-  if(!showCat && catSel){ catSel.value = ''; }
-};
 window.filterAdminPhone = function(el) {
   var cleaned = el.value.replace(/[^0-9+\- ]/g,'');
   if(el.value !== cleaned) el.value = cleaned;
 };
+
+// ── Gallery upload: show event category ONLY for Luxury Decor & Styling ──
+function HH_onSvcChange(svc) {
+  var group = document.getElementById('uploadEventCatGroup');
+  var catSel = document.getElementById('uploadEventCat');
+  if (!group) return;
+  var isDecor = (svc === 'Luxury Decor & Styling');
+  group.style.display = isDecor ? 'block' : 'none';
+  if (!isDecor && catSel) catSel.value = '';
+}
+window.HH_onSvcChange = HH_onSvcChange;
 </script>
 </body>
 </html>
