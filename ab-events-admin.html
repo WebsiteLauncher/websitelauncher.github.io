@@ -717,32 +717,48 @@ tbody tr:hover td{background:var(--s2);}
               <label class="uf-label">Preview</label>
               <div id="uploadPreview">No image selected</div>
               <div class="upload-progress" id="uploadProgress"><div class="upload-progress-bar" id="uploadProgressBar"></div></div>
+
               <label class="uf-label" style="margin-top:8px;">Service Category *</label>
-              <select class="uf-select" id="uploadService">
+              <select class="uf-select" id="uploadService" onchange="onServiceChange(this.value)">
                 <option value="">— Select Service —</option>
                 <optgroup label="Decor &amp; Styling">
                   <option value="Luxury Decor &amp; Styling">Luxury Decor &amp; Styling</option>
-                  </optgroup>
-                <option>Professional Photography</option>
-                <option>Live Music &amp; Entertainment</option>
-                <option>Premium Lighting Design</option>
-                <option>Logistics Services</option>
-                <option>Gourmet Catering</option>
-                <option>Complete Event Management</option>
+                </optgroup>
+                <option value="Professional Photography">Professional Photography</option>
+                <option value="Live Music &amp; Entertainment">Live Music &amp; Entertainment</option>
+                <option value="Premium Lighting Design">Premium Lighting Design</option>
+                <option value="Logistics Services">Logistics Services</option>
+                <option value="Gourmet Catering">Gourmet Catering</option>
+                <option value="Complete Event Management">Complete Event Management</option>
               </select>
-              <label class="uf-label" style="margin-top:8px;">Event Category *</label>
-              <select class="uf-select" id="uploadEventCat">
-                <option value="">— Select Event Type —</option>
-                <option value="Wedding">💍 Wedding</option><option value="Engagement">💝 Engagement</option>
-                <option value="Reception">🎉 Reception</option><option value="Haldi">🌼 Haldi</option>
-                <option value="Mehendi">🌿 Mehendi</option><option value="Sangeet">🎶 Sangeet</option>
-                <option value="Baby Shower">👶 Baby Shower</option><option value="Birthday">🎂 Birthday</option>
-                <option value="Anniversary">🌹 Anniversary</option>
-                <option value="Housewarming">🏠 Housewarming</option><option value="Corporate">🏢 Corporate</option>
-                <option value="Farewell">👋 Farewell</option><option value="Naming Ceremony">🍼 Naming Ceremony</option>
-                <option value="Logistics">🚚 Logistics</option>
-                <option value="General">📸 General / Other</option>
-              </select>
+
+              <!-- Event Category: only shown + required for Luxury Decor & Styling -->
+              <div id="eventCatGroup" style="display:none;">
+                <label class="uf-label" style="margin-top:8px;">
+                  Event Type
+                  <span style="color:var(--gold);font-weight:700;"> *</span>
+                  <span style="font-size:.62rem;color:var(--t3);font-weight:400;margin-left:4px;">(Decor only)</span>
+                </label>
+                <select class="uf-select" id="uploadEventCat">
+                  <option value="">— Select Event Type —</option>
+                  <option value="Wedding">💍 Wedding</option>
+                  <option value="Engagement">💝 Engagement</option>
+                  <option value="Reception">🎉 Reception</option>
+                  <option value="Haldi">🌼 Haldi</option>
+                  <option value="Mehendi">🌿 Mehendi</option>
+                  <option value="Sangeet">🎶 Sangeet</option>
+                  <option value="Baby Shower">👶 Baby Shower</option>
+                  <option value="Birthday">🎂 Birthday</option>
+                  <option value="Anniversary">🌹 Anniversary</option>
+                  <option value="Housewarming">🏠 Housewarming</option>
+                  <option value="Corporate">🏢 Corporate</option>
+                  <option value="Farewell">👋 Farewell</option>
+                  <option value="Naming Ceremony">🍼 Naming Ceremony</option>
+                  <option value="Cradle Ceremony">🌸 Cradle Ceremony</option>
+                  <option value="General">📸 General / Other</option>
+                </select>
+              </div>
+
               <label class="uf-label" style="margin-top:8px;">Caption (optional)</label>
               <input class="uf-input" id="uploadCaption" placeholder="e.g. Lotus floral mandap at HICC"/>
               <button id="uploadBtn" onclick="uploadPhoto()" disabled>Upload Photo →</button>
@@ -775,6 +791,7 @@ tbody tr:hover td{background:var(--s2);}
               <button class="ftab" onclick="setGalCatFilter('Anniversary',this)">🌹 Anniversary</button>
               <button class="ftab" onclick="setGalCatFilter('Housewarming',this)">🏠 Housewarming</button>
               <button class="ftab" onclick="setGalCatFilter('Corporate',this)">🏢 Corporate</button>
+              <button class="ftab" onclick="setGalCatFilter('Cradle Ceremony',this)">🌸 Cradle Ceremony</button>
               <button class="ftab" onclick="setGalCatFilter('Logistics',this)">🚚 Logistics</button>
             </div>
           </div>
@@ -1707,6 +1724,27 @@ function renderUsers(filter) {
 window.filterUsers = function() { renderUsers(document.getElementById('userSearch').value); };
 
 // ════════════════════════════════════════════════════
+//  GALLERY UPLOAD — SERVICE CHANGE HANDLER
+//  Event-type dropdown only appears for Luxury Decor & Styling.
+//  All other services upload without an event category.
+// ════════════════════════════════════════════════════
+window.onServiceChange = function(svc) {
+  var group  = document.getElementById('eventCatGroup');
+  var select = document.getElementById('uploadEventCat');
+  var isDecor = (svc === 'Luxury Decor & Styling');
+
+  if (!group) return;
+
+  if (isDecor) {
+    group.style.display = 'block';
+  } else {
+    group.style.display = 'none';
+    // Reset dropdown when switching away from Decor
+    if (select) select.value = '';
+  }
+};
+
+// ════════════════════════════════════════════════════
 //  GALLERY UPLOAD (CLOUDINARY)
 // ════════════════════════════════════════════════════
 window.onFileSelect = function(e) {
@@ -1730,24 +1768,35 @@ window.onDrop = function(e) {
 };
 
 window.uploadPhoto = function() {
-  if (!selectedFile)           { showToast('Please select an image first.'); return; }
-  var svc      = document.getElementById('uploadService').value;
-  var eventCat = document.getElementById('uploadEventCat').value;
-  if (!svc)      { showToast('Please select a service category.'); return; }
-  if (!eventCat) { showToast('Please select an event category.');  return; }
+  if (!selectedFile) { showToast('Please select an image first.'); return; }
+
+  var svc      = (document.getElementById('uploadService').value   || '').trim();
+  var caption  = (document.getElementById('uploadCaption').value   || '').trim();
+  var isDecor  = (svc === 'Luxury Decor & Styling');
+
+  // Event category is only required for Luxury Decor & Styling
+  var eventCatEl  = document.getElementById('uploadEventCat');
+  var eventCat    = isDecor ? ((eventCatEl && eventCatEl.value) || '').trim() : svc;
+
+  if (!svc) { showToast('Please select a service category.'); return; }
+  if (isDecor && !eventCat) { showToast('Please select an event type for Decor & Styling.'); return; }
   if (selectedFile.size > 5 * 1024 * 1024) { showToast('File too large. Max 5MB.'); return; }
+
   if (CLOUDINARY_CLOUD === 'YOUR_CLOUD_NAME') {
     document.getElementById('uploadMsg').innerHTML = '<span class="msg-err">Set CLOUDINARY_CLOUD in the code to your Cloudinary cloud name.</span>';
     return;
   }
-  var caption = (document.getElementById('uploadCaption').value || '').trim();
+
   var btn  = document.getElementById('uploadBtn');
   var msg  = document.getElementById('uploadMsg');
   var prog = document.getElementById('uploadProgress');
   var bar  = document.getElementById('uploadProgressBar');
-  btn.disabled = true; btn.textContent = 'Uploading...';
-  prog.style.display = 'block'; bar.style.width = '5%';
-  msg.innerHTML = '<span style="color:var(--gold)">Uploading to Cloudinary...</span>';
+
+  btn.disabled = true;
+  btn.textContent = 'Uploading…';
+  prog.style.display = 'block';
+  bar.style.width = '5%';
+  msg.innerHTML = '<span style="color:var(--gold)">Uploading to Cloudinary…</span>';
 
   var formData = new FormData();
   formData.append('file', selectedFile);
@@ -1764,27 +1813,43 @@ window.uploadPhoto = function() {
     .then(function(data) {
       bar.style.width = '85%';
       return db.collection('gallery').add({
-        url: data.secure_url, service: svc, eventCategory: eventCat,
-        caption: caption || eventCat, cloudinaryId: data.public_id,
-        uploadedAt: firebase.firestore.FieldValue.serverTimestamp()
+        url:           data.secure_url,
+        service:       svc,
+        eventCategory: eventCat,
+        caption:       caption || eventCat || svc,
+        cloudinaryId:  data.public_id,
+        uploadedAt:    firebase.firestore.FieldValue.serverTimestamp()
       });
     })
     .then(function() {
       bar.style.width = '100%';
       setTimeout(function() { prog.style.display = 'none'; bar.style.width = '0%'; }, 500);
       msg.innerHTML = '<span class="msg-ok">✓ Photo uploaded and live on customer site!</span>';
-      btn.textContent = 'Upload Photo'; btn.disabled = true; selectedFile = null;
+
+      // Reset form completely
+      btn.textContent = 'Upload Photo →';
+      btn.disabled    = true;
+      selectedFile    = null;
+
       document.getElementById('uploadPreview').innerHTML = 'No image selected';
       document.getElementById('uploadCaption').value     = '';
       document.getElementById('uploadService').value     = '';
-      document.getElementById('uploadEventCat').value    = '';
       document.getElementById('photoFileInput').value    = '';
-      showToast('Photo uploaded!'); loadGallery();
+
+      // Reset and hide event category
+      if (eventCatEl) eventCatEl.value = '';
+      var grp = document.getElementById('eventCatGroup');
+      if (grp) grp.style.display = 'none';
+
+      showToast('Photo uploaded! ✓');
+      loadGallery();
     })
     .catch(function(err) {
-      prog.style.display = 'none'; bar.style.width = '0%';
-      msg.innerHTML = '<span class="msg-err">Upload failed: ' + err.message + '</span>';
-      btn.disabled = false; btn.textContent = 'Upload Photo';
+      prog.style.display = 'none';
+      bar.style.width    = '0%';
+      msg.innerHTML      = '<span class="msg-err">Upload failed: ' + err.message + '</span>';
+      btn.disabled       = false;
+      btn.textContent    = 'Upload Photo →';
     });
 };
 
