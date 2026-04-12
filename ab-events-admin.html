@@ -314,16 +314,6 @@ tbody tr:hover td{background:var(--s2);}
 .uf-select,.uf-input{width:100%;background:var(--s2);border:1px solid var(--bdr);color:var(--t1);padding:9px 12px;border-radius:var(--r);font-family:var(--fb);font-size:.82rem;outline:none;}
 .uf-select option{background:var(--s2);}
 .uf-select:focus,.uf-input:focus{border-color:rgba(201,168,76,.3);}
-/* Decor Event Type conditional wrapper */
-#decorEventTypeWrap{
-  overflow:hidden;
-  animation:decorWrapIn .22s var(--ease);
-}
-@keyframes decorWrapIn{from{opacity:0;transform:translateY(-6px);}to{opacity:1;transform:none;}}
-#decorEventTypeWrap .uf-select{
-  border-color:rgba(201,168,76,.28);
-  background:rgba(201,168,76,.04);
-}
 #uploadBtn{background:var(--gold);color:#000;border:none;padding:10px;border-radius:var(--r);font-family:var(--fh);font-weight:700;font-size:.82rem;cursor:pointer;transition:var(--tr);}
 #uploadBtn:disabled{opacity:.45;cursor:not-allowed;}
 #uploadPreview{height:100px;border-radius:var(--r);background:var(--s3);display:flex;align-items:center;justify-content:center;font-size:.75rem;color:var(--t3);overflow:hidden;}
@@ -728,7 +718,7 @@ tbody tr:hover td{background:var(--s2);}
               <div id="uploadPreview">No image selected</div>
               <div class="upload-progress" id="uploadProgress"><div class="upload-progress-bar" id="uploadProgressBar"></div></div>
               <label class="uf-label" style="margin-top:8px;">Service Category *</label>
-              <select class="uf-select" id="uploadService" onchange="onUploadServiceChange(this.value)">
+              <select class="uf-select" id="uploadService">
                 <option value="">— Select Service —</option>
                 <optgroup label="Decor &amp; Styling">
                   <option value="Luxury Decor &amp; Styling">Luxury Decor &amp; Styling</option>
@@ -740,29 +730,6 @@ tbody tr:hover td{background:var(--s2);}
                 <option>Gourmet Catering</option>
                 <option>Complete Event Management</option>
               </select>
-
-              <!-- Event Type: only visible when Luxury Decor & Styling is selected -->
-              <div id="decorEventTypeWrap" style="display:none;">
-                <label class="uf-label" style="margin-top:8px;">Decor Event Type <span style="color:var(--gold)">*</span></label>
-                <select class="uf-select" id="uploadDecorEventType">
-                  <option value="">— Select Event Type —</option>
-                  <option value="Wedding">💍 Wedding</option>
-                  <option value="Reception">🎉 Reception</option>
-                  <option value="Engagement">💝 Engagement</option>
-                  <option value="Haldi">🌼 Haldi</option>
-                  <option value="Mehendi">🌿 Mehendi</option>
-                  <option value="Sangeet">🎶 Sangeet</option>
-                  <option value="Cradle Ceremony">🌸 Cradle Ceremony</option>
-                  <option value="Baby Shower">👶 Baby Shower</option>
-                  <option value="Birthday">🎂 Birthday</option>
-                  <option value="Anniversary">🌹 Anniversary</option>
-                  <option value="Housewarming">🏠 Housewarming</option>
-                  <option value="Naming Ceremony">🍼 Naming Ceremony</option>
-                  <option value="Farewell">👋 Farewell</option>
-                  <option value="Corporate">🏢 Corporate</option>
-                </select>
-              </div>
-
               <label class="uf-label" style="margin-top:8px;">Event Category *</label>
               <select class="uf-select" id="uploadEventCat">
                 <option value="">— Select Event Type —</option>
@@ -773,8 +740,6 @@ tbody tr:hover td{background:var(--s2);}
                 <option value="Anniversary">🌹 Anniversary</option>
                 <option value="Housewarming">🏠 Housewarming</option><option value="Corporate">🏢 Corporate</option>
                 <option value="Farewell">👋 Farewell</option><option value="Naming Ceremony">🍼 Naming Ceremony</option>
-                <option value="Cradle Ceremony">🌸 Cradle Ceremony</option>
-                <option value="Photography">📷 Photography</option>
                 <option value="Logistics">🚚 Logistics</option>
                 <option value="General">📸 General / Other</option>
               </select>
@@ -810,8 +775,6 @@ tbody tr:hover td{background:var(--s2);}
               <button class="ftab" onclick="setGalCatFilter('Anniversary',this)">🌹 Anniversary</button>
               <button class="ftab" onclick="setGalCatFilter('Housewarming',this)">🏠 Housewarming</button>
               <button class="ftab" onclick="setGalCatFilter('Corporate',this)">🏢 Corporate</button>
-              <button class="ftab" onclick="setGalCatFilter('Cradle Ceremony',this)">🌸 Cradle Ceremony</button>
-              <button class="ftab" onclick="setGalCatFilter('Photography',this)">📷 Photography</button>
               <button class="ftab" onclick="setGalCatFilter('Logistics',this)">🚚 Logistics</button>
             </div>
           </div>
@@ -1744,23 +1707,8 @@ function renderUsers(filter) {
 window.filterUsers = function() { renderUsers(document.getElementById('userSearch').value); };
 
 // ════════════════════════════════════════════════════
-//  GALLERY UPLOAD — SERVICE CHANGE HANDLER
-//  Shows "Decor Event Type" dropdown ONLY when service
-//  is "Luxury Decor & Styling"; hidden + reset otherwise.
+//  GALLERY UPLOAD (CLOUDINARY)
 // ════════════════════════════════════════════════════
-window.onUploadServiceChange = function(svc) {
-  var decorWrap   = document.getElementById('decorEventTypeWrap');
-  var decorSelect = document.getElementById('uploadDecorEventType');
-  var isDecor     = (svc === 'Luxury Decor & Styling');
-
-  if (decorWrap) {
-    decorWrap.style.display = isDecor ? 'block' : 'none';
-  }
-  // Reset decor event type when switching away
-  if (!isDecor && decorSelect) {
-    decorSelect.value = '';
-  }
-};
 window.onFileSelect = function(e) {
   var file = e.target.files[0]; if (!file) return;
   selectedFile = file;
@@ -1782,41 +1730,24 @@ window.onDrop = function(e) {
 };
 
 window.uploadPhoto = function() {
-  if (!selectedFile) { showToast('Please select an image first.'); return; }
-
-  var svc          = (document.getElementById('uploadService').value        || '').trim();
-  var eventCat     = (document.getElementById('uploadEventCat').value       || '').trim();
-  var decorEvtType = (document.getElementById('uploadDecorEventType').value || '').trim();
-  var caption      = (document.getElementById('uploadCaption').value        || '').trim();
-
-  // ── Validation ──
-  if (!svc) { showToast('Please select a service category.'); return; }
-  if (!eventCat) { showToast('Please select an event category.'); return; }
-
-  // When Luxury Decor & Styling is chosen, a decor event type is required
-  var isDecor = (svc === 'Luxury Decor & Styling');
-  if (isDecor && !decorEvtType) {
-    showToast('Please select a Decor Event Type (e.g. Haldi, Wedding…)');
-    return;
-  }
-
+  if (!selectedFile)           { showToast('Please select an image first.'); return; }
+  var svc      = document.getElementById('uploadService').value;
+  var eventCat = document.getElementById('uploadEventCat').value;
+  if (!svc)      { showToast('Please select a service category.'); return; }
+  if (!eventCat) { showToast('Please select an event category.');  return; }
   if (selectedFile.size > 5 * 1024 * 1024) { showToast('File too large. Max 5MB.'); return; }
   if (CLOUDINARY_CLOUD === 'YOUR_CLOUD_NAME') {
-    document.getElementById('uploadMsg').innerHTML =
-      '<span class="msg-err">Set CLOUDINARY_CLOUD to your Cloudinary cloud name.</span>';
+    document.getElementById('uploadMsg').innerHTML = '<span class="msg-err">Set CLOUDINARY_CLOUD in the code to your Cloudinary cloud name.</span>';
     return;
   }
-
+  var caption = (document.getElementById('uploadCaption').value || '').trim();
   var btn  = document.getElementById('uploadBtn');
   var msg  = document.getElementById('uploadMsg');
   var prog = document.getElementById('uploadProgress');
   var bar  = document.getElementById('uploadProgressBar');
-
-  btn.disabled = true;
-  btn.textContent = 'Uploading…';
-  prog.style.display = 'block';
-  bar.style.width = '5%';
-  msg.innerHTML = '<span style="color:var(--gold)">Uploading to Cloudinary…</span>';
+  btn.disabled = true; btn.textContent = 'Uploading...';
+  prog.style.display = 'block'; bar.style.width = '5%';
+  msg.innerHTML = '<span style="color:var(--gold)">Uploading to Cloudinary...</span>';
 
   var formData = new FormData();
   formData.append('file', selectedFile);
@@ -1824,64 +1755,36 @@ window.uploadPhoto = function() {
   formData.append('folder', 'ab-events/gallery');
   bar.style.width = '35%';
 
-  fetch('https://api.cloudinary.com/v1_1/' + CLOUDINARY_CLOUD + '/image/upload', {
-    method: 'POST',
-    body: formData
-  })
+  fetch('https://api.cloudinary.com/v1_1/' + CLOUDINARY_CLOUD + '/image/upload', { method: 'POST', body: formData })
     .then(function(res) {
       bar.style.width = '70%';
-      if (!res.ok) return res.json().then(function(err) {
-        throw new Error(err.error ? err.error.message : 'HTTP ' + res.status);
-      });
+      if (!res.ok) return res.json().then(function(err) { throw new Error(err.error ? err.error.message : 'HTTP ' + res.status); });
       return res.json();
     })
     .then(function(data) {
       bar.style.width = '85%';
-      // Build the Firestore document — include decorEventType only for Decor service
-      var docData = {
-        url:           data.secure_url,
-        service:       svc,
-        eventCategory: eventCat,
-        caption:       caption || eventCat,
-        cloudinaryId:  data.public_id,
-        uploadedAt:    firebase.firestore.FieldValue.serverTimestamp()
-      };
-      if (isDecor && decorEvtType) {
-        docData.decorEventType = decorEvtType;
-      }
-      return db.collection('gallery').add(docData);
+      return db.collection('gallery').add({
+        url: data.secure_url, service: svc, eventCategory: eventCat,
+        caption: caption || eventCat, cloudinaryId: data.public_id,
+        uploadedAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
     })
     .then(function() {
       bar.style.width = '100%';
       setTimeout(function() { prog.style.display = 'none'; bar.style.width = '0%'; }, 500);
       msg.innerHTML = '<span class="msg-ok">✓ Photo uploaded and live on customer site!</span>';
-
-      // ── Reset all upload form fields ──
-      btn.textContent = 'Upload Photo →';
-      btn.disabled    = true;
-      selectedFile    = null;
-
-      document.getElementById('uploadPreview').innerHTML        = 'No image selected';
-      document.getElementById('uploadCaption').value            = '';
-      document.getElementById('uploadService').value            = '';
-      document.getElementById('uploadEventCat').value           = '';
-      document.getElementById('photoFileInput').value           = '';
-
-      // Reset and hide the decor event type dropdown
-      var decorSel  = document.getElementById('uploadDecorEventType');
-      var decorWrap = document.getElementById('decorEventTypeWrap');
-      if (decorSel)  decorSel.value         = '';
-      if (decorWrap) decorWrap.style.display = 'none';
-
-      showToast('Photo uploaded! ✓');
-      loadGallery();
+      btn.textContent = 'Upload Photo'; btn.disabled = true; selectedFile = null;
+      document.getElementById('uploadPreview').innerHTML = 'No image selected';
+      document.getElementById('uploadCaption').value     = '';
+      document.getElementById('uploadService').value     = '';
+      document.getElementById('uploadEventCat').value    = '';
+      document.getElementById('photoFileInput').value    = '';
+      showToast('Photo uploaded!'); loadGallery();
     })
     .catch(function(err) {
-      prog.style.display = 'none';
-      bar.style.width    = '0%';
+      prog.style.display = 'none'; bar.style.width = '0%';
       msg.innerHTML = '<span class="msg-err">Upload failed: ' + err.message + '</span>';
-      btn.disabled  = false;
-      btn.textContent = 'Upload Photo →';
+      btn.disabled = false; btn.textContent = 'Upload Photo';
     });
 };
 
@@ -2027,6 +1930,7 @@ document.addEventListener('click',function(e){
   }
 });
 window.showPanel=showPanel;
+ebar;
 
 // ── PHONE VALIDATION (admin forms) ──
 window.blockNonPhone = function(e) {
