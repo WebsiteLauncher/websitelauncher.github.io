@@ -179,18 +179,45 @@ section{padding:88px 0;}
 .cat-btn{background:transparent;border:1px solid rgba(201,168,76,.18);color:var(--muted);padding:8px 18px;border-radius:100px;font-size:.72rem;cursor:pointer;font-family:var(--fb);transition:all .3s var(--ease);white-space:nowrap;letter-spacing:.06em;}
 .cat-btn:hover,.cat-btn.active{border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,.08);box-shadow:0 0 18px rgba(201,168,76,.1);}
 
-/* Clean masonry gallery grid */
+/* ── MASONRY GALLERY GRID — fixed, no reflow, scroll-driven animations ── */
 .dyn-gallery-grid{
   display:grid;
   grid-template-columns:repeat(4,1fr);
+  /* Use auto rows so grid is always stable — no shifting */
+  grid-auto-rows:220px;
   gap:4px;
   margin-top:28px;
+  /* Contain the animation context — no overflow escape */
+  overflow:hidden;
+  /* Slight variety: every 7th item spans 2 rows for organic masonry feel */
 }
+/* Make some items taller for masonry effect without JS */
+.dyn-item:nth-child(7n+1){ grid-row: span 2; }
+.dyn-item:nth-child(7n+4){ grid-row: span 2; }
+
 .dyn-item{
   position:relative;overflow:hidden;
   background:var(--dark3);cursor:pointer;
-  aspect-ratio:4/3;
+  /* No aspect-ratio — grid-auto-rows controls height */
+  min-height:0; /* prevent blowout */
+  /* Scroll animation: hidden by default, revealed by IntersectionObserver */
+  opacity:0;
+  transform:translateY(28px);
+  transition:opacity .55s var(--ease), transform .55s var(--ease),
+             box-shadow .3s var(--ease);
+  will-change:opacity,transform;
 }
+/* Visible state (scrolling down) */
+.dyn-item.gal-visible{
+  opacity:1;
+  transform:translateY(0);
+}
+/* Hidden state (scrolling up / leaving viewport) */
+.dyn-item.gal-hidden{
+  opacity:0;
+  transform:translateY(-18px);
+}
+
 .dyn-item img{
   width:100%;height:100%;
   object-fit:cover;
@@ -232,9 +259,8 @@ section{padding:88px 0;}
   font-family:var(--fb);font-weight:600;transition:var(--tr);margin-top:4px;
 }
 .dyn-view-btn:hover{background:var(--gold2);}
-/* Stagger entrance animation */
-.dyn-item{animation:galIn .4s ease both;}
-@keyframes galIn{from{opacity:0;transform:scale(.97);}to{opacity:1;transform:none;}}
+/* Stagger via CSS custom property set inline */
+.dyn-item{ transition-delay: var(--gal-delay, 0s); }
 
 /* View All Photos button */
 .gal-view-more-wrap{text-align:center;margin-top:32px;}
@@ -401,8 +427,8 @@ section{padding:88px 0;}
    All cards are absolute children — they do NOT affect stage height. */
 .rev-stage{
   position:relative;
-  /* Sensible fallback before JS runs */
-  min-height:260px;
+  /* Sensible fallback before JS runs — accommodates 4 lines + author */
+  min-height:320px;
   /* JS will set height:Xpx after measuring tallest card */
 }
 
@@ -422,10 +448,11 @@ section{padding:88px 0;}
   /* Invisible + non-interactive by default */
   opacity:0;
   pointer-events:none;
-  /* Smooth fade + gentle upward lift */
-  transition:opacity .5s var(--ease), transform .5s var(--ease),
+  /* Smooth LEFT/RIGHT slide transition */
+  transition:opacity .45s var(--ease), transform .45s var(--ease),
              border-color .4s var(--ease), box-shadow .4s var(--ease);
-  transform:translateY(12px);
+  /* Default: hidden to the right, ready to slide in */
+  transform:translateX(48px);
   /* Stack below active */
   z-index:0;
   /* Keep measurable for height calculation */
@@ -438,7 +465,7 @@ section{padding:88px 0;}
 .rev-card.rev-active{
   opacity:1;
   pointer-events:auto;
-  transform:translateY(0);
+  transform:translateX(0);
   z-index:1;
   border-color:rgba(201,168,76,.22);
   box-shadow:0 16px 56px rgba(0,0,0,.38), 0 0 0 1px rgba(201,168,76,.05);
@@ -465,7 +492,13 @@ section{padding:88px 0;}
 .rev-star-empty{fill:none;stroke:#C9A84C;stroke-width:1.5;opacity:.3;}
 
 /* Review text — 4-line clamp with Read More */
-.rev-txt-wrap{flex:1;margin-bottom:22px;min-height:0;}
+.rev-txt-wrap{
+  flex:1;
+  margin-bottom:24px;
+  min-height:0;
+  /* Prevent overflow from pushing author row off card */
+  overflow:hidden;
+}
 .rev-txt{
   font-size:.95rem;
   color:var(--cream);
@@ -475,10 +508,13 @@ section{padding:88px 0;}
   -webkit-line-clamp:4;
   -webkit-box-orient:vertical;
   overflow:hidden;
+  /* Force stable height when clamped */
+  min-height:calc(0.95rem * 1.92 * 4);
 }
 .rev-txt.rev-expanded{
   -webkit-line-clamp:unset;
   overflow:visible;
+  min-height:unset;
 }
 .rev-read-more{
   display:none;       /* shown via JS when text > threshold */
@@ -630,6 +666,34 @@ section{padding:88px 0;}
 .guest-btn{width:100%;background:transparent;border:1px solid rgba(201,168,76,.2);color:var(--gold);padding:10px;border-radius:var(--r);font-size:.78rem;cursor:pointer;font-family:var(--fb);transition:var(--tr);}
 .guest-btn:hover{background:rgba(201,168,76,.07);}
 
+/* ── FOOTER SOCIAL LINKS ── */
+.ft-social-links{display:flex;flex-direction:column;gap:10px;margin-top:4px;}
+.ft-social-link{
+  display:flex;align-items:center;gap:11px;
+  text-decoration:none;color:var(--muted);
+  font-size:.78rem;
+  transition:var(--tr);
+  padding:5px 0;
+}
+.ft-social-link:hover{color:var(--gold);}
+.ft-social-icon{
+  width:32px;height:32px;border-radius:8px;
+  border:1px solid rgba(201,168,76,.15);
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(201,168,76,.04);
+  flex-shrink:0;
+  transition:var(--tr);
+  color:var(--muted);
+}
+.ft-social-link:hover .ft-social-icon{
+  border-color:rgba(201,168,76,.5);
+  background:rgba(201,168,76,.1);
+  color:var(--gold);
+  box-shadow:0 0 14px rgba(201,168,76,.12);
+}
+.ft-social-icon svg{width:15px;height:15px;}
+.ft-social-name{letter-spacing:.04em;}
+
 /* ── FOOTER ── */
 footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:54px 0 26px;}
 .ft-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:42px;margin-bottom:40px;}
@@ -676,7 +740,7 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
   .bk-wrap{grid-template-columns:1fr;gap:40px;}
   .t-grid{grid-template-columns:1fr 1fr;}
   .ft-grid{grid-template-columns:1fr 1fr;}
-  .dyn-gallery-grid{grid-template-columns:repeat(3,1fr);}
+  .dyn-gallery-grid{grid-template-columns:repeat(3,1fr);grid-auto-rows:190px;}
 }
 @media(max-width:768px){
   nav{padding:0 18px;height:60px;}
@@ -692,12 +756,14 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
   .ft-grid{grid-template-columns:1fr 1fr;}
   .bk-form-box{padding:22px 18px;}
   .fr{grid-template-columns:1fr;}
-  .dyn-gallery-grid{grid-template-columns:repeat(2,1fr);}
+  .dyn-gallery-grid{grid-template-columns:repeat(2,1fr);grid-auto-rows:160px;}
+  /* Disable masonry spans on mobile - keep uniform */
+  .dyn-item:nth-child(7n+1),.dyn-item:nth-child(7n+4){ grid-row:span 1; }
   .rev-carousel-wrap{margin:0;}
   .rev-card{padding:28px 24px;}
 }
 @media(max-width:520px){
-  .dyn-gallery-grid{grid-template-columns:repeat(1,1fr);}
+  .dyn-gallery-grid{grid-template-columns:repeat(2,1fr);grid-auto-rows:140px;}
   .ft-grid{grid-template-columns:1fr;}
   .proc{grid-template-columns:1fr;}
   .bk-wrap{gap:28px;}
@@ -1366,7 +1432,41 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
       </div><p class="ft-about">Hyderabad's premier celebration studio — where every moment is crafted with passion, precision, and a touch of the extraordinary.</p></div>
       <div><div class="ft-h">Services</div><div class="ft-links"><a href="#services">Decor &amp; Styling</a><a href="#services">Photography</a><a href="#services">Music &amp; DJ</a><a href="#services">Lighting</a></div></div>
       <div><div class="ft-h">Company</div><div class="ft-links"><a href="#process">Our Process</a><a href="#reviews">Reviews</a><a href="#booking">Contact</a></div></div>
-      <div><div class="ft-h">Connect</div><div class="ft-links"><a href="#">Instagram</a><a href="#">Facebook</a><a href="#">Pinterest</a><a href="#">YouTube</a></div></div>
+      <div>
+        <div class="ft-h">Connect</div>
+        <div class="ft-social-links">
+          <a href="https://instagram.com/happenhaus" target="_blank" rel="noopener" class="ft-social-link" aria-label="Instagram">
+            <span class="ft-social-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.8" fill="currentColor" stroke="none"/></svg>
+            </span>
+            <span class="ft-social-name">Instagram</span>
+          </a>
+          <a href="https://facebook.com/happenhaus" target="_blank" rel="noopener" class="ft-social-link" aria-label="Facebook">
+            <span class="ft-social-icon">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+            </span>
+            <span class="ft-social-name">Facebook</span>
+          </a>
+          <a href="https://pinterest.com/happenhaus" target="_blank" rel="noopener" class="ft-social-link" aria-label="Pinterest">
+            <span class="ft-social-icon">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.24 2.65 7.86 6.39 9.29-.09-.78-.17-1.98.04-2.83l1.05-4.44s-.27-.54-.27-1.33c0-1.25.72-2.18 1.62-2.18.76 0 1.13.57 1.13 1.26 0 .77-.49 1.92-.74 2.98-.21.89.44 1.61 1.31 1.61 1.57 0 2.63-2 2.63-4.37 0-1.8-1.22-3.07-2.96-3.07-2.01 0-3.2 1.51-3.2 3.07 0 .61.23 1.26.52 1.62.06.07.07.13.05.2l-.19.78c-.03.13-.1.16-.23.1C7.97 13.58 7.2 11.79 7.2 10.3c0-2.59 1.88-4.97 5.42-4.97 2.84 0 5.05 2.03 5.05 4.74 0 2.83-1.78 5.1-4.25 5.1-.83 0-1.61-.43-1.88-.94l-.51 1.91c-.19.71-.69 1.6-1.02 2.14.77.24 1.58.37 2.42.37 5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>
+            </span>
+            <span class="ft-social-name">Pinterest</span>
+          </a>
+          <a href="https://youtube.com/@happenhaus" target="_blank" rel="noopener" class="ft-social-link" aria-label="YouTube">
+            <span class="ft-social-icon">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58zM9.75 15.02V8.98L15.5 12l-5.75 3.02z"/></svg>
+            </span>
+            <span class="ft-social-name">YouTube</span>
+          </a>
+          <a href="https://wa.me/917386030321" target="_blank" rel="noopener" class="ft-social-link" aria-label="WhatsApp">
+            <span class="ft-social-icon">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+            </span>
+            <span class="ft-social-name">WhatsApp</span>
+          </a>
+        </div>
+      </div>
     </div>
     <div class="ft-btm"><div class="ft-copy">© 2025 HAPPENHAUS. All rights reserved.</div><div class="ft-copy">Privacy · Terms</div></div>
   </div>
@@ -2077,13 +2177,13 @@ function revSetStageHeight() {
     if (i === _revIdx) {
       c.style.opacity    = '1';
       c.style.visibility = 'visible';
-      c.style.transform  = 'translateY(0)';
+      c.style.transform  = 'translateX(0)';
       c.style.zIndex     = '1';
       c.classList.add('rev-active');
     } else {
       c.style.opacity    = '0';
       c.style.visibility = 'visible'; // keep in flow for measurement
-      c.style.transform  = 'translateY(12px)';
+      c.style.transform  = 'translateX(48px)';
       c.style.zIndex     = '0';
       c.classList.remove('rev-active');
     }
@@ -2101,9 +2201,13 @@ function initRevCarousel(total) {
 
   if (!_revCards.length) { nav.style.display = 'none'; return; }
 
-  // Initial state: first card active, rest invisible
+  // Initial state: first card active, rest hidden to the right
   _revCards.forEach((c, i) => {
     c.classList.toggle('rev-active', i === 0);
+    if (i !== 0) {
+      c.style.transform = 'translateX(48px)';
+      c.style.opacity   = '0';
+    }
   });
 
   // Measure and lock height after a paint frame
@@ -2135,7 +2239,7 @@ function initRevCarousel(total) {
     fresh.addEventListener('click', () => {
       if (_revAnimating) return;
       clearRevAuto();
-      goRevSlide((_revIdx + dir + _revCards.length) % _revCards.length);
+      goRevSlide((_revIdx + dir + _revCards.length) % _revCards.length, dir);
       startRevAuto();
     });
   });
@@ -2154,7 +2258,8 @@ function initRevCarousel(total) {
       if (Math.abs(dx) > 46)
         goRevSlide(dx < 0
           ? (_revIdx + 1) % _revCards.length
-          : (_revIdx - 1 + _revCards.length) % _revCards.length);
+          : (_revIdx - 1 + _revCards.length) % _revCards.length,
+          dx < 0 ? 1 : -1);
       startRevAuto();
     }, { passive: true });
   }
@@ -2169,38 +2274,50 @@ function _revResizeHandler() {
   _revResizeTimer = setTimeout(revSetStageHeight, 120);
 }
 
-function goRevSlide(n) {
+function goRevSlide(n, dir) {
   if (!_revCards.length || _revAnimating) return;
   n = (n + _revCards.length) % _revCards.length;
   if (n === _revIdx) return;
 
   _revAnimating = true;
 
+  // Determine direction: +1 = next (slide left), -1 = prev (slide right)
+  // If dir is not passed, infer from index
+  if (dir === undefined) {
+    const diff = n - _revIdx;
+    dir = (diff > 0 || diff < -((_revCards.length) / 2)) ? 1 : -1;
+  }
+
   const leaving  = _revCards[_revIdx];
   const entering = _revCards[n];
   _revIdx = n;
 
-  // Fade + slide out the leaving card
+  // Slide out leaving card in opposite direction
   leaving.style.opacity   = '0';
-  leaving.style.transform = 'translateY(12px)';
+  leaving.style.transform = dir > 0 ? 'translateX(-48px)' : 'translateX(48px)';
   leaving.style.zIndex    = '0';
   leaving.classList.remove('rev-active');
 
-  // Bring entering card in from slightly below (translateY set by CSS default)
-  // Use rAF to ensure the browser sees the starting state first
+  // Position entering card off-screen on the incoming side
+  entering.style.transition = 'none';
+  entering.style.opacity    = '0';
+  entering.style.transform  = dir > 0 ? 'translateX(48px)' : 'translateX(-48px)';
+  entering.style.zIndex     = '1';
+
+  // After one paint frame, animate entering card into position
   requestAnimationFrame(() => {
     requestAnimationFrame(() => {
+      entering.style.transition = '';  // restore CSS transition
       entering.style.opacity   = '1';
-      entering.style.transform = 'translateY(0)';
-      entering.style.zIndex    = '1';
+      entering.style.transform = 'translateX(0)';
       entering.classList.add('rev-active');
 
       // Update dots
       document.querySelectorAll('#revDots .rev-dot')
         .forEach((d, i) => d.classList.toggle('active', i === _revIdx));
 
-      // Unlock after transition (matches 0.5s CSS transition)
-      setTimeout(() => { _revAnimating = false; }, 520);
+      // Unlock after transition (matches 0.45s CSS transition)
+      setTimeout(() => { _revAnimating = false; }, 480);
     });
   });
 }
@@ -2407,27 +2524,34 @@ let activeCatFilter='all';
 
 function renderDynGallery(){
   // Show uploaded Firestore images first, then static fallbacks
-  // Only show Firestore images if any exist; otherwise show static gallery
   const firestoreImgs=window._firestoreGallery||[];
   const hasFirestore=firestoreImgs.length>0;
   const combined=hasFirestore?firestoreImgs:[...STATIC_GALLERY];
-  const filtered=activeCatFilter==='all'?combined:combined.filter(i=>i.eventCategory===activeCatFilter);
+
+  // ── Case-insensitive filter match ──
+  const filtered=activeCatFilter==='all'
+    ? combined
+    : combined.filter(i=>{
+        const cat=(i.eventCategory||'').trim().toLowerCase();
+        return cat===activeCatFilter.trim().toLowerCase();
+      });
+
   const grid=document.getElementById('dynGalleryGrid');
   const moreBtn=document.getElementById('galViewMoreWrap');
+
   // Prep image list for viewer
   window._glImgs=filtered.map(i=>({url:i.url,caption:(i.caption||'')+(i.eventCategory?' · '+i.eventCategory:'')}));
+
   if(!filtered.length){
     grid.innerHTML='<div class="gal-empty-msg">No photos in this category yet. Check back soon! 📸</div>';
     if(moreBtn)moreBtn.style.display='none';
     return;
   }
-  // Show all images (no strict limit) — minimum 12, show all if fewer; display full set
-  const MIN_SHOW=12;
-  const showAll=filtered.length<=MIN_SHOW;
-  const displayItems=showAll?filtered:filtered;  // always show all
-  const hasMore=filtered.length>16; // show "View All" only if many images
-  grid.innerHTML=displayItems.map((item,i)=>`
-    <div class="dyn-item" onclick="openViewer(${i})" style="animation-delay:${Math.min(i*0.04,0.4)}s">
+
+  const hasMore=filtered.length>16;
+  // Stagger delay capped at 0.36s so later images don't wait too long
+  grid.innerHTML=filtered.map((item,i)=>`
+    <div class="dyn-item" onclick="openViewer(${i})" style="--gal-delay:${Math.min(i*0.045,0.36)}s">
       <img src="${item.url}" alt="${item.caption||''}" loading="${i<8?'eager':'lazy'}"/>
       <div class="dyn-lbl">
         <span class="dyn-caption">${item.caption||''}</span>
@@ -2436,21 +2560,58 @@ function renderDynGallery(){
       </div>
       <div class="dyn-watermark">www.happenhaus.com</div>
     </div>`).join('');
+
   if(moreBtn)moreBtn.style.display=hasMore?'block':'none';
+
+  // ── Scroll-driven IntersectionObserver ──
+  initGalleryObserver();
+}
+
+// ── Gallery scroll observer: fade+slide in on scroll-down, fade out on scroll-up ──
+let _galObserver=null;
+function initGalleryObserver(){
+  // Disconnect old observer if any
+  if(_galObserver){_galObserver.disconnect();_galObserver=null;}
+
+  const items=document.querySelectorAll('.dyn-item');
+  if(!items.length) return;
+
+  _galObserver=new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        entry.target.classList.add('gal-visible');
+        entry.target.classList.remove('gal-hidden');
+      } else {
+        // Only fade-out if element was already visible (scrolling up or away)
+        if(entry.target.classList.contains('gal-visible')){
+          entry.target.classList.remove('gal-visible');
+          entry.target.classList.add('gal-hidden');
+        }
+      }
+    });
+  },{threshold:0.08,rootMargin:'0px 0px -40px 0px'});
+
+  items.forEach(item=>_galObserver.observe(item));
 }
 
 window.filterGallery=(cat,btn)=>{
   activeCatFilter=cat;
   document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));
   if(btn)btn.classList.add('active');
-  // Animate out
+  // Animate out the grid, then re-render
   const grid=document.getElementById('dynGalleryGrid');
-  grid.style.opacity='0';grid.style.transform='scale(.98)';
+  grid.style.transition='opacity .22s ease,transform .22s ease';
+  grid.style.opacity='0';
+  grid.style.transform='scale(.98)';
   setTimeout(()=>{
     renderDynGallery();
-    grid.style.transition='opacity .4s ease,transform .4s ease';
-    grid.style.opacity='1';grid.style.transform='none';
-  },220);
+    // Force a paint before restoring opacity so items start invisible for IO
+    requestAnimationFrame(()=>{
+      grid.style.transition='opacity .35s ease,transform .35s ease';
+      grid.style.opacity='1';
+      grid.style.transform='none';
+    });
+  },230);
 };
 
 // ── FULLSCREEN GALLERY MODAL ──
