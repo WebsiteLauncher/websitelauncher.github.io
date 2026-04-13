@@ -179,45 +179,18 @@ section{padding:88px 0;}
 .cat-btn{background:transparent;border:1px solid rgba(201,168,76,.18);color:var(--muted);padding:8px 18px;border-radius:100px;font-size:.72rem;cursor:pointer;font-family:var(--fb);transition:all .3s var(--ease);white-space:nowrap;letter-spacing:.06em;}
 .cat-btn:hover,.cat-btn.active{border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,.08);box-shadow:0 0 18px rgba(201,168,76,.1);}
 
-/* ── MASONRY GALLERY GRID — fixed, no reflow, scroll-driven animations ── */
+/* Clean masonry gallery grid */
 .dyn-gallery-grid{
   display:grid;
   grid-template-columns:repeat(4,1fr);
-  /* Use auto rows so grid is always stable — no shifting */
-  grid-auto-rows:220px;
   gap:4px;
   margin-top:28px;
-  /* Contain the animation context — no overflow escape */
-  overflow:hidden;
-  /* Slight variety: every 7th item spans 2 rows for organic masonry feel */
 }
-/* Make some items taller for masonry effect without JS */
-.dyn-item:nth-child(7n+1){ grid-row: span 2; }
-.dyn-item:nth-child(7n+4){ grid-row: span 2; }
-
 .dyn-item{
   position:relative;overflow:hidden;
   background:var(--dark3);cursor:pointer;
-  /* No aspect-ratio — grid-auto-rows controls height */
-  min-height:0; /* prevent blowout */
-  /* Scroll animation: hidden by default, revealed by IntersectionObserver */
-  opacity:0;
-  transform:translateY(28px);
-  transition:opacity .55s var(--ease), transform .55s var(--ease),
-             box-shadow .3s var(--ease);
-  will-change:opacity,transform;
+  aspect-ratio:4/3;
 }
-/* Visible state (scrolling down) */
-.dyn-item.gal-visible{
-  opacity:1;
-  transform:translateY(0);
-}
-/* Hidden state (scrolling up / leaving viewport) */
-.dyn-item.gal-hidden{
-  opacity:0;
-  transform:translateY(-18px);
-}
-
 .dyn-item img{
   width:100%;height:100%;
   object-fit:cover;
@@ -259,8 +232,9 @@ section{padding:88px 0;}
   font-family:var(--fb);font-weight:600;transition:var(--tr);margin-top:4px;
 }
 .dyn-view-btn:hover{background:var(--gold2);}
-/* Stagger via CSS custom property set inline */
-.dyn-item{ transition-delay: var(--gal-delay, 0s); }
+/* Stagger entrance animation */
+.dyn-item{animation:galIn .4s ease both;}
+@keyframes galIn{from{opacity:0;transform:scale(.97);}to{opacity:1;transform:none;}}
 
 /* View All Photos button */
 .gal-view-more-wrap{text-align:center;margin-top:32px;}
@@ -427,8 +401,8 @@ section{padding:88px 0;}
    All cards are absolute children — they do NOT affect stage height. */
 .rev-stage{
   position:relative;
-  /* Sensible fallback before JS runs — accommodates 4 lines + author */
-  min-height:320px;
+  /* Sensible fallback before JS runs */
+  min-height:260px;
   /* JS will set height:Xpx after measuring tallest card */
 }
 
@@ -448,11 +422,10 @@ section{padding:88px 0;}
   /* Invisible + non-interactive by default */
   opacity:0;
   pointer-events:none;
-  /* Smooth LEFT/RIGHT slide transition */
-  transition:opacity .45s var(--ease), transform .45s var(--ease),
+  /* Smooth fade + gentle upward lift */
+  transition:opacity .5s var(--ease), transform .5s var(--ease),
              border-color .4s var(--ease), box-shadow .4s var(--ease);
-  /* Default: hidden to the right, ready to slide in */
-  transform:translateX(48px);
+  transform:translateY(12px);
   /* Stack below active */
   z-index:0;
   /* Keep measurable for height calculation */
@@ -465,7 +438,7 @@ section{padding:88px 0;}
 .rev-card.rev-active{
   opacity:1;
   pointer-events:auto;
-  transform:translateX(0);
+  transform:translateY(0);
   z-index:1;
   border-color:rgba(201,168,76,.22);
   box-shadow:0 16px 56px rgba(0,0,0,.38), 0 0 0 1px rgba(201,168,76,.05);
@@ -492,13 +465,7 @@ section{padding:88px 0;}
 .rev-star-empty{fill:none;stroke:#C9A84C;stroke-width:1.5;opacity:.3;}
 
 /* Review text — 4-line clamp with Read More */
-.rev-txt-wrap{
-  flex:1;
-  margin-bottom:24px;
-  min-height:0;
-  /* Prevent overflow from pushing author row off card */
-  overflow:hidden;
-}
+.rev-txt-wrap{flex:1;margin-bottom:22px;min-height:0;}
 .rev-txt{
   font-size:.95rem;
   color:var(--cream);
@@ -508,13 +475,10 @@ section{padding:88px 0;}
   -webkit-line-clamp:4;
   -webkit-box-orient:vertical;
   overflow:hidden;
-  /* Force stable height when clamped */
-  min-height:calc(0.95rem * 1.92 * 4);
 }
 .rev-txt.rev-expanded{
   -webkit-line-clamp:unset;
   overflow:visible;
-  min-height:unset;
 }
 .rev-read-more{
   display:none;       /* shown via JS when text > threshold */
@@ -666,34 +630,6 @@ section{padding:88px 0;}
 .guest-btn{width:100%;background:transparent;border:1px solid rgba(201,168,76,.2);color:var(--gold);padding:10px;border-radius:var(--r);font-size:.78rem;cursor:pointer;font-family:var(--fb);transition:var(--tr);}
 .guest-btn:hover{background:rgba(201,168,76,.07);}
 
-/* ── FOOTER SOCIAL LINKS ── */
-.ft-social-links{display:flex;flex-direction:column;gap:10px;margin-top:4px;}
-.ft-social-link{
-  display:flex;align-items:center;gap:11px;
-  text-decoration:none;color:var(--muted);
-  font-size:.78rem;
-  transition:var(--tr);
-  padding:5px 0;
-}
-.ft-social-link:hover{color:var(--gold);}
-.ft-social-icon{
-  width:32px;height:32px;border-radius:8px;
-  border:1px solid rgba(201,168,76,.15);
-  display:flex;align-items:center;justify-content:center;
-  background:rgba(201,168,76,.04);
-  flex-shrink:0;
-  transition:var(--tr);
-  color:var(--muted);
-}
-.ft-social-link:hover .ft-social-icon{
-  border-color:rgba(201,168,76,.5);
-  background:rgba(201,168,76,.1);
-  color:var(--gold);
-  box-shadow:0 0 14px rgba(201,168,76,.12);
-}
-.ft-social-icon svg{width:15px;height:15px;}
-.ft-social-name{letter-spacing:.04em;}
-
 /* ── FOOTER ── */
 footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:54px 0 26px;}
 .ft-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:42px;margin-bottom:40px;}
@@ -740,7 +676,7 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
   .bk-wrap{grid-template-columns:1fr;gap:40px;}
   .t-grid{grid-template-columns:1fr 1fr;}
   .ft-grid{grid-template-columns:1fr 1fr;}
-  .dyn-gallery-grid{grid-template-columns:repeat(3,1fr);grid-auto-rows:190px;}
+  .dyn-gallery-grid{grid-template-columns:repeat(3,1fr);}
 }
 @media(max-width:768px){
   nav{padding:0 18px;height:60px;}
@@ -756,14 +692,12 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
   .ft-grid{grid-template-columns:1fr 1fr;}
   .bk-form-box{padding:22px 18px;}
   .fr{grid-template-columns:1fr;}
-  .dyn-gallery-grid{grid-template-columns:repeat(2,1fr);grid-auto-rows:160px;}
-  /* Disable masonry spans on mobile - keep uniform */
-  .dyn-item:nth-child(7n+1),.dyn-item:nth-child(7n+4){ grid-row:span 1; }
+  .dyn-gallery-grid{grid-template-columns:repeat(2,1fr);}
   .rev-carousel-wrap{margin:0;}
   .rev-card{padding:28px 24px;}
 }
 @media(max-width:520px){
-  .dyn-gallery-grid{grid-template-columns:repeat(2,1fr);grid-auto-rows:140px;}
+  .dyn-gallery-grid{grid-template-columns:repeat(1,1fr);}
   .ft-grid{grid-template-columns:1fr;}
   .proc{grid-template-columns:1fr;}
   .bk-wrap{gap:28px;}
@@ -1191,7 +1125,9 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
     <h2 class="s-ttl reveal" style="transition-delay:.08s">Moments We've <em>Crafted</em></h2>
     <div class="divider reveal" style="transition-delay:.16s"></div>
     <div class="cat-filter-wrap">
+      <!-- 'all' = show everything -->
       <button class="cat-btn active" onclick="filterGallery('all',this)">🎊 All</button>
+      <!-- Event-type filters → filterKey matches eventCategory for Decor images -->
       <button class="cat-btn" onclick="filterGallery('Wedding',this)">💍 Wedding</button>
       <button class="cat-btn" onclick="filterGallery('Reception',this)">🎉 Reception</button>
       <button class="cat-btn" onclick="filterGallery('Engagement',this)">💝 Engagement</button>
@@ -1203,11 +1139,14 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
       <button class="cat-btn" onclick="filterGallery('Anniversary',this)">🌹 Anniversary</button>
       <button class="cat-btn" onclick="filterGallery('Housewarming',this)">🏠 Housewarming</button>
       <button class="cat-btn" onclick="filterGallery('Corporate',this)">🏢 Corporate</button>
-      <button class="cat-btn" onclick="filterGallery('Farewell',this)">👋 Farewell</button>
-      <button class="cat-btn" onclick="filterGallery('Naming Ceremony',this)">🍼 Naming</button>
-      <button class="cat-btn" onclick="filterGallery('Logistics',this)">🚚 Logistics</button>
-      <button class="cat-btn" onclick="filterGallery('Photography',this)">📷 Photography</button>
       <button class="cat-btn" onclick="filterGallery('Cradle Ceremony',this)">🌸 Cradle Ceremony</button>
+      <button class="cat-btn" onclick="filterGallery('Naming Ceremony',this)">🍼 Naming</button>
+      <button class="cat-btn" onclick="filterGallery('Farewell',this)">👋 Farewell</button>
+      <!-- Service filters → filterKey matches service name for non-Decor images -->
+      <button class="cat-btn" onclick="filterGallery('Professional Photography',this)">📷 Photography</button>
+      <button class="cat-btn" onclick="filterGallery('Live Music &amp; Entertainment',this)">🎵 Music</button>
+      <button class="cat-btn" onclick="filterGallery('Premium Lighting Design',this)">✨ Lighting</button>
+      <button class="cat-btn" onclick="filterGallery('Logistics Services',this)">🚚 Logistics</button>
     </div>
   </div>
   <div class="con" style="margin-top:28px;">
@@ -1432,41 +1371,7 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
       </div><p class="ft-about">Hyderabad's premier celebration studio — where every moment is crafted with passion, precision, and a touch of the extraordinary.</p></div>
       <div><div class="ft-h">Services</div><div class="ft-links"><a href="#services">Decor &amp; Styling</a><a href="#services">Photography</a><a href="#services">Music &amp; DJ</a><a href="#services">Lighting</a></div></div>
       <div><div class="ft-h">Company</div><div class="ft-links"><a href="#process">Our Process</a><a href="#reviews">Reviews</a><a href="#booking">Contact</a></div></div>
-      <div>
-        <div class="ft-h">Connect</div>
-        <div class="ft-social-links">
-          <a href="https://instagram.com/happenhaus" target="_blank" rel="noopener" class="ft-social-link" aria-label="Instagram">
-            <span class="ft-social-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.8" fill="currentColor" stroke="none"/></svg>
-            </span>
-            <span class="ft-social-name">Instagram</span>
-          </a>
-          <a href="https://facebook.com/happenhaus" target="_blank" rel="noopener" class="ft-social-link" aria-label="Facebook">
-            <span class="ft-social-icon">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
-            </span>
-            <span class="ft-social-name">Facebook</span>
-          </a>
-          <a href="https://pinterest.com/happenhaus" target="_blank" rel="noopener" class="ft-social-link" aria-label="Pinterest">
-            <span class="ft-social-icon">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.24 2.65 7.86 6.39 9.29-.09-.78-.17-1.98.04-2.83l1.05-4.44s-.27-.54-.27-1.33c0-1.25.72-2.18 1.62-2.18.76 0 1.13.57 1.13 1.26 0 .77-.49 1.92-.74 2.98-.21.89.44 1.61 1.31 1.61 1.57 0 2.63-2 2.63-4.37 0-1.8-1.22-3.07-2.96-3.07-2.01 0-3.2 1.51-3.2 3.07 0 .61.23 1.26.52 1.62.06.07.07.13.05.2l-.19.78c-.03.13-.1.16-.23.1C7.97 13.58 7.2 11.79 7.2 10.3c0-2.59 1.88-4.97 5.42-4.97 2.84 0 5.05 2.03 5.05 4.74 0 2.83-1.78 5.1-4.25 5.1-.83 0-1.61-.43-1.88-.94l-.51 1.91c-.19.71-.69 1.6-1.02 2.14.77.24 1.58.37 2.42.37 5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>
-            </span>
-            <span class="ft-social-name">Pinterest</span>
-          </a>
-          <a href="https://youtube.com/@happenhaus" target="_blank" rel="noopener" class="ft-social-link" aria-label="YouTube">
-            <span class="ft-social-icon">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58zM9.75 15.02V8.98L15.5 12l-5.75 3.02z"/></svg>
-            </span>
-            <span class="ft-social-name">YouTube</span>
-          </a>
-          <a href="https://wa.me/917386030321" target="_blank" rel="noopener" class="ft-social-link" aria-label="WhatsApp">
-            <span class="ft-social-icon">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
-            </span>
-            <span class="ft-social-name">WhatsApp</span>
-          </a>
-        </div>
-      </div>
+      <div><div class="ft-h">Connect</div><div class="ft-links"><a href="#">Instagram</a><a href="#">Facebook</a><a href="#">Pinterest</a><a href="#">YouTube</a></div></div>
     </div>
     <div class="ft-btm"><div class="ft-copy">© 2025 HAPPENHAUS. All rights reserved.</div><div class="ft-copy">Privacy · Terms</div></div>
   </div>
@@ -2060,32 +1965,38 @@ window.saveModify = async () => {
   }catch(e){st.innerHTML=`<span class="a-err">${e.message}</span>`;}
 };
 
-// ── FIRESTORE GALLERY LOAD ──
-async function loadFirestoreGallery(){
-  try{
-    const snap = await getDocs(collection(db,'gallery'));
-    window._firestoreGallery = snap.docs.map(d=>{const data=d.data();return{url:data.url,caption:data.caption||'',eventCategory:data.eventCategory||'General',service:data.service||''};});
-    renderDynGallery();
-  }catch(e){renderDynGallery();}
-}
-window.loadFirestoreGallery=loadFirestoreGallery;
+// loadFirestoreGallery is defined in the GALLERY DATA LAYER section below
 
-// ── GALLERY SERVICE ──
+// ── GALLERY SERVICE OVERLAY ──
 window.loadSvcGallery = async (name) => {
-  document.getElementById('glTtl').textContent=name;
-  document.getElementById('glCount').textContent='';
-  document.getElementById('glGrid').innerHTML='<div class="gl-empty">Loading photos…</div>';
+  document.getElementById('glTtl').textContent = name;
+  document.getElementById('glCount').textContent = '';
+  document.getElementById('glGrid').innerHTML = '<div class="gl-empty">Loading photos…</div>';
   openGl();
-  try{
-    const snap=await getDocs(query(collection(db,'gallery'),where('service','==',name)));
-    const fbImgs=snap.docs.map(d=>({url:d.data().url,caption:d.data().caption||name}));
-    const staticImgs=(window._svcPhotos[name]||[]).map(u=>({url:u,caption:name}));
-    const all=[...fbImgs,...staticImgs];
-    window._glImgs=all;
-    document.getElementById('glCount').textContent=`${all.length} photo${all.length!==1?'s':''}`;
-    if(!all.length){document.getElementById('glGrid').innerHTML='<div class="gl-empty">No photos yet for this service.</div>';return;}
-    document.getElementById('glGrid').innerHTML=all.map((img,i)=>`<div class="gl-item" onclick="openViewer(${i})"><img src="${img.url}" alt="${img.caption}" loading="lazy"/><div class="gl-item-lbl">${img.caption}</div><button class="gl-zoom-btn" onclick="event.stopPropagation();openViewer(${i})">🔍</button></div>`).join('');
-  }catch(err){document.getElementById('glGrid').innerHTML='<div class="gl-empty">Could not load photos.</div>';}
+  try {
+    const snap = await getDocs(query(collection(db, 'gallery'), where('service', '==', name)));
+    const fbImgs = snap.docs.map(d => ({
+      url:     (d.data().url     || '').trim(),
+      caption: (d.data().caption || name).trim()
+    }));
+    const staticImgs = (window._svcPhotos[name] || []).map(u => ({ url: u, caption: name }));
+    const all = [...fbImgs, ...staticImgs];
+    window._glImgs = all;
+    document.getElementById('glCount').textContent = `${all.length} photo${all.length !== 1 ? 's' : ''}`;
+    if (!all.length) {
+      document.getElementById('glGrid').innerHTML = '<div class="gl-empty">No photos yet for this service.</div>';
+      return;
+    }
+    document.getElementById('glGrid').innerHTML = all.map((img, i) =>
+      `<div class="gl-item" onclick="openViewer(${i})">
+        <img src="${img.url}" alt="${img.caption}" loading="lazy"/>
+        <div class="gl-item-lbl">${img.caption}</div>
+        <button class="gl-zoom-btn" onclick="event.stopPropagation();openViewer(${i})">🔍</button>
+      </div>`
+    ).join('');
+  } catch(err) {
+    document.getElementById('glGrid').innerHTML = '<div class="gl-empty">Could not load photos.</div>';
+  }
 };
 
 // ══════════════════════════════════════════════════════════
@@ -2177,13 +2088,13 @@ function revSetStageHeight() {
     if (i === _revIdx) {
       c.style.opacity    = '1';
       c.style.visibility = 'visible';
-      c.style.transform  = 'translateX(0)';
+      c.style.transform  = 'translateY(0)';
       c.style.zIndex     = '1';
       c.classList.add('rev-active');
     } else {
       c.style.opacity    = '0';
       c.style.visibility = 'visible'; // keep in flow for measurement
-      c.style.transform  = 'translateX(48px)';
+      c.style.transform  = 'translateY(12px)';
       c.style.zIndex     = '0';
       c.classList.remove('rev-active');
     }
@@ -2201,13 +2112,9 @@ function initRevCarousel(total) {
 
   if (!_revCards.length) { nav.style.display = 'none'; return; }
 
-  // Initial state: first card active, rest hidden to the right
+  // Initial state: first card active, rest invisible
   _revCards.forEach((c, i) => {
     c.classList.toggle('rev-active', i === 0);
-    if (i !== 0) {
-      c.style.transform = 'translateX(48px)';
-      c.style.opacity   = '0';
-    }
   });
 
   // Measure and lock height after a paint frame
@@ -2239,7 +2146,7 @@ function initRevCarousel(total) {
     fresh.addEventListener('click', () => {
       if (_revAnimating) return;
       clearRevAuto();
-      goRevSlide((_revIdx + dir + _revCards.length) % _revCards.length, dir);
+      goRevSlide((_revIdx + dir + _revCards.length) % _revCards.length);
       startRevAuto();
     });
   });
@@ -2258,8 +2165,7 @@ function initRevCarousel(total) {
       if (Math.abs(dx) > 46)
         goRevSlide(dx < 0
           ? (_revIdx + 1) % _revCards.length
-          : (_revIdx - 1 + _revCards.length) % _revCards.length,
-          dx < 0 ? 1 : -1);
+          : (_revIdx - 1 + _revCards.length) % _revCards.length);
       startRevAuto();
     }, { passive: true });
   }
@@ -2274,50 +2180,38 @@ function _revResizeHandler() {
   _revResizeTimer = setTimeout(revSetStageHeight, 120);
 }
 
-function goRevSlide(n, dir) {
+function goRevSlide(n) {
   if (!_revCards.length || _revAnimating) return;
   n = (n + _revCards.length) % _revCards.length;
   if (n === _revIdx) return;
 
   _revAnimating = true;
 
-  // Determine direction: +1 = next (slide left), -1 = prev (slide right)
-  // If dir is not passed, infer from index
-  if (dir === undefined) {
-    const diff = n - _revIdx;
-    dir = (diff > 0 || diff < -((_revCards.length) / 2)) ? 1 : -1;
-  }
-
   const leaving  = _revCards[_revIdx];
   const entering = _revCards[n];
   _revIdx = n;
 
-  // Slide out leaving card in opposite direction
+  // Fade + slide out the leaving card
   leaving.style.opacity   = '0';
-  leaving.style.transform = dir > 0 ? 'translateX(-48px)' : 'translateX(48px)';
+  leaving.style.transform = 'translateY(12px)';
   leaving.style.zIndex    = '0';
   leaving.classList.remove('rev-active');
 
-  // Position entering card off-screen on the incoming side
-  entering.style.transition = 'none';
-  entering.style.opacity    = '0';
-  entering.style.transform  = dir > 0 ? 'translateX(48px)' : 'translateX(-48px)';
-  entering.style.zIndex     = '1';
-
-  // After one paint frame, animate entering card into position
+  // Bring entering card in from slightly below (translateY set by CSS default)
+  // Use rAF to ensure the browser sees the starting state first
   requestAnimationFrame(() => {
     requestAnimationFrame(() => {
-      entering.style.transition = '';  // restore CSS transition
       entering.style.opacity   = '1';
-      entering.style.transform = 'translateX(0)';
+      entering.style.transform = 'translateY(0)';
+      entering.style.zIndex    = '1';
       entering.classList.add('rev-active');
 
       // Update dots
       document.querySelectorAll('#revDots .rev-dot')
         .forEach((d, i) => d.classList.toggle('active', i === _revIdx));
 
-      // Unlock after transition (matches 0.45s CSS transition)
-      setTimeout(() => { _revAnimating = false; }, 480);
+      // Unlock after transition (matches 0.5s CSS transition)
+      setTimeout(() => { _revAnimating = false; }, 520);
     });
   });
 }
@@ -2464,154 +2358,192 @@ function initServices(){
   }).join('');
 }
 
-// ── CATEGORY GALLERY ──
-const STATIC_GALLERY=[
-  {url:'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=800&q=80',caption:'Lotus Flower Mandapam',eventCategory:'Wedding',service:'Luxury Decor & Styling'},
-  {url:'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=800&q=80',caption:'Grand Kalyana Mandapam',eventCategory:'Wedding',service:'Luxury Decor & Styling'},
-  {url:'https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=800&q=80',caption:'Floral Wedding Stage',eventCategory:'Wedding',service:'Luxury Decor & Styling'},
-  {url:'https://images.unsplash.com/photo-1606216794074-735e91aa2c92?w=800&q=80',caption:'Wedding Photography',eventCategory:'Wedding',service:'Professional Photography'},
-  {url:'https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=800&q=80',caption:'Fairy Light Reception',eventCategory:'Wedding',service:'Premium Lighting Design'},
-  {url:'https://images.unsplash.com/photo-1529543544282-ea669407fca3?w=800&q=80',caption:'Bridal Floral Setup',eventCategory:'Engagement',service:'Luxury Decor & Styling'},
-  {url:'https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=800&q=80',caption:'Engagement Photography',eventCategory:'Engagement',service:'Professional Photography'},
-  {url:'https://images.unsplash.com/photo-1561489413-985b06da5bee?w=800&q=80',caption:'Rose Petal Decor',eventCategory:'Engagement',service:'Luxury Decor & Styling'},
-  {url:'https://images.unsplash.com/photo-1520854221256-17452cc3a785?w=800&q=80',caption:'Baby Shower Decor',eventCategory:'Baby Shower',service:'Luxury Decor & Styling'},
-  {url:'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=800&q=80',caption:'Pastel Balloon Setup',eventCategory:'Baby Shower',service:'Luxury Decor & Styling'},
-  {url:'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800&q=80',caption:'Soft Fairy Lights',eventCategory:'Baby Shower',service:'Premium Lighting Design'},
-  {url:'https://images.unsplash.com/photo-1543269865-cbf427effbad?w=800&q=80',caption:'Birthday Celebration',eventCategory:'Birthday',service:'Complete Event Management'},
-  {url:'https://images.unsplash.com/photo-1519741497674-611481863552?w=800&q=80',caption:'Birthday Party Decor',eventCategory:'Birthday',service:'Luxury Decor & Styling'},
-  {url:'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=800&q=80',caption:'Birthday Live Music',eventCategory:'Birthday',service:'Live Music & Entertainment'},
-  {url:'https://images.unsplash.com/photo-1478146059778-26028b07395a?w=800&q=80',caption:'Anniversary Decor',eventCategory:'Anniversary',service:'Luxury Decor & Styling'},
-  {url:'https://images.unsplash.com/photo-1567337710282-00832b415979?w=800&q=80',caption:'Anniversary Dinner',eventCategory:'Anniversary',service:'Gourmet Catering'},
-  // Reception
-  {url:'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=800&q=80',caption:'Grand Reception Hall',eventCategory:'Reception',service:'Complete Event Management'},
-  {url:'https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=800&q=80',caption:'Reception Lighting Setup',eventCategory:'Reception',service:'Premium Lighting Design'},
-  {url:'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=800&q=80',caption:'Reception Floral Decor',eventCategory:'Reception',service:'Luxury Decor & Styling'},
-  // Sangeet
-  {url:'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=800&q=80',caption:'Sangeet Night Stage',eventCategory:'Sangeet',service:'Live Music & Entertainment'},
-  {url:'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800&q=80',caption:'Sangeet Lighting & Decor',eventCategory:'Sangeet',service:'Premium Lighting Design'},
-  // Mehendi
-  {url:'https://images.unsplash.com/photo-1529543544282-ea669407fca3?w=800&q=80',caption:'Mehendi Ceremony Decor',eventCategory:'Mehendi',service:'Luxury Decor & Styling'},
-  {url:'https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=800&q=80',caption:'Mehendi Stage Setup',eventCategory:'Mehendi',service:'Luxury Decor & Styling'},
-  {url:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80',caption:'Housewarming Floral Entrance',eventCategory:'Housewarming',service:'Luxury Decor & Styling'},
-  {url:'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80',caption:'Elegant Home Decor',eventCategory:'Housewarming',service:'Luxury Decor & Styling'},
-  {url:'https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=800&q=80',caption:'Housewarming Celebration',eventCategory:'Housewarming',service:'Complete Event Management'},
-  {url:'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=800&q=80',caption:'Corporate Gala Setup',eventCategory:'Corporate',service:'Complete Event Management'},
-  {url:'https://images.unsplash.com/photo-1555244162-803834f70033?w=800&q=80',caption:'Corporate Catering',eventCategory:'Corporate',service:'Gourmet Catering'},
-  {url:'https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=800&q=80',caption:'Corporate Live Stage',eventCategory:'Corporate',service:'Live Music & Entertainment'},
-  // Haldi
-  {url:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80',caption:'Marigold Haldi Stage',eventCategory:'Haldi',service:'Luxury Decor & Styling'},
-  {url:'https://images.unsplash.com/photo-1529543544282-ea669407fca3?w=800&q=80',caption:'Haldi Floral Canopy',eventCategory:'Haldi',service:'Luxury Decor & Styling'},
-  {url:'https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=800&q=80',caption:'Folk Haldi Decor',eventCategory:'Haldi',service:'Luxury Decor & Styling'},
-  {url:'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=800&q=80',caption:'Vibrant Haldi Setup',eventCategory:'Haldi',service:'Luxury Decor & Styling'},
-  // Logistics
-  {url:'https://images.unsplash.com/photo-1520854221256-17452cc3a785?w=800&q=80',caption:'Event Setup Crew',eventCategory:'Logistics',service:'Logistics Services'},
-  {url:'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=800&q=80',caption:'Venue Preparation',eventCategory:'Logistics',service:'Logistics Services'},
-  {url:'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=800&q=80',caption:'Equipment Coordination',eventCategory:'Logistics',service:'Logistics Services'},
-  // Photography
-  {url:'https://images.unsplash.com/photo-1606216794074-735e91aa2c92?w=800&q=80',caption:'Wedding Candid Photography',eventCategory:'Photography',service:'Professional Photography'},
-  {url:'https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=800&q=80',caption:'Portrait Session',eventCategory:'Photography',service:'Professional Photography'},
-  {url:'https://images.unsplash.com/photo-1591604466107-ec97de577aff?w=800&q=80',caption:'Event Videography',eventCategory:'Photography',service:'Professional Photography'},
-  {url:'https://images.unsplash.com/photo-1532712938310-34cb3982ef74?w=800&q=80',caption:'Drone Aerial Shot',eventCategory:'Photography',service:'Professional Photography'},
-  {url:'https://images.unsplash.com/photo-1537633552985-df8429e8048b?w=800&q=80',caption:'Reception Candids',eventCategory:'Photography',service:'Professional Photography'},
-  // Cradle Ceremony
-  {url:'https://images.unsplash.com/photo-1555252333-9f8e92e65df9?w=800&q=80',caption:'Cradle Ceremony Decor',eventCategory:'Cradle Ceremony',service:'Luxury Decor & Styling'},
-  {url:'https://images.unsplash.com/photo-1519689373023-dd07c7988603?w=800&q=80',caption:'Baby\'s First Celebration',eventCategory:'Cradle Ceremony',service:'Complete Event Management'},
-  {url:'https://images.unsplash.com/photo-1544126592-807ade215a0b?w=800&q=80',caption:'Floral Cradle Setup',eventCategory:'Cradle Ceremony',service:'Luxury Decor & Styling'},
-  {url:'https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?w=800&q=80',caption:'Naming & Cradle Celebration',eventCategory:'Cradle Ceremony',service:'Complete Event Management'},
+// ══════════════════════════════════════════════════════════════════════
+// HAPPENHAUS GALLERY — Single source of truth for filter schema
+//
+// Filter button strategy:
+//   • Event-type filters (Wedding, Birthday…) → match item.eventCategory
+//   • Service filters (Photography, Music…)   → match item.service
+//   • filterKey = canonical value every filter button passes
+//     - Decor images:       filterKey = eventCategory  (e.g. "Wedding")
+//     - Non-Decor images:   filterKey = service name   (e.g. "Professional Photography")
+//
+// Customer filter buttons pass EXACT filterKey values.
+// Filtering: item.filterKey === activeCatFilter  (always exact match)
+// ══════════════════════════════════════════════════════════════════════
+
+// Normalize a raw Firestore/static gallery item into a consistent shape
+function normalizeGalleryItem(raw) {
+  var svc      = (raw.service       || '').trim();
+  var evtCat   = (raw.eventCategory || '').trim();
+  var url      = (raw.url           || '').trim();
+  var caption  = (raw.caption       || '').trim();
+  var isDecor  = (svc === 'Luxury Decor & Styling');
+
+  // Compute filterKey — the value filter buttons will match against
+  var filterKey;
+  if (raw.filterKey) {
+    // Already set by new admin upload — trust it
+    filterKey = raw.filterKey.trim();
+  } else {
+    // Legacy document: derive from fields
+    filterKey = isDecor ? evtCat : svc;
+  }
+
+  return {
+    url:           url,
+    caption:       caption,
+    service:       svc,
+    eventCategory: evtCat,
+    filterKey:     filterKey
+  };
+}
+
+// ── STATIC GALLERY (fallback when no Firestore images exist) ──
+// Every item has correct filterKey set explicitly.
+const STATIC_GALLERY = [
+  // Wedding — Decor → filterKey:'Wedding'
+  {url:'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=800&q=80',caption:'Lotus Flower Mandapam',eventCategory:'Wedding',service:'Luxury Decor & Styling',filterKey:'Wedding'},
+  {url:'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=800&q=80',caption:'Grand Kalyana Mandapam',eventCategory:'Wedding',service:'Luxury Decor & Styling',filterKey:'Wedding'},
+  {url:'https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=800&q=80',caption:'Floral Wedding Stage',eventCategory:'Wedding',service:'Luxury Decor & Styling',filterKey:'Wedding'},
+  // Photography — filterKey:'Professional Photography'
+  {url:'https://images.unsplash.com/photo-1606216794074-735e91aa2c92?w=800&q=80',caption:'Wedding Candid Photography',eventCategory:'',service:'Professional Photography',filterKey:'Professional Photography'},
+  {url:'https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=800&q=80',caption:'Portrait Session',eventCategory:'',service:'Professional Photography',filterKey:'Professional Photography'},
+  {url:'https://images.unsplash.com/photo-1591604466107-ec97de577aff?w=800&q=80',caption:'Event Videography',eventCategory:'',service:'Professional Photography',filterKey:'Professional Photography'},
+  {url:'https://images.unsplash.com/photo-1532712938310-34cb3982ef74?w=800&q=80',caption:'Drone Aerial Shot',eventCategory:'',service:'Professional Photography',filterKey:'Professional Photography'},
+  {url:'https://images.unsplash.com/photo-1537633552985-df8429e8048b?w=800&q=80',caption:'Reception Candids',eventCategory:'',service:'Professional Photography',filterKey:'Professional Photography'},
+  // Lighting — filterKey:'Premium Lighting Design'
+  {url:'https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=800&q=80',caption:'Fairy Light Reception',eventCategory:'',service:'Premium Lighting Design',filterKey:'Premium Lighting Design'},
+  {url:'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800&q=80',caption:'Sangeet Lighting & Decor',eventCategory:'',service:'Premium Lighting Design',filterKey:'Premium Lighting Design'},
+  {url:'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=800&q=80',caption:'Uplighting Ambience',eventCategory:'',service:'Premium Lighting Design',filterKey:'Premium Lighting Design'},
+  // Live Music — filterKey:'Live Music & Entertainment'
+  {url:'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=800&q=80',caption:'Sangeet Night Stage',eventCategory:'',service:'Live Music & Entertainment',filterKey:'Live Music & Entertainment'},
+  {url:'https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=800&q=80',caption:'Corporate Live Stage',eventCategory:'',service:'Live Music & Entertainment',filterKey:'Live Music & Entertainment'},
+  {url:'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=800&q=80',caption:'Birthday Live Music',eventCategory:'',service:'Live Music & Entertainment',filterKey:'Live Music & Entertainment'},
+  // Engagement — filterKey:'Engagement'
+  {url:'https://images.unsplash.com/photo-1529543544282-ea669407fca3?w=800&q=80',caption:'Bridal Floral Setup',eventCategory:'Engagement',service:'Luxury Decor & Styling',filterKey:'Engagement'},
+  {url:'https://images.unsplash.com/photo-1561489413-985b06da5bee?w=800&q=80',caption:'Rose Petal Decor',eventCategory:'Engagement',service:'Luxury Decor & Styling',filterKey:'Engagement'},
+  // Reception — filterKey:'Reception'
+  {url:'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=800&q=80',caption:'Grand Reception Hall',eventCategory:'Reception',service:'Luxury Decor & Styling',filterKey:'Reception'},
+  {url:'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=800&q=80',caption:'Reception Floral Decor',eventCategory:'Reception',service:'Luxury Decor & Styling',filterKey:'Reception'},
+  // Sangeet — filterKey:'Sangeet'
+  {url:'https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?w=800&q=80',caption:'Sangeet Decor Stage',eventCategory:'Sangeet',service:'Luxury Decor & Styling',filterKey:'Sangeet'},
+  // Mehendi — filterKey:'Mehendi'
+  {url:'https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=800&q=80',caption:'Mehendi Stage Setup',eventCategory:'Mehendi',service:'Luxury Decor & Styling',filterKey:'Mehendi'},
+  // Haldi — filterKey:'Haldi'
+  {url:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80',caption:'Marigold Haldi Stage',eventCategory:'Haldi',service:'Luxury Decor & Styling',filterKey:'Haldi'},
+  {url:'https://images.unsplash.com/photo-1529543544282-ea669407fca3?w=800&q=80',caption:'Haldi Floral Canopy',eventCategory:'Haldi',service:'Luxury Decor & Styling',filterKey:'Haldi'},
+  {url:'https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=800&q=80',caption:'Folk Haldi Decor',eventCategory:'Haldi',service:'Luxury Decor & Styling',filterKey:'Haldi'},
+  // Baby Shower — filterKey:'Baby Shower'
+  {url:'https://images.unsplash.com/photo-1520854221256-17452cc3a785?w=800&q=80',caption:'Baby Shower Decor',eventCategory:'Baby Shower',service:'Luxury Decor & Styling',filterKey:'Baby Shower'},
+  {url:'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=800&q=80',caption:'Pastel Balloon Setup',eventCategory:'Baby Shower',service:'Luxury Decor & Styling',filterKey:'Baby Shower'},
+  // Cradle Ceremony — filterKey:'Cradle Ceremony'
+  {url:'https://images.unsplash.com/photo-1555252333-9f8e92e65df9?w=800&q=80',caption:'Cradle Ceremony Decor',eventCategory:'Cradle Ceremony',service:'Luxury Decor & Styling',filterKey:'Cradle Ceremony'},
+  {url:'https://images.unsplash.com/photo-1544126592-807ade215a0b?w=800&q=80',caption:'Floral Cradle Setup',eventCategory:'Cradle Ceremony',service:'Luxury Decor & Styling',filterKey:'Cradle Ceremony'},
+  {url:'https://images.unsplash.com/photo-1519689373023-dd07c7988603?w=800&q=80',caption:'Baby\'s First Celebration',eventCategory:'Cradle Ceremony',service:'Complete Event Management',filterKey:'Cradle Ceremony'},
+  // Birthday — filterKey:'Birthday'
+  {url:'https://images.unsplash.com/photo-1543269865-cbf427effbad?w=800&q=80',caption:'Birthday Celebration',eventCategory:'Birthday',service:'Luxury Decor & Styling',filterKey:'Birthday'},
+  {url:'https://images.unsplash.com/photo-1519741497674-611481863552?w=800&q=80',caption:'Birthday Party Decor',eventCategory:'Birthday',service:'Luxury Decor & Styling',filterKey:'Birthday'},
+  // Anniversary — filterKey:'Anniversary'
+  {url:'https://images.unsplash.com/photo-1478146059778-26028b07395a?w=800&q=80',caption:'Anniversary Decor',eventCategory:'Anniversary',service:'Luxury Decor & Styling',filterKey:'Anniversary'},
+  // Housewarming — filterKey:'Housewarming'
+  {url:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80',caption:'Housewarming Floral Entrance',eventCategory:'Housewarming',service:'Luxury Decor & Styling',filterKey:'Housewarming'},
+  {url:'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80',caption:'Elegant Home Decor',eventCategory:'Housewarming',service:'Luxury Decor & Styling',filterKey:'Housewarming'},
+  // Corporate — filterKey:'Corporate'
+  {url:'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=800&q=80',caption:'Corporate Gala Setup',eventCategory:'Corporate',service:'Luxury Decor & Styling',filterKey:'Corporate'},
+  // Logistics — filterKey:'Logistics Services'
+  {url:'https://images.unsplash.com/photo-1520854221256-17452cc3a785?w=800&q=80',caption:'Event Setup Crew',eventCategory:'',service:'Logistics Services',filterKey:'Logistics Services'},
+  {url:'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=800&q=80',caption:'Venue Preparation',eventCategory:'',service:'Logistics Services',filterKey:'Logistics Services'},
+  // Naming Ceremony — filterKey:'Naming Ceremony'
+  {url:'https://images.unsplash.com/photo-1519689373023-dd07c7988603?w=800&q=80',caption:'Naming Ceremony Celebration',eventCategory:'Naming Ceremony',service:'Luxury Decor & Styling',filterKey:'Naming Ceremony'},
+  {url:'https://images.unsplash.com/photo-1555252333-9f8e92e65df9?w=800&q=80',caption:'Baby Naming Decor',eventCategory:'Naming Ceremony',service:'Luxury Decor & Styling',filterKey:'Naming Ceremony'},
+  // Farewell — filterKey:'Farewell'
+  {url:'https://images.unsplash.com/photo-1543269865-cbf427effbad?w=800&q=80',caption:'Farewell Party Setup',eventCategory:'Farewell',service:'Luxury Decor & Styling',filterKey:'Farewell'},
 ];
-window._firestoreGallery=[];
-let activeCatFilter='all';
 
-function renderDynGallery(){
-  // Show uploaded Firestore images first, then static fallbacks
-  const firestoreImgs=window._firestoreGallery||[];
-  const hasFirestore=firestoreImgs.length>0;
-  const combined=hasFirestore?firestoreImgs:[...STATIC_GALLERY];
+window._firestoreGallery = [];
+let activeCatFilter = 'all';
 
-  // ── Case-insensitive filter match ──
-  const filtered=activeCatFilter==='all'
+// ── FIRESTORE GALLERY LOAD ──
+async function loadFirestoreGallery() {
+  try {
+    const snap = await getDocs(collection(db, 'gallery'));
+    window._firestoreGallery = snap.docs.map(d => {
+      return normalizeGalleryItem({ id: d.id, ...d.data() });
+    });
+    renderDynGallery();
+  } catch(e) {
+    console.warn('[Gallery] Firestore load failed, using static gallery:', e.message);
+    renderDynGallery();
+  }
+}
+window.loadFirestoreGallery = loadFirestoreGallery;
+
+// ── RENDER GALLERY ──
+function renderDynGallery() {
+  const firestoreImgs = window._firestoreGallery || [];
+  // Use Firestore images if any exist, else fall back to static
+  const combined = firestoreImgs.length > 0
+    ? firestoreImgs
+    : STATIC_GALLERY.map(normalizeGalleryItem);
+
+  // ── Filter: exact match on filterKey ──
+  const filtered = activeCatFilter === 'all'
     ? combined
-    : combined.filter(i=>{
-        const cat=(i.eventCategory||'').trim().toLowerCase();
-        return cat===activeCatFilter.trim().toLowerCase();
-      });
+    : combined.filter(item =>
+        (item.filterKey || '').trim().toLowerCase() === activeCatFilter.trim().toLowerCase()
+      );
 
-  const grid=document.getElementById('dynGalleryGrid');
-  const moreBtn=document.getElementById('galViewMoreWrap');
+  const grid    = document.getElementById('dynGalleryGrid');
+  const moreBtn = document.getElementById('galViewMoreWrap');
 
-  // Prep image list for viewer
-  window._glImgs=filtered.map(i=>({url:i.url,caption:(i.caption||'')+(i.eventCategory?' · '+i.eventCategory:'')}));
+  // Build viewer image list for the lightbox
+  window._glImgs = filtered.map(item => ({
+    url:     item.url,
+    caption: item.caption + (item.filterKey ? ' · ' + item.filterKey : '')
+  }));
 
-  if(!filtered.length){
-    grid.innerHTML='<div class="gal-empty-msg">No photos in this category yet. Check back soon! 📸</div>';
-    if(moreBtn)moreBtn.style.display='none';
+  if (!filtered.length) {
+    grid.innerHTML = '<div class="gal-empty-msg">No photos in this category yet. Check back soon! 📸</div>';
+    if (moreBtn) moreBtn.style.display = 'none';
     return;
   }
 
-  const hasMore=filtered.length>16;
-  // Stagger delay capped at 0.36s so later images don't wait too long
-  grid.innerHTML=filtered.map((item,i)=>`
-    <div class="dyn-item" onclick="openViewer(${i})" style="--gal-delay:${Math.min(i*0.045,0.36)}s">
-      <img src="${item.url}" alt="${item.caption||''}" loading="${i<8?'eager':'lazy'}"/>
+  const hasMore = filtered.length > 16;
+  grid.innerHTML = filtered.map((item, i) => `
+    <div class="dyn-item" onclick="openViewer(${i})" style="--gal-delay:${Math.min(i * 0.045, 0.36)}s">
+      <img src="${item.url}" alt="${item.caption || ''}" loading="${i < 8 ? 'eager' : 'lazy'}"/>
       <div class="dyn-lbl">
-        <span class="dyn-caption">${item.caption||''}</span>
-        <span class="dyn-cat">${item.eventCategory||''}</span>
+        <span class="dyn-caption">${item.caption || ''}</span>
+        <span class="dyn-cat">${item.filterKey || ''}</span>
         <button class="dyn-view-btn" onclick="event.stopPropagation();openViewer(${i})">View Project</button>
       </div>
-      <div class="dyn-watermark">www.happenhaus.com</div>
+      <div class="dyn-watermark">happenhaus.in</div>
     </div>`).join('');
 
-  if(moreBtn)moreBtn.style.display=hasMore?'block':'none';
-
-  // ── Scroll-driven IntersectionObserver ──
-  initGalleryObserver();
+  if (moreBtn) moreBtn.style.display = hasMore ? 'block' : 'none';
 }
 
-// ── Gallery scroll observer: fade+slide in on scroll-down, fade out on scroll-up ──
-let _galObserver=null;
-function initGalleryObserver(){
-  // Disconnect old observer if any
-  if(_galObserver){_galObserver.disconnect();_galObserver=null;}
+// ── FILTER HANDLER ──
+window.filterGallery = (filterKey, btn) => {
+  activeCatFilter = filterKey;
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
 
-  const items=document.querySelectorAll('.dyn-item');
-  if(!items.length) return;
+  const grid = document.getElementById('dynGalleryGrid');
+  grid.style.transition = 'opacity .2s ease, transform .2s ease';
+  grid.style.opacity    = '0';
+  grid.style.transform  = 'scale(.98)';
 
-  _galObserver=new IntersectionObserver((entries)=>{
-    entries.forEach(entry=>{
-      if(entry.isIntersecting){
-        entry.target.classList.add('gal-visible');
-        entry.target.classList.remove('gal-hidden');
-      } else {
-        // Only fade-out if element was already visible (scrolling up or away)
-        if(entry.target.classList.contains('gal-visible')){
-          entry.target.classList.remove('gal-visible');
-          entry.target.classList.add('gal-hidden');
-        }
-      }
-    });
-  },{threshold:0.08,rootMargin:'0px 0px -40px 0px'});
-
-  items.forEach(item=>_galObserver.observe(item));
-}
-
-window.filterGallery=(cat,btn)=>{
-  activeCatFilter=cat;
-  document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));
-  if(btn)btn.classList.add('active');
-  // Animate out the grid, then re-render
-  const grid=document.getElementById('dynGalleryGrid');
-  grid.style.transition='opacity .22s ease,transform .22s ease';
-  grid.style.opacity='0';
-  grid.style.transform='scale(.98)';
-  setTimeout(()=>{
+  setTimeout(() => {
     renderDynGallery();
-    // Force a paint before restoring opacity so items start invisible for IO
-    requestAnimationFrame(()=>{
-      grid.style.transition='opacity .35s ease,transform .35s ease';
-      grid.style.opacity='1';
-      grid.style.transform='none';
+    // Let paint complete before showing items (so scroll observer fires correctly)
+    requestAnimationFrame(() => {
+      grid.style.transition = 'opacity .35s ease, transform .35s ease';
+      grid.style.opacity    = '1';
+      grid.style.transform  = 'none';
     });
-  },230);
+  }, 220);
 };
 
 // ── FULLSCREEN GALLERY MODAL ──
