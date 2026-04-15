@@ -717,48 +717,23 @@ tbody tr:hover td{background:var(--s2);}
               <label class="uf-label">Preview</label>
               <div id="uploadPreview">No image selected</div>
               <div class="upload-progress" id="uploadProgress"><div class="upload-progress-bar" id="uploadProgressBar"></div></div>
-
               <label class="uf-label" style="margin-top:8px;">Service Category *</label>
-              <select class="uf-select" id="uploadService" onchange="onServiceChange(this.value)">
+              <select class="uf-select" id="uploadService">
                 <option value="">— Select Service —</option>
                 <optgroup label="Decor &amp; Styling">
                   <option value="Luxury Decor &amp; Styling">Luxury Decor &amp; Styling</option>
-                </optgroup>
-                <option value="Professional Photography">Professional Photography</option>
-                <option value="Live Music &amp; Entertainment">Live Music &amp; Entertainment</option>
-                <option value="Premium Lighting Design">Premium Lighting Design</option>
-                <option value="Logistics Services">Logistics Services</option>
-                <option value="Gourmet Catering">Gourmet Catering</option>
-                <option value="Complete Event Management">Complete Event Management</option>
+                  </optgroup>
+                <option>Professional Photography</option>
+                <option>Live Music &amp; Entertainment</option>
+                <option>Premium Lighting Design</option>
+                <option>Logistics Services</option>
+                <option>Gourmet Catering</option>
+                <option>Complete Event Management</option>
               </select>
-
-              <!-- Event Category: only shown + required for Luxury Decor & Styling -->
-              <div id="eventCatGroup" style="display:none;">
-                <label class="uf-label" style="margin-top:8px;">
-                  Event Type
-                  <span style="color:var(--gold);font-weight:700;"> *</span>
-                  <span style="font-size:.62rem;color:var(--t3);font-weight:400;margin-left:4px;">(Decor only)</span>
-                </label>
-                <select class="uf-select" id="uploadEventCat">
-                  <option value="">— Select Event Type —</option>
-                  <option value="Wedding">💍 Wedding</option>
-                  <option value="Engagement">💝 Engagement</option>
-                  <option value="Reception">🎉 Reception</option>
-                  <option value="Haldi">🌼 Haldi</option>
-                  <option value="Mehendi">🌿 Mehendi</option>
-                  <option value="Sangeet">🎶 Sangeet</option>
-                  <option value="Baby Shower">👶 Baby Shower</option>
-                  <option value="Birthday">🎂 Birthday</option>
-                  <option value="Anniversary">🌹 Anniversary</option>
-                  <option value="Housewarming">🏠 Housewarming</option>
-                  <option value="Corporate">🏢 Corporate</option>
-                  <option value="Farewell">👋 Farewell</option>
-                  <option value="Naming Ceremony">🍼 Naming Ceremony</option>
-                  <option value="Cradle Ceremony">🌸 Cradle Ceremony</option>
-                  <option value="General">📸 General / Other</option>
-                </select>
-              </div>
-
+              <label class="uf-label" style="margin-top:8px;">Event Category *</label>
+              <select class="uf-select" id="uploadEventCat">
+                <option value="">— Select Event Type —</option>
+              </select>
               <label class="uf-label" style="margin-top:8px;">Caption (optional)</label>
               <input class="uf-input" id="uploadCaption" placeholder="e.g. Lotus floral mandap at HICC"/>
               <button id="uploadBtn" onclick="uploadPhoto()" disabled>Upload Photo →</button>
@@ -773,29 +748,15 @@ tbody tr:hover td{background:var(--s2);}
           <div style="display:flex;flex-direction:column;gap:6px;">
             <div class="ftabs" id="galleryServiceTabs" style="flex-wrap:wrap;">
               <button class="ftab active" onclick="setGalSvcFilter('',this)">All Services</button>
-              <button class="ftab" onclick="setGalSvcFilter('Luxury Decor &amp; Styling',this)">🌸 Decor</button>
-                            <button class="ftab" onclick="setGalSvcFilter('Professional Photography',this)">📷 Photo</button>
-              <button class="ftab" onclick="setGalSvcFilter('Premium Lighting Design',this)">✨ Lighting</button>
-              <button class="ftab" onclick="setGalSvcFilter('Live Music &amp; Entertainment',this)">🎵 Music</button>
-              <button class="ftab" onclick="setGalSvcFilter('Logistics Services',this)">🚚 Logistics</button>
-              <button class="ftab" onclick="setGalSvcFilter('Gourmet Catering',this)">🍽️ Catering</button>
+              <button class="ftab" onclick="setGalSvcFilter('luxury-decor-styling',this)">🌸 Decor</button>
+              <button class="ftab" onclick="setGalSvcFilter('professional-photography',this)">📷 Photo</button>
+              <button class="ftab" onclick="setGalSvcFilter('premium-lighting-design',this)">✨ Lighting</button>
+              <button class="ftab" onclick="setGalSvcFilter('live-music-entertainment',this)">🎵 Music</button>
+              <button class="ftab" onclick="setGalSvcFilter('logistics-services',this)">🚚 Logistics</button>
+              <button class="ftab" onclick="setGalSvcFilter('gourmet-catering',this)">🍽️ Catering</button>
             </div>
             <div class="ftabs" id="galleryCatTabs" style="flex-wrap:wrap;">
               <button class="ftab active" onclick="setGalCatFilter('',this)">All Events</button>
-              <button class="ftab" onclick="setGalCatFilter('Wedding',this)">💍 Wedding</button>
-              <button class="ftab" onclick="setGalCatFilter('Reception',this)">🎉 Reception</button>
-              <button class="ftab" onclick="setGalCatFilter('Engagement',this)">💝 Engagement</button>
-              <button class="ftab" onclick="setGalCatFilter('Sangeet',this)">🎶 Sangeet</button>
-              <button class="ftab" onclick="setGalCatFilter('Mehendi',this)">🌿 Mehendi</button>
-              <button class="ftab" onclick="setGalCatFilter('Haldi',this)">🌼 Haldi</button>
-              <button class="ftab" onclick="setGalCatFilter('Baby Shower',this)">👶 Baby Shower</button>
-              <button class="ftab" onclick="setGalCatFilter('Birthday',this)">🎂 Birthday</button>
-              <button class="ftab" onclick="setGalCatFilter('Anniversary',this)">🌹 Anniversary</button>
-              <button class="ftab" onclick="setGalCatFilter('Housewarming',this)">🏠 Housewarming</button>
-              <button class="ftab" onclick="setGalCatFilter('Corporate',this)">🏢 Corporate</button>
-              <button class="ftab" onclick="setGalCatFilter('Cradle Ceremony',this)">🌸 Cradle Ceremony</button>
-              <button class="ftab" onclick="setGalCatFilter('Logistics',this)">🚚 Logistics</button>
-              <button class="ftab" onclick="setGalCatFilter('Photography',this)">📷 Photography</button>
             </div>
           </div>
         </div>
@@ -902,6 +863,7 @@ tbody tr:hover td{background:var(--s2);}
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="./gallery-config.js"></script>
 <!-- EmailJS -->
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
@@ -994,6 +956,7 @@ var ADMIN_EMAILS = (window.__HH_ADMINS__) || [
 // ── PIPELINE STAGES ──
 var PIPELINE_STAGES = ['New Enquiry','Consultation Scheduled','Proposal Sent','Confirmed','Completed','Declined'];
 var STAGE_COLORS    = ['var(--blue)','var(--purple)','var(--yellow)','var(--green)','var(--t3)','var(--red)'];
+var GALLERY_TAXONOMY = window.HHGalleryTaxonomy || null;
 
 // ── STATE ──
 var allBookings=[], allUsers=[], allGallery=[], allStaff=[], allReviews=[];
@@ -1135,7 +1098,12 @@ function loadUsers() {
 
 function loadGallery() {
   return db.collection('gallery').get().then(function(snap) {
-    allGallery = snap.docs.map(function(d) { return Object.assign({ id: d.id }, d.data()); });
+    allGallery = snap.docs.map(function(d) {
+      var raw = Object.assign({ id: d.id }, d.data());
+      var normalized = normalizeGalleryRecord(raw);
+      syncGalleryRecordIfNeeded(d.id, raw, normalized);
+      return normalized;
+    });
     renderAdminGallery();
     var gb = document.getElementById('galBadge');
     if (gb) gb.textContent = allGallery.length;
@@ -1727,27 +1695,6 @@ function renderUsers(filter) {
 window.filterUsers = function() { renderUsers(document.getElementById('userSearch').value); };
 
 // ════════════════════════════════════════════════════
-//  GALLERY UPLOAD — SERVICE CHANGE HANDLER
-//  Event-type dropdown only appears for Luxury Decor & Styling.
-//  All other services upload without an event category.
-// ════════════════════════════════════════════════════
-window.onServiceChange = function(svc) {
-  var group  = document.getElementById('eventCatGroup');
-  var select = document.getElementById('uploadEventCat');
-  var isDecor = (svc === 'Luxury Decor & Styling');
-
-  if (!group) return;
-
-  if (isDecor) {
-    group.style.display = 'block';
-  } else {
-    group.style.display = 'none';
-    // Reset dropdown when switching away from Decor
-    if (select) select.value = '';
-  }
-};
-
-// ════════════════════════════════════════════════════
 //  GALLERY UPLOAD (CLOUDINARY)
 // ════════════════════════════════════════════════════
 window.onFileSelect = function(e) {
@@ -1771,35 +1718,24 @@ window.onDrop = function(e) {
 };
 
 window.uploadPhoto = function() {
-  if (!selectedFile) { showToast('Please select an image first.'); return; }
-
-  var svc      = (document.getElementById('uploadService').value   || '').trim();
-  var caption  = (document.getElementById('uploadCaption').value   || '').trim();
-  var isDecor  = (svc === 'Luxury Decor & Styling');
-
-  // Event category is only required for Luxury Decor & Styling
-  var eventCatEl  = document.getElementById('uploadEventCat');
-  var eventCat    = isDecor ? ((eventCatEl && eventCatEl.value) || '').trim() : svc;
-
-  if (!svc) { showToast('Please select a service category.'); return; }
-  if (isDecor && !eventCat) { showToast('Please select an event type for Decor & Styling.'); return; }
+  if (!selectedFile)           { showToast('Please select an image first.'); return; }
+  var svc      = normalizeGalleryService(document.getElementById('uploadService').value);
+  var eventCat = normalizeGalleryCategory(document.getElementById('uploadEventCat').value);
+  if (!svc)      { showToast('Please select a service category.'); return; }
+  if (!eventCat) { showToast('Please select an event category.');  return; }
   if (selectedFile.size > 5 * 1024 * 1024) { showToast('File too large. Max 5MB.'); return; }
-
   if (CLOUDINARY_CLOUD === 'YOUR_CLOUD_NAME') {
     document.getElementById('uploadMsg').innerHTML = '<span class="msg-err">Set CLOUDINARY_CLOUD in the code to your Cloudinary cloud name.</span>';
     return;
   }
-
+  var caption = (document.getElementById('uploadCaption').value || '').trim();
   var btn  = document.getElementById('uploadBtn');
   var msg  = document.getElementById('uploadMsg');
   var prog = document.getElementById('uploadProgress');
   var bar  = document.getElementById('uploadProgressBar');
-
-  btn.disabled = true;
-  btn.textContent = 'Uploading…';
-  prog.style.display = 'block';
-  bar.style.width = '5%';
-  msg.innerHTML = '<span style="color:var(--gold)">Uploading to Cloudinary…</span>';
+  btn.disabled = true; btn.textContent = 'Uploading...';
+  prog.style.display = 'block'; bar.style.width = '5%';
+  msg.innerHTML = '<span style="color:var(--gold)">Uploading to Cloudinary...</span>';
 
   var formData = new FormData();
   formData.append('file', selectedFile);
@@ -1815,44 +1751,41 @@ window.uploadPhoto = function() {
     })
     .then(function(data) {
       bar.style.width = '85%';
-      return db.collection('gallery').add({
-        url:           data.secure_url,
-        service:       svc,
+      var normalized = normalizeGalleryRecord({
+        url: data.secure_url,
+        service: svc,
         eventCategory: eventCat,
-        caption:       caption || eventCat || svc,
-        cloudinaryId:  data.public_id,
-        uploadedAt:    firebase.firestore.FieldValue.serverTimestamp()
+        caption: caption || eventCat,
+        cloudinaryId: data.public_id
+      });
+      return db.collection('gallery').add({
+        url: normalized.url,
+        service: normalized.service,
+        serviceKey: normalized.serviceKey,
+        eventCategory: normalized.eventCategory,
+        eventCategoryKey: normalized.eventCategoryKey,
+        filterKeys: normalized.filterKeys,
+        caption: normalized.caption,
+        cloudinaryId: normalized.cloudinaryId,
+        uploadedAt: firebase.firestore.FieldValue.serverTimestamp()
       });
     })
     .then(function() {
       bar.style.width = '100%';
       setTimeout(function() { prog.style.display = 'none'; bar.style.width = '0%'; }, 500);
       msg.innerHTML = '<span class="msg-ok">✓ Photo uploaded and live on customer site!</span>';
-
-      // Reset form completely
-      btn.textContent = 'Upload Photo →';
-      btn.disabled    = true;
-      selectedFile    = null;
-
+      btn.textContent = 'Upload Photo'; btn.disabled = true; selectedFile = null;
       document.getElementById('uploadPreview').innerHTML = 'No image selected';
       document.getElementById('uploadCaption').value     = '';
       document.getElementById('uploadService').value     = '';
+      document.getElementById('uploadEventCat').value    = '';
       document.getElementById('photoFileInput').value    = '';
-
-      // Reset and hide event category
-      if (eventCatEl) eventCatEl.value = '';
-      var grp = document.getElementById('eventCatGroup');
-      if (grp) grp.style.display = 'none';
-
-      showToast('Photo uploaded! ✓');
-      loadGallery();
+      showToast('Photo uploaded!'); loadGallery();
     })
     .catch(function(err) {
-      prog.style.display = 'none';
-      bar.style.width    = '0%';
-      msg.innerHTML      = '<span class="msg-err">Upload failed: ' + err.message + '</span>';
-      btn.disabled       = false;
-      btn.textContent    = 'Upload Photo →';
+      prog.style.display = 'none'; bar.style.width = '0%';
+      msg.innerHTML = '<span class="msg-err">Upload failed: ' + err.message + '</span>';
+      btn.disabled = false; btn.textContent = 'Upload Photo';
     });
 };
 
@@ -1860,12 +1793,8 @@ function renderAdminGallery() {
   var grid = document.getElementById('adminGalleryGrid');
   if (!grid) return;
   var photos = allGallery.slice();
-  if (galSvcFilter) photos = photos.filter(function(p) {
-    return (p.service||'').trim().toLowerCase() === galSvcFilter.trim().toLowerCase();
-  });
-  if (galCatFilter) photos = photos.filter(function(p) {
-    return (p.eventCategory||'').trim().toLowerCase() === galCatFilter.trim().toLowerCase();
-  });
+  if (galSvcFilter) photos = photos.filter(function(p) { return p.serviceKey === galSvcFilter; });
+  if (galCatFilter) photos = photos.filter(function(p) { return p.eventCategoryKey === galCatFilter; });
   var sub = document.getElementById('gallerySubtitle');
   if (sub) sub.textContent = photos.length + ' photo' + (photos.length !== 1 ? 's' : '') + ' uploaded';
   if (!photos.length) { grid.innerHTML = '<div class="gga-empty">No photos match this filter.</div>'; return; }
@@ -1912,6 +1841,53 @@ function renderServicesPanel() {
     var el = document.getElementById('svcStat' + i); if (el) el.textContent = allBookings.filter(function(b) { return b.service === s; }).length;
   });
   renderSvcChart('svcChartFull');
+}
+
+function normalizeGalleryService(value) {
+  return GALLERY_TAXONOMY ? GALLERY_TAXONOMY.normalizeService(value) : (value || '').trim();
+}
+
+function normalizeGalleryCategory(value) {
+  return GALLERY_TAXONOMY ? GALLERY_TAXONOMY.normalizeEventCategory(value) : (value || '').trim();
+}
+
+function normalizeGalleryRecord(record) {
+  return GALLERY_TAXONOMY ? GALLERY_TAXONOMY.normalizeGalleryItem(record) : Object.assign({}, record);
+}
+
+function syncGalleryRecordIfNeeded(id, raw, normalized) {
+  if (!GALLERY_TAXONOMY || !GALLERY_TAXONOMY.needsGalleryNormalization(raw)) return;
+  db.collection('gallery').doc(id).set({
+    service: normalized.service,
+    serviceKey: normalized.serviceKey,
+    eventCategory: normalized.eventCategory,
+    eventCategoryKey: normalized.eventCategoryKey,
+    filterKeys: normalized.filterKeys
+  }, { merge: true }).catch(function(e) {
+    console.error('gallery normalization sync:', e.message);
+  });
+}
+
+function initGalleryCategoryControls() {
+  if (!GALLERY_TAXONOMY) return;
+  var select = document.getElementById('uploadEventCat');
+  if (select) {
+    select.innerHTML = '<option value="">— Select Event Type —</option>' +
+      GALLERY_TAXONOMY.eventCategories.map(function(category) {
+        return '<option value="' + category.label + '">' + (category.icon ? category.icon + ' ' : '') + category.label + '</option>';
+      }).join('');
+  }
+
+  var catTabs = document.getElementById('galleryCatTabs');
+  if (catTabs) {
+    catTabs.innerHTML = '<button class="ftab active" onclick="setGalCatFilter(\'\',this)">All Events</button>' +
+      GALLERY_TAXONOMY.eventCategories
+        .filter(function(category) { return category.key !== 'general'; })
+        .map(function(category) {
+          return '<button class="ftab" onclick="setGalCatFilter(\'' + category.key + '\',this)">' +
+            (category.icon ? category.icon + ' ' : '') + category.shortLabel + '</button>';
+        }).join('');
+  }
 }
 
 // ════════════════════════════════════════════════════
@@ -2013,6 +1989,8 @@ window.filterAdminPhone = function(el) {
   var cleaned = el.value.replace(/[^0-9+\- ]/g,'');
   if(el.value !== cleaned) el.value = cleaned;
 };
+
+initGalleryCategoryControls();
 </script>
 </body>
 </html>
