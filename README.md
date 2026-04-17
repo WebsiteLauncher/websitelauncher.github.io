@@ -21,7 +21,7 @@ Then open:
 
 GitHub Pages is deployed through `.github/workflows/deploy.yml`.
 
-Add these GitHub Secrets:
+Add these GitHub Secrets or GitHub Variables:
 
 - `FB_API_KEY`
 - `FB_AUTH_DOMAIN`
@@ -39,7 +39,15 @@ Add these GitHub Secrets:
 - `CONTACT_WHATSAPP`
 - `CONTACT_PHONE`
 
-The workflow generates `config.js` during deploy, so secrets are not committed to the repository.
+The workflow generates `config.js` during deploy, so credentials are not committed to the repository.
+
+Deployment notes:
+
+- The workflow runs on pushes to `main`, `master`, or `develop`
+- It also supports manual runs from the Actions tab via `workflow_dispatch`
+- Browser code cannot read GitHub repository environment variables directly
+- Your Firebase and Cloudinary values only reach the site if GitHub Actions injects them into the generated `config.js`
+- If you store values as GitHub Variables instead of GitHub Secrets, the workflow now supports that too
 
 ## Important note
 
