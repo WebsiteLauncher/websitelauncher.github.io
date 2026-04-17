@@ -58,6 +58,17 @@ jobs:
           ! grep -Eq 'appId:\s+""' config.js
           ! grep -Eq 'cloud:\s+""' config.js
           ! grep -Eq 'preset:\s+""' config.js
+
+      - name: Print config availability summary
+        run: |
+          echo "FB_API_KEY configured: ${{ secrets.FB_API_KEY != '' || vars.FB_API_KEY != '' }}"
+          echo "FB_AUTH_DOMAIN configured: ${{ secrets.FB_AUTH_DOMAIN != '' || vars.FB_AUTH_DOMAIN != '' }}"
+          echo "FB_PROJECT_ID configured: ${{ secrets.FB_PROJECT_ID != '' || vars.FB_PROJECT_ID != '' }}"
+          echo "FB_STORAGE_BUCKET configured: ${{ secrets.FB_STORAGE_BUCKET != '' || vars.FB_STORAGE_BUCKET != '' }}"
+          echo "FB_MESSAGING_SENDER_ID configured: ${{ secrets.FB_MESSAGING_SENDER_ID != '' || vars.FB_MESSAGING_SENDER_ID != '' }}"
+          echo "FB_APP_ID configured: ${{ secrets.FB_APP_ID != '' || vars.FB_APP_ID != '' }}"
+          echo "CLOUDINARY_CLOUD configured: ${{ secrets.CLOUDINARY_CLOUD != '' || vars.CLOUDINARY_CLOUD != '' }}"
+          echo "CLOUDINARY_PRESET configured: ${{ secrets.CLOUDINARY_PRESET != '' || vars.CLOUDINARY_PRESET != '' }}"
  
       - name: Setup Pages
         uses: actions/configure-pages@v4
