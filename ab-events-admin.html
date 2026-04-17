@@ -6,7 +6,8 @@
 <title>HAPPENHAUS Admin — Event Management Console</title>
 <meta name="description" content="HAPPENHAUS Admin Dashboard — manage bookings, pipeline, gallery and team."/>
 <meta name="robots" content="noindex, nofollow"/>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23080808' rx='3'/%3E%3C!-- Left H solid --%3E%3Crect x='2' y='3' width='4.5' height='26' fill='%23C9A84C'/%3E%3Crect x='13' y='3' width='4.5' height='26' fill='%23C9A84C'/%3E%3Crect x='2' y='13' width='28' height='6' fill='%23C9A84C'/%3E%3C!-- serif caps --%3E%3Crect x='1' y='3' width='6.5' height='2' fill='%23C9A84C'/%3E%3Crect x='12' y='3' width='6.5' height='2' fill='%23C9A84C'/%3E%3Crect x='1' y='27' width='6.5' height='2' fill='%23C9A84C'/%3E%3Crect x='12' y='27' width='6.5' height='2' fill='%23C9A84C'/%3E%3C!-- Right H wireframe --%3E%3Crect x='16' y='2' width='14' height='28' fill='none' stroke='%23C9A84C' stroke-width='1.2'/%3E%3Cline x1='19' y1='4' x2='19' y2='28' stroke='%23C9A84C' stroke-width='0.9'/%3E%3Cline x1='27' y1='4' x2='27' y2='28' stroke='%23C9A84C' stroke-width='0.9'/%3E%3Cline x1='19' y1='16' x2='27' y2='16' stroke='%23C9A84C' stroke-width='0.9'/%3E%3C!-- superscript 2 --%3E%3Ctext x='29' y='8' font-family='Georgia' font-size='5' fill='%23C9A84C' opacity='0.9'%3E2%3C/text%3E%3C/svg%3E" type="image/svg+xml"/>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
+<link rel="shortcut icon" href="/favicon.svg" type="image/svg+xml"/>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
 <!-- EmailJS for notifications -->
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
@@ -924,101 +925,9 @@ const firebaseConfig = (typeof window.__HH_CFG__ !== 'undefined' && window.__HH_
 if (!firebaseConfig || !firebaseConfig.apiKey || !firebaseConfig.projectId) {
   throw new Error('Missing runtime config. Add config.js locally or configure GitHub Secrets so deploy generates it.');
 }
-function hhGetRedirectPath() {
-  try {
-    return sessionStorage.getItem('redirect_path') || '';
-  } catch (_err) {
-    return '';
-  }
-}
-function hhHasDebugFlag(source) {
-  if (!source) return false;
-  try {
-    return new URL(source, window.location.origin).searchParams.get('debug') === '1';
-  } catch (_err) {
-    return false;
-  }
-}
-var HH_REDIRECT_PATH = hhGetRedirectPath();
-var HH_DEBUG = hhHasDebugFlag(window.location.href) || hhHasDebugFlag(HH_REDIRECT_PATH);
-function hhDebugLog(label, detail) {
-  if (HH_DEBUG) console.log('[HAPPENHAUS ADMIN DEBUG]', label, detail || '');
-}
-function hhDebugError(label, err) {
-  console.error('[HAPPENHAUS ADMIN]', label, err);
-  if (HH_DEBUG && typeof showToast === 'function') {
-    showToast(label + ': ' + ((err && (err.code || err.message)) || 'Unknown error'));
-  }
-}
-hhDebugLog('Runtime config detected', {
-  hasConfig: !!firebaseConfig,
-  projectId: firebaseConfig.projectId || '',
-  authDomain: firebaseConfig.authDomain || '',
-  hasApiKey: !!firebaseConfig.apiKey,
-  hasCloudinaryCloud: !!(window.__HH_MEDIA__ && window.__HH_MEDIA__.cloud),
-  hasCloudinaryPreset: !!(window.__HH_MEDIA__ && window.__HH_MEDIA__.preset)
-});
-function hhCreateDebugPanel(title) {
-  if (!HH_DEBUG) return null;
-  var panel = document.getElementById('hhDebugPanel');
-  if (panel) return panel;
-  panel = document.createElement('div');
-  panel.id = 'hhDebugPanel';
-  panel.style.cssText = 'position:fixed;right:16px;bottom:16px;z-index:99999;width:min(420px,calc(100vw - 32px));max-height:min(70vh,560px);overflow:auto;background:#10141c;color:#f8fafc;border:1px solid rgba(255,255,255,.14);border-radius:14px;box-shadow:0 18px 60px rgba(0,0,0,.35);font:12px/1.5 ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;padding:14px;';
-  panel.innerHTML = '<div style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:10px;"><strong style="font-size:12px;letter-spacing:.04em;text-transform:uppercase;">' + title + '</strong><button type="button" style="appearance:none;border:0;background:#1f2937;color:#fff;border-radius:999px;padding:4px 10px;cursor:pointer;">Close</button></div><div id="hhDebugBody"></div>';
-  panel.querySelector('button').addEventListener('click', function() { panel.remove(); });
-  document.body.appendChild(panel);
-  return panel;
-}
-function hhDebugLine(kind, label, detail) {
-  var panel = hhCreateDebugPanel('HAPPENHAUS Admin Debug');
-  if (!panel) return;
-  var body = panel.querySelector('#hhDebugBody');
-  var row = document.createElement('div');
-  var colors = { ok:'#22c55e', warn:'#f59e0b', err:'#ef4444', info:'#60a5fa' };
-  row.style.cssText = 'padding:8px 0;border-top:1px solid rgba(255,255,255,.08);word-break:break-word;';
-  row.innerHTML = '<div><span style="display:inline-block;min-width:46px;color:' + (colors[kind] || colors.info) + ';font-weight:700;">' + kind.toUpperCase() + '</span> ' + label + '</div><div style="opacity:.82;padding-left:46px;">' + (detail || '') + '</div>';
-  body.appendChild(row);
-}
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db   = firebase.firestore();
-function hhRunDebugDiagnostics() {
-  if (!HH_DEBUG) return;
-  hhDebugLine('info', 'Page', window.location.href);
-  if (HH_REDIRECT_PATH) {
-    hhDebugLine('info', 'Redirect path', HH_REDIRECT_PATH);
-  }
-  hhDebugLine('ok', 'Runtime config', 'projectId=' + (firebaseConfig.projectId || '(missing)') + ', authDomain=' + (firebaseConfig.authDomain || '(missing)'));
-  hhDebugLine(window.__HH_MEDIA__ && window.__HH_MEDIA__.cloud ? 'ok' : 'warn', 'Cloudinary config', 'cloud=' + ((window.__HH_MEDIA__ && window.__HH_MEDIA__.cloud) || '(missing)') + ', preset=' + ((window.__HH_MEDIA__ && window.__HH_MEDIA__.preset) || '(missing)'));
-  hhDebugLine(navigator.serviceWorker && navigator.serviceWorker.controller ? 'info' : 'warn', 'Service worker', navigator.serviceWorker && navigator.serviceWorker.controller ? 'A service worker is controlling this page. Hard refresh or unregister it if you suspect stale files.' : 'No active service worker controller detected.');
-  fetch('./config.js', { cache: 'no-store' })
-    .then(function(res) {
-      hhDebugLine(res.ok ? 'ok' : 'err', 'config.js fetch', 'HTTP ' + res.status + ' ' + res.statusText);
-    })
-    .catch(function(err) {
-      hhDebugLine('err', 'config.js fetch', err.message || String(err));
-    });
-  db.collection('bookings').limit(1).get()
-    .then(function(snap) {
-      hhDebugLine('ok', 'Firestore bookings read', 'documents=' + snap.size);
-    })
-    .catch(function(err) {
-      hhDebugLine('err', 'Firestore bookings read', (err.code || 'error') + ': ' + (err.message || 'Unknown error'));
-    });
-  db.collection('gallery').limit(1).get()
-    .then(function(snap) {
-      hhDebugLine('ok', 'Firestore gallery read', 'documents=' + snap.size);
-    })
-    .catch(function(err) {
-      hhDebugLine('err', 'Firestore gallery read', (err.code || 'error') + ': ' + (err.message || 'Unknown error'));
-    });
-}
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', hhRunDebugDiagnostics, { once: true });
-} else {
-  hhRunDebugDiagnostics();
-}
 
 // ── CLOUDINARY CONFIG ──
 // SECURITY: Load from config.js → window.__HH_MEDIA__

@@ -6,6 +6,10 @@
 <title>HAPPENHAUS — Where Every Moment Becomes Extraordinary</title>
 <meta name="theme-color" content="#C9A84C"/>
 <link rel="manifest" href="manifest.json"/>
+<link rel="canonical" href="https://www.happenhaus.com/"/>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
+<link rel="shortcut icon" href="/favicon.svg" type="image/svg+xml"/>
+<link rel="apple-touch-icon" href="/favicon.svg"/>
 <!-- SEO -->
 <meta name="description" content="HAPPENHAUS — Hyderabad's premier celebration studio. Luxury decor, photography, lighting, music &amp; complete event management. Every Occasion, Perfectly Crafted."/>
 <meta name="keywords" content="HAPPENHAUS, event management Hyderabad, wedding decor, luxury events, photography, lighting design, Jubilee Hills"/>
@@ -17,7 +21,7 @@
 <meta property="og:title" content="HAPPENHAUS — Every Occasion, Perfectly Crafted"/>
 <meta property="og:description" content="Hyderabad's premier celebration studio for weddings, decor, photography, lighting &amp; complete event management."/>
 <meta property="og:image" content="https://placehold.co/1200x630/080808/C9A84C?text=HAPPENHAUS"/>
-<meta property="og:url" content="https://happenhaus.in"/>
+<meta property="og:url" content="https://www.happenhaus.com/"/>
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:title" content="HAPPENHAUS — Every Occasion, Perfectly Crafted"/>
@@ -27,9 +31,6 @@
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <meta name="apple-mobile-web-app-title" content="HAPPENHAUS"/>
-<!-- Favicon (gold H² on dark) -->
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23080808' rx='4'/><rect x='2' y='4' width='5' height='24' fill='%23C9A84C'/><rect x='13' y='4' width='5' height='24' fill='%23C9A84C'/><rect x='2' y='13' width='30' height='6' fill='%23C9A84C'/><rect x='18' y='4' width='5' height='24' fill='%23C9A84C'/><rect x='25' y='4' width='5' height='24' fill='%23C9A84C'/><rect x='17' y='4' width='16' height='15' fill='none' stroke='%23C9A84C' stroke-width='0.8'/><text x='29' y='11' font-family='Georgia' font-size='5' fill='%23C9A84C'>2</text></svg>" type="image/svg+xml"/>
-<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect width='180' height='180' fill='%23080808'/><rect x='12' y='24' width='28' height='132' fill='%23C9A84C'/><rect x='72' y='24' width='28' height='132' fill='%23C9A84C'/><rect x='12' y='74' width='168' height='32' fill='%23C9A84C'/><rect x='96' y='24' width='28' height='132' fill='%23C9A84C'/><rect x='140' y='24' width='28' height='132' fill='%23C9A84C'/><rect x='96' y='24' width='84' height='84' fill='none' stroke='%23C9A84C' stroke-width='4'/><text x='172' y='48' font-family='Georgia' font-size='28' fill='%23C9A84C'>2</text></svg>"/>
 <!-- EmailJS -->
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500;600&family=Italiana&display=swap" rel="stylesheet"/>
@@ -1576,99 +1577,9 @@ const firebaseConfig = (typeof window.__HH_CFG__ !== 'undefined' && window.__HH_
 if(!firebaseConfig || !firebaseConfig.apiKey || !firebaseConfig.projectId){
   throw new Error('Missing runtime config. Add config.js locally or configure GitHub Secrets so deploy generates it.');
 }
-function hhGetRedirectPath(){
-  try{
-    return sessionStorage.getItem('redirect_path') || '';
-  }catch(_err){
-    return '';
-  }
-}
-function hhHasDebugFlag(source){
-  if(!source) return false;
-  try{
-    return new URL(source, window.location.origin).searchParams.get('debug') === '1';
-  }catch(_err){
-    return false;
-  }
-}
-const HH_REDIRECT_PATH = hhGetRedirectPath();
-const HH_DEBUG = hhHasDebugFlag(window.location.href) || hhHasDebugFlag(HH_REDIRECT_PATH);
-function hhDebugLog(label, detail){
-  if(HH_DEBUG) console.log('[HAPPENHAUS DEBUG]', label, detail || '');
-}
-function hhDebugError(label, err){
-  console.error('[HAPPENHAUS]', label, err);
-  if(HH_DEBUG && typeof window.showToast === 'function'){
-    const msg = err && (err.code || err.message) ? `${label}: ${err.code || err.message}` : label;
-    window.showToast(msg);
-  }
-}
-hhDebugLog('Runtime config detected', {
-  hasConfig: !!firebaseConfig,
-  projectId: firebaseConfig.projectId || '',
-  authDomain: firebaseConfig.authDomain || '',
-  hasApiKey: !!firebaseConfig.apiKey,
-  hasCloudinaryCloud: !!(window.__HH_MEDIA__ && window.__HH_MEDIA__.cloud),
-  hasCloudinaryPreset: !!(window.__HH_MEDIA__ && window.__HH_MEDIA__.preset)
-});
-function hhCreateDebugPanel(title){
-  if(!HH_DEBUG) return null;
-  let panel = document.getElementById('hhDebugPanel');
-  if(panel) return panel;
-  panel = document.createElement('div');
-  panel.id = 'hhDebugPanel';
-  panel.style.cssText = 'position:fixed;right:16px;bottom:16px;z-index:99999;width:min(420px,calc(100vw - 32px));max-height:min(70vh,560px);overflow:auto;background:#10141c;color:#f8fafc;border:1px solid rgba(255,255,255,.14);border-radius:14px;box-shadow:0 18px 60px rgba(0,0,0,.35);font:12px/1.5 ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;padding:14px;';
-  panel.innerHTML = '<div style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:10px;"><strong style="font-size:12px;letter-spacing:.04em;text-transform:uppercase;">' + title + '</strong><button type="button" style="appearance:none;border:0;background:#1f2937;color:#fff;border-radius:999px;padding:4px 10px;cursor:pointer;">Close</button></div><div id="hhDebugBody"></div>';
-  panel.querySelector('button').addEventListener('click', ()=>panel.remove());
-  document.body.appendChild(panel);
-  return panel;
-}
-function hhDebugLine(kind, label, detail){
-  const panel = hhCreateDebugPanel('HAPPENHAUS Debug');
-  if(!panel) return;
-  const body = panel.querySelector('#hhDebugBody');
-  const row = document.createElement('div');
-  const colors = { ok:'#22c55e', warn:'#f59e0b', err:'#ef4444', info:'#60a5fa' };
-  row.style.cssText = 'padding:8px 0;border-top:1px solid rgba(255,255,255,.08);word-break:break-word;';
-  row.innerHTML = '<div><span style="display:inline-block;min-width:46px;color:' + (colors[kind] || colors.info) + ';font-weight:700;">' + kind.toUpperCase() + '</span> ' + label + '</div><div style="opacity:.82;padding-left:46px;">' + (detail || '') + '</div>';
-  body.appendChild(row);
-}
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
-async function hhRunDebugDiagnostics(){
-  if(!HH_DEBUG) return;
-  hhDebugLine('info', 'Page', window.location.href);
-  if(HH_REDIRECT_PATH){
-    hhDebugLine('info', 'Redirect path', HH_REDIRECT_PATH);
-  }
-  hhDebugLine('ok', 'Runtime config', 'projectId=' + (firebaseConfig.projectId || '(missing)') + ', authDomain=' + (firebaseConfig.authDomain || '(missing)'));
-  hhDebugLine(window.__HH_MEDIA__ && window.__HH_MEDIA__.cloud ? 'ok' : 'warn', 'Cloudinary config', 'cloud=' + ((window.__HH_MEDIA__ && window.__HH_MEDIA__.cloud) || '(missing)') + ', preset=' + ((window.__HH_MEDIA__ && window.__HH_MEDIA__.preset) || '(missing)'));
-  hhDebugLine(navigator.serviceWorker && navigator.serviceWorker.controller ? 'info' : 'warn', 'Service worker', navigator.serviceWorker && navigator.serviceWorker.controller ? 'A service worker is controlling this page. Hard refresh or unregister it if you suspect stale files.' : 'No active service worker controller detected.');
-  try{
-    const res = await fetch('./config.js', { cache: 'no-store' });
-    hhDebugLine(res.ok ? 'ok' : 'err', 'config.js fetch', 'HTTP ' + res.status + ' ' + res.statusText);
-  }catch(err){
-    hhDebugLine('err', 'config.js fetch', err.message || String(err));
-  }
-  try{
-    const gallerySnap = await getDocs(collection(db,'gallery'));
-    hhDebugLine('ok', 'Firestore gallery read', 'documents=' + gallerySnap.size);
-  }catch(err){
-    hhDebugLine('err', 'Firestore gallery read', (err.code || 'error') + ': ' + (err.message || 'Unknown error'));
-  }
-  try{
-    const reviewsSnap = await getDocs(query(collection(db,'reviews'),where('approved','==',true)));
-    hhDebugLine('ok', 'Firestore reviews read', 'documents=' + reviewsSnap.size);
-  }catch(err){
-    hhDebugLine('err', 'Firestore reviews read', (err.code || 'error') + ': ' + (err.message || 'Unknown error'));
-  }
-}
-if(document.readyState === 'loading'){
-  document.addEventListener('DOMContentLoaded', hhRunDebugDiagnostics, { once: true });
-} else {
-  hhRunDebugDiagnostics();
-}
 window._db = db; window._auth = auth;
 // ── Expose Firestore helpers to non-module scripts (fixes "addDoc is not defined") ──
 window._addDoc = addDoc;
@@ -2077,10 +1988,7 @@ async function loadFirestoreGallery(){
       return normalized;
     });
     renderDynGallery();
-  }catch(e){
-    hhDebugError('Gallery load failed', e);
-    renderDynGallery();
-  }
+  }catch(e){renderDynGallery();}
 }
 window.loadFirestoreGallery=loadFirestoreGallery;
 
@@ -2103,10 +2011,7 @@ window.loadSvcGallery = async (name) => {
     document.getElementById('glCount').textContent=`${all.length} photo${all.length!==1?'s':''}`;
     if(!all.length){document.getElementById('glGrid').innerHTML='<div class="gl-empty">No photos yet for this service.</div>';return;}
     document.getElementById('glGrid').innerHTML=all.map((img,i)=>`<div class="gl-item" onclick="openViewer(${i})"><img src="${img.url}" alt="${img.caption}" loading="lazy"/><div class="gl-item-lbl">${img.caption}</div><button class="gl-zoom-btn" onclick="event.stopPropagation();openViewer(${i})">🔍</button></div>`).join('');
-  }catch(err){
-    hhDebugError('Service gallery load failed', err);
-    document.getElementById('glGrid').innerHTML='<div class="gl-empty">Could not load photos.</div>';
-  }
+  }catch(err){document.getElementById('glGrid').innerHTML='<div class="gl-empty">Could not load photos.</div>';}
 };
 
 // ── REVIEWS ──
@@ -2145,7 +2050,6 @@ async function loadReviews(){
       initRevCarousel(FALLBACK_REVS.length);
     }
   }catch(e){
-    hhDebugError('Reviews load failed', e);
     document.getElementById('revAvgNum').textContent='5.0';
     document.getElementById('revAvgCount').textContent='Based on verified reviews';
     document.getElementById('revGrid').innerHTML=FALLBACK_REVS.map(r=>makeRevCard(r)).join('');
