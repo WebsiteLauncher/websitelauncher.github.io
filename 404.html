@@ -14,7 +14,7 @@ sessionStorage.setItem('redirect_path', path + search + hash);
 // Redirect to root index.html
 window.location.replace(
   window.location.protocol + '//' + window.location.hostname + 
-  (window.location.port ? ':' + window.location.port : '') + '/'
+  (window.location.port ? ':' + window.location.port : '') + '/' + search + hash
 );
 </script>
 </head>

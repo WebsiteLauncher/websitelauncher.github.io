@@ -924,7 +924,23 @@ const firebaseConfig = (typeof window.__HH_CFG__ !== 'undefined' && window.__HH_
 if (!firebaseConfig || !firebaseConfig.apiKey || !firebaseConfig.projectId) {
   throw new Error('Missing runtime config. Add config.js locally or configure GitHub Secrets so deploy generates it.');
 }
-var HH_DEBUG = new URLSearchParams(window.location.search).get('debug') === '1';
+function hhGetRedirectPath() {
+  try {
+    return sessionStorage.getItem('redirect_path') || '';
+  } catch (_err) {
+    return '';
+  }
+}
+function hhHasDebugFlag(source) {
+  if (!source) return false;
+  try {
+    return new URL(source, window.location.origin).searchParams.get('debug') === '1';
+  } catch (_err) {
+    return false;
+  }
+}
+var HH_REDIRECT_PATH = hhGetRedirectPath();
+var HH_DEBUG = hhHasDebugFlag(window.location.href) || hhHasDebugFlag(HH_REDIRECT_PATH);
 function hhDebugLog(label, detail) {
   if (HH_DEBUG) console.log('[HAPPENHAUS ADMIN DEBUG]', label, detail || '');
 }
@@ -970,6 +986,9 @@ const db   = firebase.firestore();
 function hhRunDebugDiagnostics() {
   if (!HH_DEBUG) return;
   hhDebugLine('info', 'Page', window.location.href);
+  if (HH_REDIRECT_PATH) {
+    hhDebugLine('info', 'Redirect path', HH_REDIRECT_PATH);
+  }
   hhDebugLine('ok', 'Runtime config', 'projectId=' + (firebaseConfig.projectId || '(missing)') + ', authDomain=' + (firebaseConfig.authDomain || '(missing)'));
   hhDebugLine(window.__HH_MEDIA__ && window.__HH_MEDIA__.cloud ? 'ok' : 'warn', 'Cloudinary config', 'cloud=' + ((window.__HH_MEDIA__ && window.__HH_MEDIA__.cloud) || '(missing)') + ', preset=' + ((window.__HH_MEDIA__ && window.__HH_MEDIA__.preset) || '(missing)'));
   hhDebugLine(navigator.serviceWorker && navigator.serviceWorker.controller ? 'info' : 'warn', 'Service worker', navigator.serviceWorker && navigator.serviceWorker.controller ? 'A service worker is controlling this page. Hard refresh or unregister it if you suspect stale files.' : 'No active service worker controller detected.');
