@@ -43,17 +43,73 @@ img{display:block;width:100%;height:100%;object-fit:cover;}
 .hidden{display:none!important;}
 
 /* ── NAV ── */
-nav{position:fixed;top:0;left:0;right:0;z-index:900;height:70px;padding:0 40px;display:flex;align-items:center;justify-content:space-between;background:rgba(8,8,8,.96);backdrop-filter:blur(24px) saturate(180%);border-bottom:1px solid rgba(201,168,76,.12);transition:var(--tr);}
+nav{position:fixed;top:0;left:0;right:0;z-index:900;height:70px;padding:0 32px;display:flex;align-items:center;justify-content:space-between;background:rgba(8,8,8,.72);backdrop-filter:blur(28px) saturate(180%);border-bottom:1px solid rgba(201,168,76,.08);box-shadow:0 16px 48px rgba(0,0,0,.16);transition:var(--tr);}
 nav.maintenance-on{border-bottom:2px solid var(--gold);}
 .nav-logo{display:inline-flex;align-items:center;gap:14px;text-decoration:none;flex-shrink:0;white-space:nowrap;transition:var(--tr);}
 .nav-logo:hover{opacity:.85;}
-.nav-brand{display:flex;flex-direction:column;line-height:1.1;flex-shrink:0;}
-.nav-brand-name{font-family:"Italiana",var(--fd);font-size:1.45rem;letter-spacing:.22em;color:var(--gold);white-space:nowrap;font-weight:400;line-height:1;}
+.nav-brand{display:flex;flex-direction:column;line-height:1.1;flex-shrink:0;min-width:max-content;white-space:nowrap;}
+.nav-brand-name{font-family:"Italiana",var(--fd);font-size:1.45rem;letter-spacing:.22em;white-space:nowrap;font-weight:400;line-height:1;display:inline-flex;align-items:center;gap:.14em;}
+.nav-brand-name span:first-child{color:var(--white);}
+.nav-brand-name span:last-child{color:var(--gold);}
 .nav-brand-tagline{font-size:.52rem;letter-spacing:.28em;text-transform:uppercase;color:rgba(201,168,76,.45);white-space:nowrap;margin-top:2px;}
-.nav-mid{display:flex;gap:28px;}
-.nav-mid a{font-size:.76rem;letter-spacing:.12em;text-transform:uppercase;color:var(--cream);text-decoration:none;opacity:.65;transition:var(--tr);}
-.nav-mid a:hover,.nav-mid a.active{opacity:1;color:var(--gold);}
-.nav-mid a.active{border-bottom:1px solid var(--gold);padding-bottom:2px;}
+.nav-mid{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:8px;
+  border-radius:999px;
+  background:linear-gradient(135deg,rgba(255,255,255,.045),rgba(201,168,76,.03));
+  border:1px solid rgba(201,168,76,.12);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.03),0 14px 30px rgba(0,0,0,.12);
+}
+.nav-mid a{
+  position:relative;
+  z-index:0;
+  isolation:isolate;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:40px;
+  padding:0 16px;
+  border-radius:999px;
+  font-size:.72rem;
+  font-weight:500;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:rgba(245,240,232,.72);
+  text-decoration:none;
+  overflow:hidden;
+  transition:color .32s var(--ease),transform .32s var(--ease),box-shadow .32s var(--ease);
+}
+.nav-mid a::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  z-index:-1;
+  border-radius:inherit;
+  background:linear-gradient(135deg,rgba(201,168,76,.14),rgba(201,168,76,.04));
+  opacity:0;
+  transform:scale(.92);
+  pointer-events:none;
+  transition:opacity .32s var(--ease),transform .32s var(--ease),background .32s var(--ease);
+}
+.nav-mid a:hover{
+  color:var(--white);
+  transform:translateY(-1px);
+}
+.nav-mid a:hover::before{
+  opacity:1;
+  transform:scale(1);
+}
+.nav-mid a.active{
+  color:var(--black);
+  box-shadow:0 10px 24px rgba(201,168,76,.22);
+}
+.nav-mid a.active::before{
+  opacity:1;
+  transform:scale(1);
+  background:linear-gradient(135deg,var(--gold),var(--gold2));
+}
 .nav-right{display:flex;align-items:center;gap:10px;}
 .btn{font-family:var(--fb);cursor:pointer;border:none;display:inline-flex;align-items:center;gap:6px;text-decoration:none;transition:var(--tr);font-weight:500;letter-spacing:.05em;border-radius:var(--r);}
 .btn-ghost{background:transparent;border:1px solid rgba(201,168,76,.4);color:var(--gold);padding:8px 18px;font-size:.75rem;}
@@ -65,9 +121,10 @@ nav.maintenance-on{border-bottom:2px solid var(--gold);}
 .hamburger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg);}
 .hamburger.open span:nth-child(2){opacity:0;}
 .hamburger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg);}
-.mob-nav{position:fixed;top:66px;left:0;right:0;background:rgba(8,8,8,.98);backdrop-filter:blur(20px);border-bottom:1px solid rgba(201,168,76,.1);z-index:899;padding:16px 24px 24px;display:flex;flex-direction:column;transform:translateY(-110%);transition:var(--tr);}
+.mob-nav{position:fixed;top:66px;left:12px;right:12px;background:rgba(8,8,8,.94);backdrop-filter:blur(24px);border:1px solid rgba(201,168,76,.12);box-shadow:0 18px 42px rgba(0,0,0,.28);z-index:899;padding:16px 18px 20px;display:flex;flex-direction:column;transform:translateY(-120%);transition:var(--tr);border-radius:22px;}
 .mob-nav.open{transform:none;}
-.mob-nav a{padding:13px 4px;font-size:.88rem;letter-spacing:.1em;text-transform:uppercase;color:var(--cream);text-decoration:none;border-bottom:1px solid rgba(255,255,255,.05);}
+.mob-nav a{padding:13px 16px;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(245,240,232,.78);text-decoration:none;border:1px solid rgba(255,255,255,.04);border-radius:16px;background:rgba(255,255,255,.02);margin-bottom:8px;transition:var(--tr);}
+.mob-nav a:hover{color:var(--black);background:linear-gradient(135deg,var(--gold),var(--gold2));border-color:transparent;}
 .mob-nav-btns{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap;}
 .mob-nav-btns .btn{flex:1;justify-content:center;}
 .u-wrap{position:relative;}
@@ -335,6 +392,40 @@ section{padding:88px 0;}
 .fl{display:block;font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:6px;}
 .fi,.fs,.fta{width:100%;background:var(--dark3);border:1px solid rgba(201,168,76,.12);color:var(--cream);padding:11px 13px;font-family:var(--fb);font-size:.85rem;outline:none;transition:var(--tr);border-radius:var(--r);}
 .fi:focus,.fs:focus,.fta:focus{border-color:rgba(201,168,76,.45);background:rgba(201,168,76,.03);}
+.date-input-wrap{position:relative;}
+.date-input-wrap .fi[type="date"]{padding-right:62px;}
+.date-icon{
+  position:absolute;
+  right:12px;
+  top:50%;
+  transform:translateY(-50%);
+  width:34px;
+  height:34px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:10px;
+  background:linear-gradient(135deg,rgba(201,168,76,.26),rgba(226,201,126,.12));
+  border:1px solid rgba(201,168,76,.28);
+  color:var(--gold2);
+  box-shadow:0 8px 22px rgba(0,0,0,.22);
+  pointer-events:none;
+}
+.fi[type="date"]{
+  color-scheme:dark;
+  border-color:rgba(201,168,76,.2);
+  box-shadow:inset 0 0 0 1px rgba(201,168,76,.05);
+}
+.fi[type="date"]::-webkit-calendar-picker-indicator{
+  position:absolute;
+  right:10px;
+  top:50%;
+  width:40px;
+  height:40px;
+  opacity:0;
+  cursor:pointer;
+  transform:translateY(-50%);
+}
 .fta{resize:vertical;min-height:100px;}
 .fs option{background:var(--dark3);color:var(--cream);}
 .fr{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
@@ -528,13 +619,35 @@ section{padding:88px 0;}
 /* ── FOOTER ── */
 footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:54px 0 26px;}
 .ft-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:42px;margin-bottom:40px;}
-.ft-brand-wrap{margin-bottom:14px;}
+.ft-brand-wrap{margin-bottom:14px;white-space:nowrap;}
 .ft-tagline{font-family:var(--fd);font-size:.78rem;font-style:italic;color:rgba(201,168,76,.55);margin-top:8px;letter-spacing:.04em;}
 .ft-about{font-size:.78rem;color:var(--muted);line-height:1.8;}
 .ft-h{font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;}
 .ft-links{display:flex;flex-direction:column;gap:8px;}
 .ft-links a{font-size:.78rem;color:var(--muted);text-decoration:none;transition:var(--tr);}
 .ft-links a:hover{color:var(--gold);}
+.ft-socials{display:flex;flex-direction:column;gap:10px;}
+.ft-social{
+  min-height:44px;
+  display:inline-flex;align-items:center;gap:12px;
+  padding:10px 14px;
+  border-radius:999px;
+  background:linear-gradient(135deg,rgba(201,168,76,.12),rgba(201,168,76,.04));
+  border:1px solid rgba(201,168,76,.22);
+  color:var(--gold);
+  text-decoration:none;
+  transition:var(--tr);
+  box-shadow:0 10px 26px rgba(0,0,0,.18);
+}
+.ft-social:hover{
+  color:var(--black);
+  background:linear-gradient(135deg,var(--gold),var(--gold2));
+  border-color:transparent;
+  transform:translateX(4px);
+  box-shadow:0 14px 30px rgba(201,168,76,.2);
+}
+.ft-social svg{width:18px;height:18px;fill:currentColor;flex-shrink:0;}
+.ft-social span{font-size:.78rem;letter-spacing:.04em;}
 .ft-btm{border-top:1px solid rgba(255,255,255,.05);padding-top:22px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;}
 .ft-copy{font-size:.73rem;color:var(--muted);}
 
@@ -662,6 +775,7 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
   font-size:clamp(2.6rem,7vw,5rem);
   font-weight:300;letter-spacing:.22em;
   color:var(--white);
+  white-space:nowrap;
   opacity:0;transform:translateY(14px);
   animation:fadeUp .85s .85s cubic-bezier(.22,1,.36,1) forwards;
 }
@@ -931,16 +1045,16 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
       <text x="204" y="30" font-family="Cormorant Garamond,Georgia,serif" font-size="26" font-weight="300" fill="#C9A84C" opacity="0.88">2</text>
     </svg>
     <div class="nav-brand">
-      <span class="nav-brand-name">HAPPENHAUS</span>
+      <span class="nav-brand-name"><span>HAPPEN</span><span>HAUS</span></span>
       <span class="nav-brand-tagline">Hyderabad's Premier Studio</span>
     </div>
   </a>
   <div class="nav-mid" id="navMid">
-    <a href="#services" data-section="services">Services</a>
-    <a href="#gallery-section" data-section="gallery-section">Gallery</a>
-    <a href="#reviews" data-section="reviews">Reviews</a>
-    <a href="#booking" data-section="booking">Book Now</a>
-    <a href="#booking" data-section="booking">Contact</a>
+    <a href="#services" data-section="services" data-nav="services">Services</a>
+    <a href="#gallery-section" data-section="gallery-section" data-nav="gallery">Gallery</a>
+    <a href="#reviews" data-section="reviews" data-nav="reviews">Reviews</a>
+    <a href="#booking" data-section="booking" data-nav="book">Book Now</a>
+    <a href="#booking" data-section="booking" data-nav="contact">Contact</a>
   </div>
   <div class="nav-right">
     <div id="guestNav">
@@ -1078,9 +1192,7 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
             <span class="bk-svc-chip">✨ Premium Lighting Design</span>
             <span class="bk-svc-chip">🚚 Logistics Services</span>
             <span class="bk-svc-chip">🎊 Complete Event Management</span>
-            <span class="bk-svc-chip">💍 Wedding Planning</span>
             <span class="bk-svc-chip">🏢 Corporate Events</span>
-            <span class="bk-svc-chip">🌸 Cradle Ceremony</span>
           </div>
         </div>
         <div class="bk-contacts">
@@ -1140,7 +1252,7 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
               </select>
             </div>
           </div>
-          <div class="fg"><label class="fl">Event Date</label><input class="fi" type="date" id="bkDate"/></div>
+          <div class="fg"><label class="fl">Event Date</label><div class="date-input-wrap"><input class="fi" type="date" id="bkDate"/><span class="date-icon" aria-hidden="true">📅</span></div></div>
           <div class="fg">
             <label class="fl">Budget Range (₹)</label>
             <select class="fs" id="bkBudget" onchange="onBudgetChange(this.value)">
@@ -1235,7 +1347,7 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
           <line x1="4"   y1="57" x2="124" y2="57" stroke="#C9A84C" stroke-width="0.4" opacity="0.22"/>
           <text x="124" y="20" font-family="Cormorant Garamond,Georgia,serif" font-size="18" font-weight="300" fill="#C9A84C" opacity="0.85">2</text>
           <!-- Wordmark -->
-          <text x="148" y="44" font-family="Italiana,Georgia,serif" font-size="22" letter-spacing="3.5" fill="url(#flogo)">HAPPEN</text>
+          <text x="148" y="44" font-family="Italiana,Georgia,serif" font-size="22" letter-spacing="3.5" fill="#FDFCFA">HAPPEN</text>
           <text x="148" y="70" font-family="Italiana,Georgia,serif" font-size="22" letter-spacing="3.5" fill="#C9A84C" opacity="0.75">HAUS</text>
           <line x1="148" y1="52" x2="316" y2="52" stroke="#C9A84C" stroke-width="0.35" opacity="0.18"/>
         </svg>
@@ -1243,7 +1355,27 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
       </div><p class="ft-about">Hyderabad's premier celebration studio — where every moment is crafted with passion, precision, and a touch of the extraordinary.</p></div>
       <div><div class="ft-h">Services</div><div class="ft-links"><a href="#services">Decor &amp; Styling</a><a href="#services">Photography</a><a href="#services">Music &amp; DJ</a><a href="#services">Lighting</a></div></div>
       <div><div class="ft-h">Company</div><div class="ft-links"><a href="#process">Our Process</a><a href="#reviews">Reviews</a><a href="#booking">Contact</a></div></div>
-      <div><div class="ft-h">Connect</div><div class="ft-links"><a href="#">Instagram</a><a href="#">Facebook</a><a href="#">Pinterest</a><a href="#">YouTube</a></div></div>
+      <div>
+        <div class="ft-h">Connect</div>
+        <div class="ft-socials">
+          <a class="ft-social" href="#" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2zm0 1.8A3.95 3.95 0 0 0 3.8 7.75v8.5a3.95 3.95 0 0 0 3.95 3.95h8.5a3.95 3.95 0 0 0 3.95-3.95v-8.5a3.95 3.95 0 0 0-3.95-3.95h-8.5zm8.95 1.35a1.15 1.15 0 1 1 0 2.3 1.15 1.15 0 0 1 0-2.3zM12 6.85A5.15 5.15 0 1 1 6.85 12 5.16 5.16 0 0 1 12 6.85zm0 1.8A3.35 3.35 0 1 0 15.35 12 3.36 3.36 0 0 0 12 8.65z"/></svg>
+            <span>Instagram</span>
+          </a>
+          <a class="ft-social" href="#" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 22v-8.2h2.77l.42-3.22H13.5V8.52c0-.93.26-1.56 1.6-1.56h1.71V4.08A22.5 22.5 0 0 0 14.32 4c-2.47 0-4.16 1.5-4.16 4.27v2.31H7.35v3.22h2.81V22h3.34z"/></svg>
+            <span>Facebook</span>
+          </a>
+          <a class="ft-social" href="#" aria-label="Pinterest">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.02 2C6.58 2 4 5.9 4 9.15c0 2.52.96 4.76 3.01 5.59.34.14.64.01.74-.37.07-.26.23-.91.3-1.18.1-.38.06-.51-.21-.83-.59-.69-.97-1.59-.97-2.86 0-3.68 2.75-6.98 7.16-6.98 3.91 0 6.06 2.39 6.06 5.58 0 4.2-1.86 7.75-4.62 7.75-1.52 0-2.66-1.25-2.29-2.8.44-1.85 1.29-3.84 1.29-5.17 0-1.19-.64-2.18-1.96-2.18-1.55 0-2.8 1.6-2.8 3.75 0 1.36.46 2.28.46 2.28l-1.85 7.84c-.55 2.31-.08 5.13-.04 5.42.03.17.24.21.33.08.13-.17 1.79-2.21 2.35-4.24.16-.58.94-3.63.94-3.63.47.89 1.82 1.68 3.26 1.68 4.28 0 7.18-3.9 7.18-9.11C20 5.68 16.66 2 12.02 2z"/></svg>
+            <span>Pinterest</span>
+          </a>
+          <a class="ft-social" href="#" aria-label="YouTube">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.58 7.19a2.99 2.99 0 0 0-2.1-2.11C17.62 4.5 12 4.5 12 4.5s-5.62 0-7.48.58a2.99 2.99 0 0 0-2.1 2.11A31.2 31.2 0 0 0 2 12a31.2 31.2 0 0 0 .42 4.81 2.99 2.99 0 0 0 2.1 2.11c1.86.58 7.48.58 7.48.58s5.62 0 7.48-.58a2.99 2.99 0 0 0 2.1-2.11A31.2 31.2 0 0 0 22 12a31.2 31.2 0 0 0-.42-4.81zM10.2 14.98V9.02L15.4 12l-5.2 2.98z"/></svg>
+            <span>YouTube</span>
+          </a>
+        </div>
+      </div>
     </div>
     <div class="ft-btm"><div class="ft-copy">© 2025 HAPPENHAUS. All rights reserved.</div><div class="ft-copy">Privacy · Terms</div></div>
   </div>
@@ -1349,7 +1481,7 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
     <p>Update your booking details. Changes will be reviewed by our team.</p>
     <input type="hidden" id="modifyBkId"/>
     <div class="fr"><div class="fg"><label class="fl">Full Name</label><input class="fi" id="modName"/></div><div class="fg"><label class="fl">Phone</label><input class="fi" id="modPhone" inputmode="tel" oninput="validatePhoneInput(this)" onkeypress="return filterPhoneKey(event)"/></div></div>
-    <div class="fg"><label class="fl">Event Date</label><input class="fi" type="date" id="modDate"/></div>
+    <div class="fg"><label class="fl">Event Date</label><div class="date-input-wrap"><input class="fi" type="date" id="modDate"/><span class="date-icon" aria-hidden="true">📅</span></div></div>
     <div class="fg"><label class="fl">Venue / Location</label><input class="fi" id="modVenue"/></div>
     <div class="fg"><label class="fl">Updated Vision / Message</label><textarea class="fta" id="modMsg" style="min-height:80px;"></textarea></div>
     <button class="sub-btn" onclick="saveModify()">Update Booking →</button>
@@ -1430,6 +1562,7 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
 <div class="toast" id="toast"></div>
 
 <!-- ══ FIREBASE ══ -->
+<script src="./config.js"></script>
 <script src="./gallery-config.js"></script>
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -1437,16 +1570,12 @@ import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, si
 import { getFirestore, collection, addDoc, query, where, getDocs, getDoc, doc, updateDoc, orderBy, serverTimestamp, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 // ── FIREBASE CONFIG ──
-// Production: set GitHub Secrets → Actions injects config.js → window.__HH_CFG__
-// Local dev:  create config.js with window.__HH_CFG__ = { apiKey:"...", ... }
-const firebaseConfig = (typeof window.__HH_CFG__ !== 'undefined' && window.__HH_CFG__) || {
-  apiKey:            "AIzaSyDo8u-SZMHPXBLdJV4oq5rNiPz6p33KSF4",
-  authDomain:        "abevents-38a91.firebaseapp.com",
-  projectId:         "abevents-38a91",
-  storageBucket:     "abevents-38a91.appspot.com",
-  messagingSenderId: "408468587854",
-  appId:             "1:408468587854:web:09c108c41c4fb7cd81ca1f"
-};
+// Production: GitHub Actions generates config.js from GitHub Secrets.
+// Local dev: copy config.example.js to config.js and fill in real values.
+const firebaseConfig = (typeof window.__HH_CFG__ !== 'undefined' && window.__HH_CFG__) || null;
+if(!firebaseConfig || !firebaseConfig.apiKey || !firebaseConfig.projectId){
+  throw new Error('Missing runtime config. Add config.js locally or configure GitHub Secrets so deploy generates it.');
+}
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
@@ -2321,17 +2450,20 @@ document.getElementById('profileModal').addEventListener('click',e=>{if(e.target
 document.getElementById('modifyModal').addEventListener('click',e=>{if(e.target===document.getElementById('modifyModal'))closeModify();});
 
 // ══ HAPPENHAUS FLOATING ACTION BUTTON ══
-const WA_NUMBER = '917386030321'; // ← HAPPENHAUS WhatsApp
-const CALL_NUMBER = '+917386030321';
+const CONTACT_CFG = window.__HH_CONTACT__ || {};
+const WA_NUMBER = CONTACT_CFG.whatsapp || '';
+const CALL_NUMBER = CONTACT_CFG.phone || '';
 let fabOpen = false;
 
 window.toggleFab = () => {
   fabOpen = !fabOpen;
   const menu = document.getElementById('fabMenu');
   const btn  = document.getElementById('fabMainBtn');
+  const picker = document.getElementById('waPicker');
   menu.classList.toggle('hidden-menu', !fabOpen);
   btn.classList.toggle('open', fabOpen);
   btn.textContent = fabOpen ? '×' : '✦';
+  if(!fabOpen && picker) picker.classList.remove('open');
   // Stagger animation on items
   if(fabOpen){
     document.querySelectorAll('.fab-option').forEach((el,i)=>{
@@ -2349,6 +2481,7 @@ const WA_MSGS=[
   'Hi HAPPENHAUS! I have a specific event I would like to discuss. Could you help me plan it? I would love to share more details with your team.'
 ];
 window.sendWAMsg=(idx)=>{
+  if(!WA_NUMBER){showToast('WhatsApp contact is not configured yet.');return;}
   const msg=WA_MSGS[idx]||WA_MSGS[0];
   window.open('https://wa.me/'+WA_NUMBER+'?text='+encodeURIComponent(msg),'_blank');
   document.getElementById('waPicker').classList.remove('open');
@@ -2356,9 +2489,12 @@ window.sendWAMsg=(idx)=>{
 };
 window.openFabWA = () => {
   const picker=document.getElementById('waPicker');
+  if(!fabOpen) return;
   picker.classList.toggle('open');
 };
 window.openFabCall = () => {
+  if(!CALL_NUMBER){showToast('Call contact is not configured yet.');return;}
+  document.getElementById('waPicker').classList.remove('open');
   window.location.href = 'tel:' + CALL_NUMBER;
   toggleFab();
 };
@@ -2366,7 +2502,10 @@ window.openFabCall = () => {
 // Close FAB on outside click
 document.addEventListener('click', e => {
   if(fabOpen && !e.target.closest('.fab-wrap')) {
+    document.getElementById('waPicker').classList.remove('open');
     fabOpen = true; toggleFab();
+  } else if(!e.target.closest('#waPicker') && !e.target.closest('#fabWaOpt')) {
+    document.getElementById('waPicker')?.classList.remove('open');
   }
 });
 
@@ -2554,18 +2693,28 @@ function initReveal(){
 }
 
 // ── NAV ACTIVE SECTION HIGHLIGHT ──
+let bookingNavPreference='book';
+
 function initNavHighlight(){
   const sections=['services','gallery-section','reviews','booking'];
   const navLinks=document.querySelectorAll('.nav-mid a[data-section]');
   if(!navLinks.length)return;
+  navLinks.forEach(link=>{
+    link.addEventListener('click',()=>{
+      const navKey=link.dataset.nav||link.dataset.section;
+      if(link.dataset.section==='booking') bookingNavPreference=navKey;
+      navLinks.forEach(a=>a.classList.toggle('active',a===link));
+    });
+  });
   const obs=new IntersectionObserver((entries)=>{
     entries.forEach(entry=>{
       if(entry.isIntersecting){
         const id=entry.target.id;
         navLinks.forEach(a=>{
           const sec=a.dataset.section;
-          // Both "booking" links get active when booking section is in view
-          a.classList.toggle('active',sec===id||(id==='booking'&&sec==='booking'));
+          const navKey=a.dataset.nav||sec;
+          const isBookingMatch=id==='booking' && sec==='booking' && navKey===bookingNavPreference;
+          a.classList.toggle('active',(sec===id && id!=='booking') || isBookingMatch);
         });
       }
     });

@@ -699,7 +699,7 @@ tbody tr:hover td{background:var(--s2);}
         <div style="font-family:var(--fh);font-size:.85rem;color:var(--gold);margin-bottom:6px;">☁️ Cloudinary Setup (Free 25GB)</div>
         1. Go to <strong>cloudinary.com</strong> → Sign up → copy your <strong>Cloud Name</strong><br>
         2. Settings → Upload → Add Preset → set <strong>Unsigned</strong>, name it <code style="background:var(--s3);padding:1px 7px;border-radius:4px;color:var(--gold)">ab_events_gallery</code><br>
-        3. In this file, find <code style="background:var(--s3);padding:1px 7px;border-radius:4px;color:var(--gold)">YOUR_CLOUD_NAME</code> and replace with your Cloud Name
+        3. Put your Cloudinary values in <code style="background:var(--s3);padding:1px 7px;border-radius:4px;color:var(--gold)">config.js</code> locally or GitHub Secrets for deployment
       </div>
       <div class="card" style="margin-bottom:16px;">
         <div class="card-hdr"><div><div class="card-ttl">📸 Upload New Photo</div><div class="card-sub">Add images by service &amp; event category</div></div></div>
@@ -863,6 +863,7 @@ tbody tr:hover td{background:var(--s2);}
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="./config.js"></script>
 <script src="./gallery-config.js"></script>
 <!-- EmailJS -->
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
@@ -917,41 +918,29 @@ tbody tr:hover td{background:var(--s2);}
   }, { once: true });
 })();
 // ── FIREBASE CONFIG ──
-// Production: GitHub Secrets → Actions generates config.js → window.__HH_CFG__
-// Local dev:  create config.js: window.__HH_CFG__ = { apiKey:"...", ... }
-const firebaseConfig = (typeof window.__HH_CFG__ !== 'undefined' && window.__HH_CFG__) || {
-  apiKey:            "AIzaSyDo8u-SZMHPXBLdJV4oq5rNiPz6p33KSF4",
-  authDomain:        "abevents-38a91.firebaseapp.com",
-  projectId:         "abevents-38a91",
-  storageBucket:     "abevents-38a91.appspot.com",
-  messagingSenderId: "408468587854",
-  appId:             "1:408468587854:web:09c108c41c4fb7cd81ca1f"
-};
+// Production: GitHub Actions generates config.js from GitHub Secrets.
+// Local dev: copy config.example.js to config.js and fill in real values.
+const firebaseConfig = (typeof window.__HH_CFG__ !== 'undefined' && window.__HH_CFG__) || null;
+if (!firebaseConfig || !firebaseConfig.apiKey || !firebaseConfig.projectId) {
+  throw new Error('Missing runtime config. Add config.js locally or configure GitHub Secrets so deploy generates it.');
+}
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db   = firebase.firestore();
 
 // ── CLOUDINARY CONFIG ──
-// Replace YOUR_CLOUD_NAME with your Cloudinary cloud name from cloudinary.com
 // SECURITY: Load from config.js → window.__HH_MEDIA__
-var CLOUDINARY_CLOUD  = (window.__HH_MEDIA__ && window.__HH_MEDIA__.cloud)  || 'di0ihwmg0';
-var CLOUDINARY_PRESET = (window.__HH_MEDIA__ && window.__HH_MEDIA__.preset) || 'ab_events_gallery';
+var CLOUDINARY_CLOUD  = (window.__HH_MEDIA__ && window.__HH_MEDIA__.cloud)  || '';
+var CLOUDINARY_PRESET = (window.__HH_MEDIA__ && window.__HH_MEDIA__.preset) || '';
 
 // ── EMAILJS CONFIG (optional) ──
-var EMAILJS_SERVICE_ID  = 'YOUR_EMAILJS_SERVICE_ID';
-var EMAILJS_TEMPLATE_ID = 'YOUR_EMAILJS_TEMPLATE_ID';
-var EMAILJS_PUBLIC_KEY  = 'YOUR_EMAILJS_PUBLIC_KEY';
+var EMAILJS_SERVICE_ID  = (window.__HH_EMAILJS__ && window.__HH_EMAILJS__.serviceId)  || '';
+var EMAILJS_TEMPLATE_ID = (window.__HH_EMAILJS__ && window.__HH_EMAILJS__.templateId) || '';
+var EMAILJS_PUBLIC_KEY  = (window.__HH_EMAILJS__ && window.__HH_EMAILJS__.publicKey)  || '';
 
 // ── ADMIN WHITELIST ──
-// Add YOUR email address here to gain access
-// SECURITY: Admin emails should be stored in Firestore 'admin_roles' collection
-// or loaded via window.__HH_ADMINS__ from config.js
-// Example config.js: window.__HH_ADMINS__ = ['<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="3b5a5f5652557b535a4b4b5e55535a4e48155255">[email&#160;protected]</a>']
-var ADMIN_EMAILS = (window.__HH_ADMINS__) || [
-  // ADD YOUR ADMIN EMAIL VIA config.js — do not hardcode here
-  'srikanth.ambati4957@gmail.com',
-  '<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f18283989a909f8599df909c93908598c5c8c4c6b1969c90989ddf929e9c">[email&#160;protected]</a>'  // ← REMOVE after adding config.js
-];
+// SECURITY: Load admin emails from config.js or a server-side source.
+var ADMIN_EMAILS = Array.isArray(window.__HH_ADMINS__) ? window.__HH_ADMINS__.filter(Boolean) : [];
 
 // ── PIPELINE STAGES ──
 var PIPELINE_STAGES = ['New Enquiry','Consultation Scheduled','Proposal Sent','Confirmed','Completed','Declined'];
@@ -1046,7 +1035,7 @@ window.adminRegister = function() {
         });
     })
     .then(function() {
-      if (okEl) okEl.innerHTML = '<span style="color:var(--green)">Account created! Add your email to ADMIN_EMAILS in the code, then sign in.</span>';
+      if (okEl) okEl.innerHTML = '<span style="color:var(--green)">Account created! Add your email to __HH_ADMINS__ in config.js or GitHub Secrets, then sign in.</span>';
       ['regFirstName','regLastName','regEmail','regPhone','regPwd','regPwd2'].forEach(function(id) {
         var el = document.getElementById(id); if (el) el.value = '';
       });
@@ -1525,7 +1514,7 @@ function sendBookingNotification(bookingId, status, pipeline) {
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
     });
   }
-  if (EMAILJS_SERVICE_ID === 'YOUR_EMAILJS_SERVICE_ID') return;
+  if (!EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID || !EMAILJS_PUBLIC_KEY) return;
   if (typeof emailjs !== 'undefined' && bk.email) {
     emailjs.init(EMAILJS_PUBLIC_KEY);
     emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
@@ -1724,8 +1713,8 @@ window.uploadPhoto = function() {
   if (!svc)      { showToast('Please select a service category.'); return; }
   if (!eventCat) { showToast('Please select an event category.');  return; }
   if (selectedFile.size > 5 * 1024 * 1024) { showToast('File too large. Max 5MB.'); return; }
-  if (CLOUDINARY_CLOUD === 'YOUR_CLOUD_NAME') {
-    document.getElementById('uploadMsg').innerHTML = '<span class="msg-err">Set CLOUDINARY_CLOUD in the code to your Cloudinary cloud name.</span>';
+  if (!CLOUDINARY_CLOUD || !CLOUDINARY_PRESET) {
+    document.getElementById('uploadMsg').innerHTML = '<span class="msg-err">Set Cloudinary values in config.js or GitHub Secrets before uploading.</span>';
     return;
   }
   var caption = (document.getElementById('uploadCaption').value || '').trim();
@@ -1978,7 +1967,6 @@ document.addEventListener('click',function(e){
   }
 });
 window.showPanel=showPanel;
-ebar;
 
 // ── PHONE VALIDATION (admin forms) ──
 window.blockNonPhone = function(e) {
