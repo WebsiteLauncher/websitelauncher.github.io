@@ -6,7 +6,8 @@
 <title>HAPPENHAUS Admin — Event Management Console</title>
 <meta name="description" content="HAPPENHAUS Admin Dashboard — manage bookings, pipeline, gallery and team."/>
 <meta name="robots" content="noindex, nofollow"/>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23080808' rx='3'/%3E%3C!-- Left H solid --%3E%3Crect x='2' y='3' width='4.5' height='26' fill='%23C9A84C'/%3E%3Crect x='13' y='3' width='4.5' height='26' fill='%23C9A84C'/%3E%3Crect x='2' y='13' width='28' height='6' fill='%23C9A84C'/%3E%3C!-- serif caps --%3E%3Crect x='1' y='3' width='6.5' height='2' fill='%23C9A84C'/%3E%3Crect x='12' y='3' width='6.5' height='2' fill='%23C9A84C'/%3E%3Crect x='1' y='27' width='6.5' height='2' fill='%23C9A84C'/%3E%3Crect x='12' y='27' width='6.5' height='2' fill='%23C9A84C'/%3E%3C!-- Right H wireframe --%3E%3Crect x='16' y='2' width='14' height='28' fill='none' stroke='%23C9A84C' stroke-width='1.2'/%3E%3Cline x1='19' y1='4' x2='19' y2='28' stroke='%23C9A84C' stroke-width='0.9'/%3E%3Cline x1='27' y1='4' x2='27' y2='28' stroke='%23C9A84C' stroke-width='0.9'/%3E%3Cline x1='19' y1='16' x2='27' y2='16' stroke='%23C9A84C' stroke-width='0.9'/%3E%3C!-- superscript 2 --%3E%3Ctext x='29' y='8' font-family='Georgia' font-size='5' fill='%23C9A84C' opacity='0.9'%3E2%3C/text%3E%3C/svg%3E" type="image/svg+xml"/>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
+<link rel="shortcut icon" href="/favicon.svg" type="image/svg+xml"/>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
 <!-- EmailJS for notifications -->
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
@@ -699,7 +700,7 @@ tbody tr:hover td{background:var(--s2);}
         <div style="font-family:var(--fh);font-size:.85rem;color:var(--gold);margin-bottom:6px;">☁️ Cloudinary Setup (Free 25GB)</div>
         1. Go to <strong>cloudinary.com</strong> → Sign up → copy your <strong>Cloud Name</strong><br>
         2. Settings → Upload → Add Preset → set <strong>Unsigned</strong>, name it <code style="background:var(--s3);padding:1px 7px;border-radius:4px;color:var(--gold)">ab_events_gallery</code><br>
-        3. In this file, find <code style="background:var(--s3);padding:1px 7px;border-radius:4px;color:var(--gold)">YOUR_CLOUD_NAME</code> and replace with your Cloud Name
+        3. Put your Cloudinary values in <code style="background:var(--s3);padding:1px 7px;border-radius:4px;color:var(--gold)">config.js</code> locally or GitHub Secrets for deployment
       </div>
       <div class="card" style="margin-bottom:16px;">
         <div class="card-hdr"><div><div class="card-ttl">📸 Upload New Photo</div><div class="card-sub">Add images by service &amp; event category</div></div></div>
@@ -733,15 +734,6 @@ tbody tr:hover td{background:var(--s2);}
               <label class="uf-label" style="margin-top:8px;">Event Category *</label>
               <select class="uf-select" id="uploadEventCat">
                 <option value="">— Select Event Type —</option>
-                <option value="Wedding">💍 Wedding</option><option value="Engagement">💝 Engagement</option>
-                <option value="Reception">🎉 Reception</option><option value="Haldi">🌼 Haldi</option>
-                <option value="Mehendi">🌿 Mehendi</option><option value="Sangeet">🎶 Sangeet</option>
-                <option value="Baby Shower">👶 Baby Shower</option><option value="Birthday">🎂 Birthday</option>
-                <option value="Anniversary">🌹 Anniversary</option>
-                <option value="Housewarming">🏠 Housewarming</option><option value="Corporate">🏢 Corporate</option>
-                <option value="Farewell">👋 Farewell</option><option value="Naming Ceremony">🍼 Naming Ceremony</option>
-                <option value="Logistics">🚚 Logistics</option>
-                <option value="General">📸 General / Other</option>
               </select>
               <label class="uf-label" style="margin-top:8px;">Caption (optional)</label>
               <input class="uf-input" id="uploadCaption" placeholder="e.g. Lotus floral mandap at HICC"/>
@@ -757,25 +749,15 @@ tbody tr:hover td{background:var(--s2);}
           <div style="display:flex;flex-direction:column;gap:6px;">
             <div class="ftabs" id="galleryServiceTabs" style="flex-wrap:wrap;">
               <button class="ftab active" onclick="setGalSvcFilter('',this)">All Services</button>
-              <button class="ftab" onclick="setGalSvcFilter('Luxury Decor &amp; Styling',this)">🌸 Decor</button>
-                            <button class="ftab" onclick="setGalSvcFilter('Professional Photography',this)">📷 Photo</button>
-              <button class="ftab" onclick="setGalSvcFilter('Premium Lighting Design',this)">✨ Lighting</button>
-              <button class="ftab" onclick="setGalSvcFilter('Live Music &amp; Entertainment',this)">🎵 Music</button>
-              <button class="ftab" onclick="setGalSvcFilter('Logistics Services',this)">🚚 Logistics</button>
-              <button class="ftab" onclick="setGalSvcFilter('Gourmet Catering',this)">🍽️ Catering</button>
+              <button class="ftab" onclick="setGalSvcFilter('luxury-decor-styling',this)">🌸 Decor</button>
+              <button class="ftab" onclick="setGalSvcFilter('professional-photography',this)">📷 Photo</button>
+              <button class="ftab" onclick="setGalSvcFilter('premium-lighting-design',this)">✨ Lighting</button>
+              <button class="ftab" onclick="setGalSvcFilter('live-music-entertainment',this)">🎵 Music</button>
+              <button class="ftab" onclick="setGalSvcFilter('logistics-services',this)">🚚 Logistics</button>
+              <button class="ftab" onclick="setGalSvcFilter('gourmet-catering',this)">🍽️ Catering</button>
             </div>
             <div class="ftabs" id="galleryCatTabs" style="flex-wrap:wrap;">
               <button class="ftab active" onclick="setGalCatFilter('',this)">All Events</button>
-              <button class="ftab" onclick="setGalCatFilter('Wedding',this)">💍 Wedding</button>
-              <button class="ftab" onclick="setGalCatFilter('Engagement',this)">💝 Engagement</button>
-              <button class="ftab" onclick="setGalCatFilter('Haldi',this)">🌼 Haldi</button>
-              <button class="ftab" onclick="setGalCatFilter('Mehendi',this)">🌿 Mehendi</button>
-              <button class="ftab" onclick="setGalCatFilter('Baby Shower',this)">👶 Baby Shower</button>
-              <button class="ftab" onclick="setGalCatFilter('Birthday',this)">🎂 Birthday</button>
-              <button class="ftab" onclick="setGalCatFilter('Anniversary',this)">🌹 Anniversary</button>
-              <button class="ftab" onclick="setGalCatFilter('Housewarming',this)">🏠 Housewarming</button>
-              <button class="ftab" onclick="setGalCatFilter('Corporate',this)">🏢 Corporate</button>
-              <button class="ftab" onclick="setGalCatFilter('Logistics',this)">🚚 Logistics</button>
             </div>
           </div>
         </div>
@@ -882,6 +864,8 @@ tbody tr:hover td{background:var(--s2);}
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="./config.js"></script>
+<script src="./gallery-config.js"></script>
 <!-- EmailJS -->
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
@@ -935,45 +919,34 @@ tbody tr:hover td{background:var(--s2);}
   }, { once: true });
 })();
 // ── FIREBASE CONFIG ──
-// Production: GitHub Secrets → Actions generates config.js → window.__HH_CFG__
-// Local dev:  create config.js: window.__HH_CFG__ = { apiKey:"...", ... }
-const firebaseConfig = (typeof window.__HH_CFG__ !== 'undefined' && window.__HH_CFG__) || {
-  apiKey:            "AIzaSyDo8u-SZMHPXBLdJV4oq5rNiPz6p33KSF4",
-  authDomain:        "abevents-38a91.firebaseapp.com",
-  projectId:         "abevents-38a91",
-  storageBucket:     "abevents-38a91.appspot.com",
-  messagingSenderId: "408468587854",
-  appId:             "1:408468587854:web:09c108c41c4fb7cd81ca1f"
-};
+// Production: GitHub Actions generates config.js from GitHub Secrets.
+// Local dev: copy config.example.js to config.js and fill in real values.
+const firebaseConfig = (typeof window.__HH_CFG__ !== 'undefined' && window.__HH_CFG__) || null;
+if (!firebaseConfig || !firebaseConfig.apiKey || !firebaseConfig.projectId) {
+  throw new Error('Missing runtime config. Add config.js locally or configure GitHub Secrets so deploy generates it.');
+}
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db   = firebase.firestore();
 
 // ── CLOUDINARY CONFIG ──
-// Replace YOUR_CLOUD_NAME with your Cloudinary cloud name from cloudinary.com
 // SECURITY: Load from config.js → window.__HH_MEDIA__
-var CLOUDINARY_CLOUD  = (window.__HH_MEDIA__ && window.__HH_MEDIA__.cloud)  || 'di0ihwmg0';
-var CLOUDINARY_PRESET = (window.__HH_MEDIA__ && window.__HH_MEDIA__.preset) || 'ab_events_gallery';
+var CLOUDINARY_CLOUD  = (window.__HH_MEDIA__ && window.__HH_MEDIA__.cloud)  || '';
+var CLOUDINARY_PRESET = (window.__HH_MEDIA__ && window.__HH_MEDIA__.preset) || '';
 
 // ── EMAILJS CONFIG (optional) ──
-var EMAILJS_SERVICE_ID  = 'YOUR_EMAILJS_SERVICE_ID';
-var EMAILJS_TEMPLATE_ID = 'YOUR_EMAILJS_TEMPLATE_ID';
-var EMAILJS_PUBLIC_KEY  = 'YOUR_EMAILJS_PUBLIC_KEY';
+var EMAILJS_SERVICE_ID  = (window.__HH_EMAILJS__ && window.__HH_EMAILJS__.serviceId)  || '';
+var EMAILJS_TEMPLATE_ID = (window.__HH_EMAILJS__ && window.__HH_EMAILJS__.templateId) || '';
+var EMAILJS_PUBLIC_KEY  = (window.__HH_EMAILJS__ && window.__HH_EMAILJS__.publicKey)  || '';
 
 // ── ADMIN WHITELIST ──
-// Add YOUR email address here to gain access
-// SECURITY: Admin emails should be stored in Firestore 'admin_roles' collection
-// or loaded via window.__HH_ADMINS__ from config.js
-// Example config.js: window.__HH_ADMINS__ = ['<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="3b5a5f5652557b535a4b4b5e55535a4e48155255">[email&#160;protected]</a>']
-var ADMIN_EMAILS = (window.__HH_ADMINS__) || [
-  // ADD YOUR ADMIN EMAIL VIA config.js — do not hardcode here
-  'srikanth.ambati4957@gmail.com',
-  '<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f18283989a909f8599df909c93908598c5c8c4c6b1969c90989ddf929e9c">[email&#160;protected]</a>'  // ← REMOVE after adding config.js
-];
+// SECURITY: Load admin emails from config.js or a server-side source.
+var ADMIN_EMAILS = Array.isArray(window.__HH_ADMINS__) ? window.__HH_ADMINS__.filter(Boolean) : [];
 
 // ── PIPELINE STAGES ──
 var PIPELINE_STAGES = ['New Enquiry','Consultation Scheduled','Proposal Sent','Confirmed','Completed','Declined'];
 var STAGE_COLORS    = ['var(--blue)','var(--purple)','var(--yellow)','var(--green)','var(--t3)','var(--red)'];
+var GALLERY_TAXONOMY = window.HHGalleryTaxonomy || null;
 
 // ── STATE ──
 var allBookings=[], allUsers=[], allGallery=[], allStaff=[], allReviews=[];
@@ -1063,7 +1036,7 @@ window.adminRegister = function() {
         });
     })
     .then(function() {
-      if (okEl) okEl.innerHTML = '<span style="color:var(--green)">Account created! Add your email to ADMIN_EMAILS in the code, then sign in.</span>';
+      if (okEl) okEl.innerHTML = '<span style="color:var(--green)">Account created! Add your email to __HH_ADMINS__ in config.js or GitHub Secrets, then sign in.</span>';
       ['regFirstName','regLastName','regEmail','regPhone','regPwd','regPwd2'].forEach(function(id) {
         var el = document.getElementById(id); if (el) el.value = '';
       });
@@ -1115,7 +1088,12 @@ function loadUsers() {
 
 function loadGallery() {
   return db.collection('gallery').get().then(function(snap) {
-    allGallery = snap.docs.map(function(d) { return Object.assign({ id: d.id }, d.data()); });
+    allGallery = snap.docs.map(function(d) {
+      var raw = Object.assign({ id: d.id }, d.data());
+      var normalized = normalizeGalleryRecord(raw);
+      syncGalleryRecordIfNeeded(d.id, raw, normalized);
+      return normalized;
+    });
     renderAdminGallery();
     var gb = document.getElementById('galBadge');
     if (gb) gb.textContent = allGallery.length;
@@ -1537,7 +1515,7 @@ function sendBookingNotification(bookingId, status, pipeline) {
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
     });
   }
-  if (EMAILJS_SERVICE_ID === 'YOUR_EMAILJS_SERVICE_ID') return;
+  if (!EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID || !EMAILJS_PUBLIC_KEY) return;
   if (typeof emailjs !== 'undefined' && bk.email) {
     emailjs.init(EMAILJS_PUBLIC_KEY);
     emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
@@ -1731,13 +1709,13 @@ window.onDrop = function(e) {
 
 window.uploadPhoto = function() {
   if (!selectedFile)           { showToast('Please select an image first.'); return; }
-  var svc      = document.getElementById('uploadService').value;
-  var eventCat = document.getElementById('uploadEventCat').value;
+  var svc      = normalizeGalleryService(document.getElementById('uploadService').value);
+  var eventCat = normalizeGalleryCategory(document.getElementById('uploadEventCat').value);
   if (!svc)      { showToast('Please select a service category.'); return; }
   if (!eventCat) { showToast('Please select an event category.');  return; }
   if (selectedFile.size > 5 * 1024 * 1024) { showToast('File too large. Max 5MB.'); return; }
-  if (CLOUDINARY_CLOUD === 'YOUR_CLOUD_NAME') {
-    document.getElementById('uploadMsg').innerHTML = '<span class="msg-err">Set CLOUDINARY_CLOUD in the code to your Cloudinary cloud name.</span>';
+  if (!CLOUDINARY_CLOUD || !CLOUDINARY_PRESET) {
+    document.getElementById('uploadMsg').innerHTML = '<span class="msg-err">Set Cloudinary values in config.js or GitHub Secrets before uploading.</span>';
     return;
   }
   var caption = (document.getElementById('uploadCaption').value || '').trim();
@@ -1763,9 +1741,22 @@ window.uploadPhoto = function() {
     })
     .then(function(data) {
       bar.style.width = '85%';
+      var normalized = normalizeGalleryRecord({
+        url: data.secure_url,
+        service: svc,
+        eventCategory: eventCat,
+        caption: caption || eventCat,
+        cloudinaryId: data.public_id
+      });
       return db.collection('gallery').add({
-        url: data.secure_url, service: svc, eventCategory: eventCat,
-        caption: caption || eventCat, cloudinaryId: data.public_id,
+        url: normalized.url,
+        service: normalized.service,
+        serviceKey: normalized.serviceKey,
+        eventCategory: normalized.eventCategory,
+        eventCategoryKey: normalized.eventCategoryKey,
+        filterKeys: normalized.filterKeys,
+        caption: normalized.caption,
+        cloudinaryId: normalized.cloudinaryId,
         uploadedAt: firebase.firestore.FieldValue.serverTimestamp()
       });
     })
@@ -1792,8 +1783,8 @@ function renderAdminGallery() {
   var grid = document.getElementById('adminGalleryGrid');
   if (!grid) return;
   var photos = allGallery.slice();
-  if (galSvcFilter) photos = photos.filter(function(p) { return p.service      === galSvcFilter; });
-  if (galCatFilter) photos = photos.filter(function(p) { return p.eventCategory === galCatFilter; });
+  if (galSvcFilter) photos = photos.filter(function(p) { return p.serviceKey === galSvcFilter; });
+  if (galCatFilter) photos = photos.filter(function(p) { return p.eventCategoryKey === galCatFilter; });
   var sub = document.getElementById('gallerySubtitle');
   if (sub) sub.textContent = photos.length + ' photo' + (photos.length !== 1 ? 's' : '') + ' uploaded';
   if (!photos.length) { grid.innerHTML = '<div class="gga-empty">No photos match this filter.</div>'; return; }
@@ -1840,6 +1831,53 @@ function renderServicesPanel() {
     var el = document.getElementById('svcStat' + i); if (el) el.textContent = allBookings.filter(function(b) { return b.service === s; }).length;
   });
   renderSvcChart('svcChartFull');
+}
+
+function normalizeGalleryService(value) {
+  return GALLERY_TAXONOMY ? GALLERY_TAXONOMY.normalizeService(value) : (value || '').trim();
+}
+
+function normalizeGalleryCategory(value) {
+  return GALLERY_TAXONOMY ? GALLERY_TAXONOMY.normalizeEventCategory(value) : (value || '').trim();
+}
+
+function normalizeGalleryRecord(record) {
+  return GALLERY_TAXONOMY ? GALLERY_TAXONOMY.normalizeGalleryItem(record) : Object.assign({}, record);
+}
+
+function syncGalleryRecordIfNeeded(id, raw, normalized) {
+  if (!GALLERY_TAXONOMY || !GALLERY_TAXONOMY.needsGalleryNormalization(raw)) return;
+  db.collection('gallery').doc(id).set({
+    service: normalized.service,
+    serviceKey: normalized.serviceKey,
+    eventCategory: normalized.eventCategory,
+    eventCategoryKey: normalized.eventCategoryKey,
+    filterKeys: normalized.filterKeys
+  }, { merge: true }).catch(function(e) {
+    console.error('gallery normalization sync:', e.message);
+  });
+}
+
+function initGalleryCategoryControls() {
+  if (!GALLERY_TAXONOMY) return;
+  var select = document.getElementById('uploadEventCat');
+  if (select) {
+    select.innerHTML = '<option value="">— Select Event Type —</option>' +
+      GALLERY_TAXONOMY.eventCategories.map(function(category) {
+        return '<option value="' + category.label + '">' + (category.icon ? category.icon + ' ' : '') + category.label + '</option>';
+      }).join('');
+  }
+
+  var catTabs = document.getElementById('galleryCatTabs');
+  if (catTabs) {
+    catTabs.innerHTML = '<button class="ftab active" onclick="setGalCatFilter(\'\',this)">All Events</button>' +
+      GALLERY_TAXONOMY.eventCategories
+        .filter(function(category) { return category.key !== 'general'; })
+        .map(function(category) {
+          return '<button class="ftab" onclick="setGalCatFilter(\'' + category.key + '\',this)">' +
+            (category.icon ? category.icon + ' ' : '') + category.shortLabel + '</button>';
+        }).join('');
+  }
 }
 
 // ════════════════════════════════════════════════════
@@ -1930,7 +1968,6 @@ document.addEventListener('click',function(e){
   }
 });
 window.showPanel=showPanel;
-ebar;
 
 // ── PHONE VALIDATION (admin forms) ──
 window.blockNonPhone = function(e) {
@@ -1941,6 +1978,8 @@ window.filterAdminPhone = function(el) {
   var cleaned = el.value.replace(/[^0-9+\- ]/g,'');
   if(el.value !== cleaned) el.value = cleaned;
 };
+
+initGalleryCategoryControls();
 </script>
 </body>
 </html>

@@ -1,5 +1,5 @@
-// HAPPENHAUS — Service Worker v3
-const CACHE_NAME = 'happenhaus-v3';
+// HAPPENHAUS — Service Worker v5
+const CACHE_NAME = 'happenhaus-v5';
 const OFFLINE_URL = './index.html';
 
 self.addEventListener('install', e => {
@@ -7,7 +7,8 @@ self.addEventListener('install', e => {
     caches.open(CACHE_NAME).then(cache => {
       return Promise.allSettled([
         cache.add('./index.html'),
-        cache.add('./manifest.json')
+        cache.add('./manifest.json'),
+        cache.add('./gallery-config.js')
       ]);
     }).then(() => self.skipWaiting())
   );
