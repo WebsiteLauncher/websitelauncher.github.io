@@ -1576,6 +1576,25 @@ const firebaseConfig = (typeof window.__HH_CFG__ !== 'undefined' && window.__HH_
 if(!firebaseConfig || !firebaseConfig.apiKey || !firebaseConfig.projectId){
   throw new Error('Missing runtime config. Add config.js locally or configure GitHub Secrets so deploy generates it.');
 }
+const HH_DEBUG = new URLSearchParams(window.location.search).get('debug') === '1';
+function hhDebugLog(label, detail){
+  if(HH_DEBUG) console.log('[HAPPENHAUS DEBUG]', label, detail || '');
+}
+function hhDebugError(label, err){
+  console.error('[HAPPENHAUS]', label, err);
+  if(HH_DEBUG && typeof window.showToast === 'function'){
+    const msg = err && (err.code || err.message) ? `${label}: ${err.code || err.message}` : label;
+    window.showToast(msg);
+  }
+}
+hhDebugLog('Runtime config detected', {
+  hasConfig: !!firebaseConfig,
+  projectId: firebaseConfig.projectId || '',
+  authDomain: firebaseConfig.authDomain || '',
+  hasApiKey: !!firebaseConfig.apiKey,
+  hasCloudinaryCloud: !!(window.__HH_MEDIA__ && window.__HH_MEDIA__.cloud),
+  hasCloudinaryPreset: !!(window.__HH_MEDIA__ && window.__HH_MEDIA__.preset)
+});
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
@@ -1987,7 +2006,10 @@ async function loadFirestoreGallery(){
       return normalized;
     });
     renderDynGallery();
-  }catch(e){renderDynGallery();}
+  }catch(e){
+    hhDebugError('Gallery load failed', e);
+    renderDynGallery();
+  }
 }
 window.loadFirestoreGallery=loadFirestoreGallery;
 
@@ -2010,7 +2032,10 @@ window.loadSvcGallery = async (name) => {
     document.getElementById('glCount').textContent=`${all.length} photo${all.length!==1?'s':''}`;
     if(!all.length){document.getElementById('glGrid').innerHTML='<div class="gl-empty">No photos yet for this service.</div>';return;}
     document.getElementById('glGrid').innerHTML=all.map((img,i)=>`<div class="gl-item" onclick="openViewer(${i})"><img src="${img.url}" alt="${img.caption}" loading="lazy"/><div class="gl-item-lbl">${img.caption}</div><button class="gl-zoom-btn" onclick="event.stopPropagation();openViewer(${i})">🔍</button></div>`).join('');
-  }catch(err){document.getElementById('glGrid').innerHTML='<div class="gl-empty">Could not load photos.</div>';}
+  }catch(err){
+    hhDebugError('Service gallery load failed', err);
+    document.getElementById('glGrid').innerHTML='<div class="gl-empty">Could not load photos.</div>';
+  }
 };
 
 // ── REVIEWS ──
@@ -2049,6 +2074,7 @@ async function loadReviews(){
       initRevCarousel(FALLBACK_REVS.length);
     }
   }catch(e){
+    hhDebugError('Reviews load failed', e);
     document.getElementById('revAvgNum').textContent='5.0';
     document.getElementById('revAvgCount').textContent='Based on verified reviews';
     document.getElementById('revGrid').innerHTML=FALLBACK_REVS.map(r=>makeRevCard(r)).join('');

@@ -924,6 +924,24 @@ const firebaseConfig = (typeof window.__HH_CFG__ !== 'undefined' && window.__HH_
 if (!firebaseConfig || !firebaseConfig.apiKey || !firebaseConfig.projectId) {
   throw new Error('Missing runtime config. Add config.js locally or configure GitHub Secrets so deploy generates it.');
 }
+var HH_DEBUG = new URLSearchParams(window.location.search).get('debug') === '1';
+function hhDebugLog(label, detail) {
+  if (HH_DEBUG) console.log('[HAPPENHAUS ADMIN DEBUG]', label, detail || '');
+}
+function hhDebugError(label, err) {
+  console.error('[HAPPENHAUS ADMIN]', label, err);
+  if (HH_DEBUG && typeof showToast === 'function') {
+    showToast(label + ': ' + ((err && (err.code || err.message)) || 'Unknown error'));
+  }
+}
+hhDebugLog('Runtime config detected', {
+  hasConfig: !!firebaseConfig,
+  projectId: firebaseConfig.projectId || '',
+  authDomain: firebaseConfig.authDomain || '',
+  hasApiKey: !!firebaseConfig.apiKey,
+  hasCloudinaryCloud: !!(window.__HH_MEDIA__ && window.__HH_MEDIA__.cloud),
+  hasCloudinaryPreset: !!(window.__HH_MEDIA__ && window.__HH_MEDIA__.preset)
+});
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db   = firebase.firestore();
