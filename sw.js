@@ -1,5 +1,5 @@
-// HAPPENHAUS — Service Worker v5
-const CACHE_NAME = 'happenhaus-v5';
+// HAPPENHAUS — Service Worker v6
+const CACHE_NAME = 'happenhaus-v6';
 const OFFLINE_URL = './index.html';
 
 self.addEventListener('install', e => {
@@ -7,8 +7,11 @@ self.addEventListener('install', e => {
     caches.open(CACHE_NAME).then(cache => {
       return Promise.allSettled([
         cache.add('./index.html'),
+        cache.add('./ab-events-admin.html'),
         cache.add('./manifest.json'),
-        cache.add('./gallery-config.js')
+        cache.add('./gallery-config.js'),
+        cache.add('./favicon.svg'),
+        cache.add('./config.js')
       ]);
     }).then(() => self.skipWaiting())
   );
@@ -35,7 +38,7 @@ self.addEventListener('fetch', e => {
       .then(res => {
         // Cache successful responses for static assets
         if(res.ok && (url.includes('.html') || url.includes('.css') || 
-           url.includes('.js') || url.includes('.json') || url.includes('.png'))) {
+           url.includes('.js') || url.includes('.json') || url.includes('.png') || url.includes('.svg') || url.includes('.webp'))) {
           const clone = res.clone();
           caches.open(CACHE_NAME).then(cache => cache.put(e.request, clone));
         }
