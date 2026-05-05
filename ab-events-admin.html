@@ -2106,7 +2106,7 @@ window.viewDetail = function(id) {
   // Decode booking ID into human-readable label
   var _bkIdDecoded = '';
   if (b.bookingId) {
-    var _evtMap = {'WED':'Wedding','REC':'Reception','ENG':'Engagement','SGT':'Sangeet','MEH':'Mehendi','BDY':'Birthday','CRP':'Corporate','ANV':'Anniversary','BSH':'Baby Shower','HWM':'Housewarming','NAM':'Naming Ceremony','FWL':'Farewell','EVT':'Event','DCR':'Decor','PHT':'Photography','MUS':'Music','LGT':'Lighting','MGT':'Management','MUL':'Multiple'};
+    var _evtMap = {'WED':'Wedding','REC':'Reception','ENG':'Engagement','SGT':'Sangeet','MEH':'Mehendi','BDY':'Birthday','CRP':'Corporate','ANV':'Anniversary','BSH':'Baby Shower','HWM':'Housewarming','NAM':'Naming Ceremony','FWL':'Farewell','EVT':'Event','DCR':'Decor','PHT':'Photography','MUS':'Music','LGT':'Lighting','LS':'Logistics Services','LOG':'Logistics Services','MGT':'Management','MUL':'Multiple'};
     var _pts = b.bookingId.split('-');
     var _dec = (_evtMap[_pts[0]] || _pts[0] || '');
     var _mn  = _pts[1] || '';

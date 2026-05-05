@@ -235,11 +235,22 @@ section{padding:88px 0;}
 #gallery-section{background:var(--black);padding:88px 0;}
 .gallery-shell{display:grid;gap:28px;}
 .gallery-intro-copy{max-width:640px;font-size:.92rem;color:rgba(245,240,232,.68);line-height:1.9;}
-.gallery-section-foot{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;}
-.cat-filter-wrap{display:flex;flex-wrap:wrap;gap:8px;}
-.cat-btn{background:transparent;border:1px solid rgba(201,168,76,.18);color:var(--muted);padding:8px 18px;border-radius:100px;font-size:.72rem;cursor:pointer;font-family:var(--fb);transition:all .3s var(--ease);white-space:nowrap;letter-spacing:.06em;}
-.cat-btn:hover,.cat-btn.active{border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,.08);box-shadow:0 0 18px rgba(201,168,76,.1);}
-.gallery-results-meta{font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(245,240,232,.5);}
+.gallery-section-foot{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:nowrap;overflow:visible;}
+.cat-filter-wrap{position:relative;display:flex;align-items:center;gap:16px;flex:1 1 auto;min-width:0;max-width:min(100%,980px);overflow:visible;}
+.gallery-filter-scroll{display:flex;align-items:center;gap:8px;flex:1 1 auto;min-width:0;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-webkit-overflow-scrolling:touch;}
+.gallery-filter-scroll::-webkit-scrollbar{display:none;}
+.gallery-filter-more{position:relative;z-index:3;flex:0 0 auto;}
+.gallery-filter-menu{position:absolute;top:calc(100% + 10px);right:0;z-index:40;display:none;grid-template-columns:repeat(2,minmax(150px,1fr));gap:8px;width:min(410px,calc(100vw - 32px));max-height:min(62vh,520px);overflow:auto;padding:12px;background:rgba(8,8,8,.96);border:1px solid rgba(201,168,76,.2);box-shadow:0 18px 48px rgba(0,0,0,.44);border-radius:14px;}
+.gallery-filter-more.open .gallery-filter-menu{display:grid;}
+.cat-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;flex:0 0 auto;min-height:38px;background:transparent;border:1px solid rgba(201,168,76,.18);color:var(--muted);padding:8px 16px;border-radius:100px;font-size:.7rem;cursor:pointer;font-family:var(--fb);transition:all .3s var(--ease);white-space:nowrap;letter-spacing:.04em;}
+.cat-btn-count{font-size:.62rem;color:rgba(245,240,232,.46);}
+.cat-btn:hover,.cat-btn.active{border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,.1);box-shadow:0 0 20px rgba(201,168,76,.12);}
+.cat-btn.active .cat-btn-count{color:rgba(201,168,76,.72);}
+.gallery-more-btn{padding-right:14px;}
+.gallery-more-btn::after{content:'▾';font-size:.56rem;color:rgba(245,240,232,.5);}
+.gallery-filter-more.open .gallery-more-btn::after{color:var(--gold);transform:rotate(180deg);}
+.gallery-filter-menu .cat-btn{width:100%;justify-content:space-between;border-radius:10px;padding:9px 12px;}
+.gallery-results-meta{flex:0 0 auto;font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(245,240,232,.5);}
 .dyn-gallery-grid{
   display:grid;
   grid-template-columns:repeat(12,minmax(0,1fr));
@@ -705,7 +716,10 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
   .bk-form-box{padding:22px 18px;}
   .fr{grid-template-columns:1fr;}
   #gallery-section{padding:72px 0;}
-  .gallery-section-foot{align-items:flex-start;}
+  .gallery-section-foot{align-items:stretch;flex-direction:column;}
+  .cat-filter-wrap{width:100%;max-width:100%;}
+  .gallery-filter-scroll{flex:1;}
+  .gallery-filter-menu{position:fixed;left:12px;right:12px;bottom:calc(14px + env(safe-area-inset-bottom));top:auto;width:auto;max-height:min(58dvh,420px);overflow:auto;grid-template-columns:1fr;padding:14px;border-radius:18px;}
   .dyn-gallery-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
   .dyn-item,.dyn-item:nth-child(6n+1),.dyn-item:nth-child(6n+2),.dyn-item:nth-child(6n+3),.dyn-item:nth-child(6n+4),.dyn-item:nth-child(6n+5),.dyn-item:nth-child(6n+6){grid-column:span 1;min-height:0;aspect-ratio:3/4;}
   .dyn-lbl{padding:18px;gap:8px;}
@@ -1678,6 +1692,9 @@ function normalizeGalleryRecordForModule(item){
 }
 
 function requestGalleryRender(){
+  if(typeof window.initGalleryFilters === 'function'){
+    window.initGalleryFilters();
+  }
   if(typeof window.renderDynGallery === 'function'){
     window.renderDynGallery();
   }
@@ -1886,14 +1903,14 @@ window.submitBooking = async (ev) => {
     const _svcCodeMap = {
       'Luxury Decor & Styling':'DCR', 'Professional Photography':'PHT',
       'Live Music & Entertainment':'MUS', 'Premium Lighting Design':'LGT',
-      'Logistics Services':'LOG', 'Complete Event Management':'MGT', 'Multiple Services':'MUL'
+      'Logistics Services':'LS', 'Complete Event Management':'MGT', 'Multiple Services':'MUL'
     };
     const _months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
     const _now = new Date();
     const _mon = _months[_now.getMonth()];
-    // Event type takes priority for the prefix; fall back to service code
+    // Logistics bookings should be service-led, while other bookings remain event-led.
     const _evtType = document.getElementById('bkEventType').value;
-    const _evtCode = _eventCodeMap[_evtType] || _svcCodeMap[svc] || 'EVT';
+    const _evtCode = svc === 'Logistics Services' ? 'LS' : (_eventCodeMap[_evtType] || _svcCodeMap[svc] || 'EVT');
 
     // Fetch current counter for this prefix from Firestore to get incremental number
     let _seq = 1;
@@ -2394,11 +2411,57 @@ function getGalleryData(){
 function initGalleryFilters(){
   const wrap=document.getElementById('galleryFilterChips');
   if(!wrap || !GALLERY_TAXONOMY) return;
-  wrap.innerHTML=GALLERY_TAXONOMY.galleryFilters.map(filter=>`
-    <button class="cat-btn${filter.key==='all'?' active':''}" data-filter-key="${filter.key}" onclick="filterGallery('${filter.key}', this)">
-      ${filter.icon ? filter.icon + ' ' : ''}${filter.label}
-    </button>`).join('');
+  const source=getGalleryData();
+  const catalog=[...GALLERY_TAXONOMY.galleryFilters].sort((a,b)=>(a.priority||99)-(b.priority||99));
+  const filters=catalog.map(filter=>{
+    const count=filter.key==='all'
+      ? source.length
+      : source.filter(item=>matchesGalleryFilter(item, filter.key)).length;
+    return { ...filter, count };
+  });
+  const visiblePrimary=filters.filter(filter=>
+    (filter.featured || filter.group === 'primary') &&
+    (filter.key==='all' || filter.key==='reels' || filter.count > 0)
+  );
+  const secondary=filters.filter(filter=>!visiblePrimary.some(primaryFilter=>primaryFilter.key===filter.key) && filter.key !== 'all');
+
+  if(!filters.some(filter=>filter.key===activeCatFilter)){
+    activeCatFilter='all';
+  }
+
+  const renderBtn=(filter, extraClass='')=>`
+    <button class="cat-btn${filter.key===activeCatFilter?' active':''}${extraClass ? ' ' + extraClass : ''}" type="button" data-filter-key="${filter.key}" onclick="filterGallery('${filter.key}', this)">
+      <span>${filter.icon ? filter.icon + ' ' : ''}${filter.label}</span>
+      <span class="cat-btn-count">${filter.count}</span>
+    </button>`;
+
+  const moreActive=secondary.some(filter=>filter.key===activeCatFilter);
+  const moreMenu=secondary.length ? `
+    <div class="gallery-filter-more${moreActive?' active':''}" id="galleryFilterMore">
+      <button class="cat-btn gallery-more-btn${moreActive?' active':''}" type="button" onclick="toggleGalleryMore(event)" aria-expanded="false">
+        <span>More</span>
+      </button>
+      <div class="gallery-filter-menu" id="galleryFilterMenu">
+        ${secondary.map(filter=>renderBtn(filter)).join('')}
+      </div>
+    </div>` : '';
+
+  wrap.innerHTML=`
+    <div class="gallery-filter-scroll">
+      ${visiblePrimary.map(filter=>renderBtn(filter)).join('')}
+    </div>
+    ${moreMenu}`;
 }
+window.initGalleryFilters=initGalleryFilters;
+
+window.toggleGalleryMore=(event)=>{
+  if(event) event.stopPropagation();
+  const more=document.getElementById('galleryFilterMore');
+  if(!more) return;
+  const willOpen=!more.classList.contains('open');
+  more.classList.toggle('open', willOpen);
+  more.querySelector('.gallery-more-btn')?.setAttribute('aria-expanded', String(willOpen));
+};
 
 function initGalleryReveal(){
   const items=document.querySelectorAll('.dyn-item');
@@ -2483,12 +2546,29 @@ window.toggleGalleryExpansion=()=>{
 window.filterGallery=(filterKey, btn)=>{
   activeCatFilter=filterKey;
   galleryExpanded=false;
-  document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));
-  const activeBtn = btn || document.querySelector(`.cat-btn[data-filter-key="${filterKey}"]`);
-  if(activeBtn) activeBtn.classList.add('active');
+  document.querySelectorAll('.cat-btn[data-filter-key]').forEach(filterBtn=>{
+    filterBtn.classList.toggle('active', filterBtn.dataset.filterKey === filterKey);
+  });
+  const more=document.getElementById('galleryFilterMore');
+  const moreBtn=more?.querySelector('.gallery-more-btn');
+  const isMoreSelection=!!more?.querySelector(`.gallery-filter-menu .cat-btn[data-filter-key="${filterKey}"]`);
+  if(more){
+    more.classList.toggle('active', isMoreSelection);
+    more.classList.remove('open');
+  }
+  if(moreBtn){
+    moreBtn.classList.toggle('active', isMoreSelection);
+    moreBtn.setAttribute('aria-expanded','false');
+  }
   renderDynGallery();
-  document.getElementById('dynGalleryGrid')?.scrollIntoView({behavior:'smooth',block:'start'});
 };
+
+document.addEventListener('click',e=>{
+  const more=document.getElementById('galleryFilterMore');
+  if(!more || more.contains(e.target)) return;
+  more.classList.remove('open');
+  more.querySelector('.gallery-more-btn')?.setAttribute('aria-expanded','false');
+});
 
 document.addEventListener('keydown',e=>{
   const viewer=document.getElementById('glViewer');
