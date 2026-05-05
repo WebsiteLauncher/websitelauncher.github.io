@@ -37,7 +37,7 @@
 <style>
 :root{--gold:#C9A84C;--gold2:#E2C97E;--gd:#8B6914;--black:#080808;--dark:#111;--dark2:#181818;--dark3:#222;--cream:#F5F0E8;--white:#FDFCFA;--muted:#888;--fd:'Cormorant Garamond',serif;--fb:'Outfit',sans-serif;--ease:cubic-bezier(.4,0,.2,1);--tr:0.35s var(--ease);--r:4px;}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-html{scroll-behavior:smooth;}
+html{scroll-behavior:smooth;overflow-x:hidden;}
 body{background:var(--black);color:var(--cream);font-family:var(--fb);font-weight:300;overflow-x:hidden;line-height:1.6;}
 img{display:block;width:100%;height:100%;object-fit:cover;}
 ::-webkit-scrollbar{width:3px;}::-webkit-scrollbar-track{background:var(--dark);}::-webkit-scrollbar-thumb{background:var(--gd);}
@@ -233,107 +233,98 @@ section{padding:88px 0;}
 
 /* ── GALLERY ── */
 #gallery-section{background:var(--black);padding:88px 0;}
-.cat-filter-wrap{display:flex;flex-wrap:wrap;gap:8px;margin-top:28px;}
+.gallery-shell{display:grid;gap:28px;}
+.gallery-intro-copy{max-width:640px;font-size:.92rem;color:rgba(245,240,232,.68);line-height:1.9;}
+.gallery-section-foot{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;}
+.cat-filter-wrap{display:flex;flex-wrap:wrap;gap:8px;}
 .cat-btn{background:transparent;border:1px solid rgba(201,168,76,.18);color:var(--muted);padding:8px 18px;border-radius:100px;font-size:.72rem;cursor:pointer;font-family:var(--fb);transition:all .3s var(--ease);white-space:nowrap;letter-spacing:.06em;}
 .cat-btn:hover,.cat-btn.active{border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,.08);box-shadow:0 0 18px rgba(201,168,76,.1);}
-
-/* Clean masonry gallery grid */
+.gallery-results-meta{font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(245,240,232,.5);}
 .dyn-gallery-grid{
-  column-count:4;
-  column-gap:14px;
-  margin-top:28px;
+  display:grid;
+  grid-template-columns:repeat(12,minmax(0,1fr));
+  gap:16px;
+  align-items:start;
 }
 .dyn-item{
-  position:relative;overflow:hidden;
-  background:var(--dark3);cursor:pointer;
-  display:block;
+  position:relative;
   width:100%;
-  margin:0 0 14px;
-  border-radius:10px;
-  break-inside:avoid;
+  min-width:0;
+  overflow:hidden;
+  min-height:280px;
+  border-radius:24px;
+  border:1px solid rgba(201,168,76,.08);
+  background:var(--dark3);
+  cursor:pointer;
   opacity:0;
   transform:translateY(26px) scale(.98);
-  transition:transform .55s var(--ease),opacity .55s var(--ease),box-shadow .35s var(--ease);
+  transition:transform .55s var(--ease),opacity .55s var(--ease),box-shadow .35s var(--ease),border-color .35s var(--ease);
 }
-.dyn-item.in{
-  opacity:1;
-  transform:none;
-}
-.dyn-item img{
-  width:100%;height:auto;
-  object-fit:cover;
-  transition:transform .6s var(--ease);
-  display:block;
-}
-.dyn-item:hover{box-shadow:0 18px 42px rgba(0,0,0,.28);}
-.dyn-item:hover img{transform:scale(1.04);}
-/* Dark overlay on hover */
+.dyn-item:nth-child(6n+1){grid-column:span 7;min-height:360px;}
+.dyn-item:nth-child(6n+2){grid-column:span 5;min-height:360px;}
+.dyn-item:nth-child(6n+3),.dyn-item:nth-child(6n+4),.dyn-item:nth-child(6n+5),.dyn-item:nth-child(6n+6){grid-column:span 3;}
+.dyn-item.in{opacity:1;transform:none;}
+.dyn-item:hover{box-shadow:0 22px 58px rgba(0,0,0,.34);border-color:rgba(201,168,76,.18);}
+.dyn-item:hover .dyn-thumb{transform:scale(1.04);}
 .dyn-item::before{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(to top,rgba(8,8,8,.7) 0%,rgba(8,8,8,.16) 55%,rgba(8,8,8,0) 100%);
-  transition:background .35s var(--ease);z-index:1;
+  content:'';
+  position:absolute;
+  inset:0;
+  z-index:1;
+  background:linear-gradient(180deg,rgba(8,8,8,.06) 0%,rgba(8,8,8,.12) 32%,rgba(8,8,8,.88) 100%);
 }
-.dyn-item:hover::before{background:linear-gradient(to top,rgba(8,8,8,.82) 0%,rgba(8,8,8,.28) 62%,rgba(8,8,8,.04) 100%);}
-/* Watermark */
+.dyn-item::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(8,8,8,.12) 0%,rgba(8,8,8,0) 52%);opacity:0;transition:var(--tr);z-index:1;}
+.dyn-item:hover::after{opacity:1;}
+.dyn-media{position:absolute;inset:0;}
+.dyn-media img{width:100%;height:100%;object-fit:cover;display:block;}
+.dyn-thumb{transition:transform .6s var(--ease);}
 .dyn-watermark{
-  position:absolute;bottom:8px;right:10px;
-  font-size:.58rem;letter-spacing:.1em;
-  color:rgba(255,255,255,.35);
-  font-family:var(--fb);z-index:3;
-  text-transform:lowercase;
-  pointer-events:none;
-  text-shadow:0 1px 3px rgba(0,0,0,.8);
+  position:absolute;bottom:12px;right:14px;font-size:.58rem;letter-spacing:.1em;color:rgba(255,255,255,.34);font-family:var(--fb);z-index:3;text-transform:lowercase;pointer-events:none;text-shadow:0 1px 3px rgba(0,0,0,.8);
 }
-/* Hover info panel */
 .dyn-lbl{
-  position:absolute;inset:0;
-  display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;
-  gap:8px;opacity:0;
-  transition:opacity .35s var(--ease),transform .35s var(--ease);z-index:2;padding:18px;
-  transform:translateY(12px);
+  position:absolute;inset:0;z-index:2;padding:22px;display:flex;flex-direction:column;justify-content:flex-end;gap:10px;
 }
-.dyn-item:hover .dyn-lbl{opacity:1;transform:none;}
-.dyn-caption{font-size:.84rem;color:var(--white);text-align:left;font-weight:500;text-shadow:0 1px 4px rgba(0,0,0,.8);}
-.dyn-cat{font-size:.62rem;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;}
+.dyn-meta{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.dyn-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:7px 11px;
+  border-radius:999px;
+  background:rgba(8,8,8,.48);
+  border:1px solid rgba(201,168,76,.22);
+  color:var(--gold2);
+  font-size:.6rem;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  backdrop-filter:blur(10px);
+}
+.dyn-caption{font-size:1rem;color:var(--white);text-align:left;font-weight:500;text-shadow:0 1px 4px rgba(0,0,0,.8);}
+.dyn-cat{font-size:.62rem;color:var(--gold);letter-spacing:.14em;text-transform:uppercase;}
+.dyn-service{font-size:.68rem;color:rgba(245,240,232,.72);letter-spacing:.06em;}
 .dyn-view-btn{
-  font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;
-  color:var(--black);background:var(--gold);border:none;
-  padding:6px 16px;border-radius:100px;cursor:pointer;
-  font-family:var(--fb);font-weight:600;transition:var(--tr);margin-top:4px;
+  align-self:flex-start;
+  font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--black);background:var(--gold);border:none;padding:8px 16px;border-radius:100px;cursor:pointer;font-family:var(--fb);font-weight:600;transition:var(--tr);margin-top:4px;
 }
 .dyn-view-btn:hover{background:var(--gold2);}
-
-/* View All Photos button */
-.gal-view-more-wrap{text-align:center;margin-top:32px;}
+.gal-view-more-wrap{text-align:center;}
 .gal-view-more-btn{
-  background:transparent;border:1px solid rgba(201,168,76,.3);
-  color:var(--gold);padding:12px 40px;font-size:.78rem;
-  letter-spacing:.14em;text-transform:uppercase;cursor:pointer;
-  font-family:var(--fb);transition:var(--tr);border-radius:100px;
+  background:transparent;border:1px solid rgba(201,168,76,.3);color:var(--gold);padding:12px 40px;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;font-family:var(--fb);transition:var(--tr);border-radius:100px;
 }
 .gal-view-more-btn:hover{background:rgba(201,168,76,.09);border-color:var(--gold);box-shadow:0 0 24px rgba(201,168,76,.12);}
-.gal-empty-msg{text-align:center;padding:48px;color:var(--muted);font-size:.85rem;}
-
-
-
-/* ── FULLSCREEN MODAL SLIDER (for View More) ── */
-.gal-modal{position:fixed;inset:0;background:rgba(0,0,0,.98);z-index:3500;display:none;flex-direction:column;}
-.gal-modal.open{display:flex;}
-.gal-modal-hdr{padding:16px 28px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(201,168,76,.1);flex-shrink:0;}
-.gal-modal-ttl{font-family:var(--fd);font-size:1.1rem;color:var(--cream);}
-.gal-modal-x{background:none;border:1px solid rgba(201,168,76,.25);color:var(--gold);padding:6px 16px;border-radius:var(--r);cursor:pointer;font-size:.85rem;font-family:var(--fb);transition:var(--tr);}
-.gal-modal-x:hover{background:rgba(201,168,76,.1);}
-.gal-modal-body{flex:1;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
-.gal-modal-img{max-width:88vw;max-height:82vh;object-fit:contain;display:block;transition:opacity .3s ease,transform .3s ease;box-shadow:0 32px 96px rgba(0,0,0,.8);}
-.gal-modal-img.sliding{opacity:0;transform:scale(.97);}
-.gal-modal-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(8,8,8,.7);border:1px solid rgba(201,168,76,.2);color:var(--cream);font-size:2rem;cursor:pointer;padding:16px 22px;border-radius:var(--r);transition:var(--tr);line-height:1;z-index:2;}
-.gal-modal-nav:hover{background:rgba(201,168,76,.15);color:var(--gold);}
-.gal-modal-prev{left:18px;}.gal-modal-next{right:18px;}
-.gal-modal-footer{padding:16px;display:flex;align-items:center;justify-content:center;gap:16px;flex-shrink:0;}
-.gal-modal-dots{display:flex;gap:6px;align-items:center;}
-.gal-mdot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.2);cursor:pointer;transition:var(--tr);}
-.gal-mdot.active{background:var(--gold);width:20px;border-radius:3px;}
-.gal-modal-counter{font-size:.72rem;color:var(--muted);}
+.gal-empty-msg{text-align:center;padding:54px 24px;color:var(--muted);font-size:.85rem;border:1px dashed rgba(201,168,76,.14);border-radius:22px;background:rgba(255,255,255,.02);}
+.gallery-convert{
+  padding:22px 24px;
+  border-radius:24px;
+  border:1px solid rgba(201,168,76,.12);
+  background:linear-gradient(135deg,rgba(201,168,76,.06),rgba(255,255,255,.02));
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+  flex-wrap:wrap;
+}
+.gallery-convert-copy{font-size:.84rem;color:rgba(245,240,232,.68);max-width:520px;line-height:1.8;}
 
 /* ── SERVICE GALLERY OVERLAY ── */
 .gl-ov{position:fixed;inset:0;background:rgba(0,0,0,.96);z-index:2000;display:none;flex-direction:column;}
@@ -345,8 +336,8 @@ section{padding:88px 0;}
 .gl-x:hover{background:rgba(201,168,76,.1);}
 .gl-grid{flex:1;overflow-y:auto;padding:20px;display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;align-content:start;}
 .gl-item{aspect-ratio:4/3;overflow:hidden;cursor:pointer;background:var(--dark3);position:relative;border-radius:2px;}
-.gl-item img{width:100%;height:100%;object-fit:cover;transition:transform .4s var(--ease);}
-.gl-item:hover img{transform:scale(1.06);}
+.gl-item img,.gl-item video{width:100%;height:100%;object-fit:cover;transition:transform .4s var(--ease);display:block;}
+.gl-item:hover img,.gl-item:hover video{transform:scale(1.06);}
 .gl-item-lbl{position:absolute;bottom:0;left:0;right:0;padding:8px 12px;background:linear-gradient(to top,rgba(0,0,0,.8),transparent);font-size:.65rem;color:var(--gold);opacity:0;transition:var(--tr);}
 .gl-item:hover .gl-item-lbl{opacity:1;}
 .gl-zoom-btn{position:absolute;top:8px;right:8px;background:rgba(0,0,0,.7);border:1px solid rgba(201,168,76,.3);color:var(--gold);font-size:.65rem;padding:4px 9px;cursor:pointer;border-radius:2px;opacity:0;transition:var(--tr);font-family:var(--fb);}
@@ -354,13 +345,24 @@ section{padding:88px 0;}
 .gl-empty{grid-column:1/-1;text-align:center;padding:56px;color:var(--muted);font-size:.86rem;}
 
 /* ── PHOTO VIEWER ── */
-.gl-viewer{position:fixed;inset:0;background:rgba(0,0,0,.98);z-index:3000;display:none;flex-direction:column;align-items:center;justify-content:center;}
+.gl-viewer{position:fixed;inset:0;width:100%;height:100vh;height:100dvh;background:rgba(0,0,0,.98);z-index:3000;display:none;flex-direction:column;align-items:center;justify-content:center;overflow:auto;overflow-x:hidden;padding:calc(22px + env(safe-area-inset-top)) calc(56px + env(safe-area-inset-right)) calc(22px + env(safe-area-inset-bottom)) calc(56px + env(safe-area-inset-left));}
 .gl-viewer.open{display:flex;}
-.gl-v-img-wrap{position:relative;}
-.gl-v-img-wrap img{max-width:92vw;max-height:80vh;object-fit:contain;display:block;box-shadow:0 24px 80px rgba(0,0,0,.8);}
-.gl-v-info{text-align:center;margin-top:14px;}
-.gl-v-caption{font-size:.82rem;color:var(--muted);}
-.gl-v-counter{font-size:.72rem;color:var(--gold);margin-top:4px;}
+.gl-v-shell{width:min(1080px,92vw);display:grid;grid-template-columns:minmax(0,1.1fr) 320px;gap:20px;align-items:stretch;}
+.gl-v-media{position:relative;min-height:68vh;border:1px solid rgba(201,168,76,.12);border-radius:24px;overflow:hidden;background:linear-gradient(180deg,rgba(18,18,18,.95),rgba(8,8,8,1));display:flex;align-items:center;justify-content:center;}
+.gl-v-img-wrap{position:relative;width:100%;height:100%;}
+.gl-v-img-wrap img,.gl-v-img-wrap video{width:100%;height:100%;max-height:min(68vh,720px);object-fit:contain;display:block;}
+.gl-v-side{padding:28px 24px;border:1px solid rgba(201,168,76,.12);border-radius:24px;background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(12,12,12,.95));display:flex;flex-direction:column;justify-content:space-between;gap:16px;}
+.gl-v-side-top{display:flex;flex-direction:column;gap:12px;}
+.gl-v-kicker{font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);}
+.gl-v-title{font-family:var(--fd);font-size:2rem;color:var(--white);line-height:1.05;}
+.gl-v-caption{font-size:.84rem;color:rgba(245,240,232,.74);line-height:1.8;}
+.gl-v-meta{display:flex;flex-wrap:wrap;gap:8px;}
+.gl-v-chip{padding:7px 12px;border-radius:999px;border:1px solid rgba(201,168,76,.18);background:rgba(255,255,255,.02);font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(245,240,232,.72);}
+.gl-v-counter{font-size:.72rem;color:var(--gold);margin-top:2px;}
+.gl-v-actions{display:flex;flex-direction:column;gap:10px;}
+.gl-v-btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;border-radius:999px;font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;text-decoration:none;font-family:var(--fb);transition:var(--tr);}
+.gl-v-btn.primary{background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--black);font-weight:600;}
+.gl-v-btn.secondary{border:1px solid rgba(255,255,255,.16);color:var(--cream);}
 .gl-vc{position:absolute;top:16px;right:20px;background:rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.12);color:var(--cream);font-size:1.8rem;cursor:pointer;padding:4px 14px;border-radius:var(--r);transition:var(--tr);line-height:1.2;}
 .gl-vc:hover{color:var(--gold);}
 .gl-nb{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.5);border:1px solid rgba(201,168,76,.2);color:var(--cream);font-size:1.6rem;cursor:pointer;padding:14px 20px;transition:var(--tr);border-radius:var(--r);}
@@ -685,7 +687,8 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
   .bk-wrap{grid-template-columns:1fr;gap:40px;}
   .t-grid{grid-template-columns:1fr 1fr;}
   .ft-grid{grid-template-columns:1fr 1fr;}
-  .dyn-gallery-grid{column-count:3;}
+  .dyn-item:nth-child(6n+1),.dyn-item:nth-child(6n+2){grid-column:span 6;}
+  .dyn-item:nth-child(6n+3),.dyn-item:nth-child(6n+4),.dyn-item:nth-child(6n+5),.dyn-item:nth-child(6n+6){grid-column:span 4;}
 }
 @media(max-width:768px){
   nav{padding:0 18px;height:60px;}
@@ -701,17 +704,55 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
   .ft-grid{grid-template-columns:1fr 1fr;}
   .bk-form-box{padding:22px 18px;}
   .fr{grid-template-columns:1fr;}
-  .dyn-gallery-grid{column-count:2;}
+  #gallery-section{padding:72px 0;}
+  .gallery-section-foot{align-items:flex-start;}
+  .dyn-gallery-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
+  .dyn-item,.dyn-item:nth-child(6n+1),.dyn-item:nth-child(6n+2),.dyn-item:nth-child(6n+3),.dyn-item:nth-child(6n+4),.dyn-item:nth-child(6n+5),.dyn-item:nth-child(6n+6){grid-column:span 1;min-height:0;aspect-ratio:3/4;}
+  .dyn-lbl{padding:18px;gap:8px;}
+  .dyn-caption{font-size:.92rem;}
+  .dyn-service{font-size:.64rem;}
+  .gl-grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));padding:14px;gap:8px;}
+  .gl-item-lbl,.gl-zoom-btn{opacity:1;}
+  .gl-viewer{align-items:stretch;justify-content:flex-start;padding:calc(58px + env(safe-area-inset-top)) calc(14px + env(safe-area-inset-right)) calc(18px + env(safe-area-inset-bottom)) calc(14px + env(safe-area-inset-left));}
+  .gl-v-shell{width:100%;grid-template-columns:1fr;gap:12px;margin:auto 0;}
   .rev-carousel-wrap{margin:0;}
   .rev-card{padding:28px 24px;}
+  .gl-v-media{min-height:0;height:58dvh;max-height:58dvh;border-radius:18px;}
+  .gl-v-img-wrap img,.gl-v-img-wrap video{height:100%;max-height:58dvh;}
+  .gl-v-side{border-radius:18px;padding:20px 18px;gap:14px;}
+  .gl-v-side-top{gap:9px;}
+  .gl-v-title{font-size:1.7rem;}
+  .gl-v-caption{font-size:.78rem;line-height:1.55;}
+  .gl-v-chip{padding:6px 9px;font-size:.58rem;letter-spacing:.1em;}
+  .gl-v-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+  .gl-v-btn{min-height:42px;padding:8px 10px;font-size:.62rem;letter-spacing:.1em;text-align:center;}
+  .gl-vc{position:fixed;top:calc(10px + env(safe-area-inset-top));right:calc(12px + env(safe-area-inset-right));z-index:2;min-width:44px;min-height:44px;padding:4px 12px;background:rgba(0,0,0,.72);backdrop-filter:blur(10px);}
+  .gl-nb{position:fixed;top:calc(32vh + env(safe-area-inset-top));z-index:2;min-width:44px;min-height:44px;padding:8px 12px;background:rgba(0,0,0,.68);backdrop-filter:blur(10px);}
+  .gl-prev{left:calc(8px + env(safe-area-inset-left));}
+  .gl-next{right:calc(8px + env(safe-area-inset-right));}
 }
 @media(max-width:520px){
-  .dyn-gallery-grid{column-count:1;}
+  .dyn-gallery-grid{grid-template-columns:1fr;}
+  .dyn-item,.dyn-item:nth-child(6n+1),.dyn-item:nth-child(6n+2),.dyn-item:nth-child(6n+3),.dyn-item:nth-child(6n+4),.dyn-item:nth-child(6n+5),.dyn-item:nth-child(6n+6){grid-column:span 1;min-height:0;aspect-ratio:4/5;}
+  .gallery-convert{padding:20px;}
+  .gl-hdr{padding:12px 14px;gap:10px;}
+  .gl-grid{grid-template-columns:repeat(auto-fill,minmax(128px,1fr));padding:10px;}
+  .gl-viewer{padding-left:calc(10px + env(safe-area-inset-left));padding-right:calc(10px + env(safe-area-inset-right));}
+  .gl-v-shell{gap:10px;}
+  .gl-v-media{height:52dvh;max-height:52dvh;border-radius:16px;}
+  .gl-v-img-wrap img,.gl-v-img-wrap video{max-height:52dvh;}
   .ft-grid{grid-template-columns:1fr;}
   .proc{grid-template-columns:1fr;}
   .bk-wrap{gap:28px;}
   .wa-fab{bottom:16px;right:16px;width:50px;height:50px;}
   .nav-brand-tagline{display:none;}
+  .gl-v-side{padding:16px 14px;border-radius:16px;}
+  .gl-v-kicker{font-size:.56rem;letter-spacing:.16em;}
+  .gl-v-title{font-size:1.55rem;}
+  .gl-v-caption{font-size:.74rem;}
+  .gl-v-meta{gap:6px;}
+  .gl-v-actions{grid-template-columns:1fr;}
+  .gl-nb{top:calc(30vh + env(safe-area-inset-top));}
 }
 
 /* ══════════════════════════════════════════════════════
@@ -885,9 +926,6 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
 /* ── Button ripple feel ── */
 .btn-gold:active{transform:scale(.98);}
 .btn-ghost:active{transform:scale(.98);}
-/* ── Gallery item improved ── */
-.dyn-item::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(8,8,8,.5) 0%,transparent 50%);opacity:0;transition:var(--tr);}
-.dyn-item:hover::after{opacity:1;}
 /* ── Footer brand enhancement ── */
 .ft-brand-wrap svg{filter:drop-shadow(0 2px 8px rgba(201,168,76,.15));}
 /* ── Nav logo hover ── */
@@ -1131,35 +1169,31 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
 <!-- GALLERY -->
 <section id="gallery-section">
   <div class="con">
-    <div class="s-lbl reveal">Our Portfolio</div>
-    <h2 class="s-ttl reveal" style="transition-delay:.08s">Moments We've <em>Crafted</em></h2>
-    <div class="divider reveal" style="transition-delay:.16s"></div>
-    <div class="cat-filter-wrap" id="galleryFilterChips"></div>
-  </div>
-  <div class="con" style="margin-top:28px;">
-    <div class="dyn-gallery-grid" id="dynGalleryGrid"></div>
-    <div class="gal-view-more-wrap" id="galViewMoreWrap" style="display:none;">
-      <button class="gal-view-more-btn" id="galViewMoreBtn" onclick="toggleGalleryExpansion()">View All Photos</button>
+    <div class="gallery-shell">
+      <div>
+        <div class="s-lbl reveal">Our Portfolio</div>
+        <h2 class="s-ttl reveal" style="transition-delay:.08s">Celebration <em>Gallery</em></h2>
+        <div class="divider reveal" style="transition-delay:.16s"></div>
+        <p class="gallery-intro-copy reveal" style="transition-delay:.22s">Browse event-specific photos, reels, and videos using the filters below.</p>
+      </div>
+      <div class="gallery-section-foot">
+        <div class="cat-filter-wrap" id="galleryFilterChips"></div>
+        <div class="gallery-results-meta" id="galleryResultsMeta">Curated highlights</div>
+      </div>
+      <div class="dyn-gallery-grid" id="dynGalleryGrid"></div>
+      <div class="gal-view-more-wrap" id="galViewMoreWrap" style="display:none;">
+        <button class="gal-view-more-btn" id="galViewMoreBtn" onclick="toggleGalleryExpansion()">View More</button>
+      </div>
+      <div class="gallery-convert reveal" style="transition-delay:.12s">
+        <div>
+          <div class="s-lbl" style="margin-bottom:8px;">Seen something you liked?</div>
+          <div class="gallery-convert-copy">Share your event date, venue, and style direction, and we’ll build a concept inspired by the work you see here.</div>
+        </div>
+        <a class="btn btn-gold" href="#booking">Enquire For A Similar Event</a>
+      </div>
     </div>
   </div>
 </section>
-
-
-<!-- FULLSCREEN GALLERY MODAL -->
-<div class="gal-modal" id="galModal">
-  <div class="gal-modal-hdr">
-    <span class="gal-modal-ttl">📸 HAPPENHAUS Gallery <span id="galModalCounter" style="font-size:.78rem;color:var(--muted);margin-left:8px;"></span></span>
-    <button class="gal-modal-x" onclick="closeGalleryModal()">✕ Close</button>
-  </div>
-  <div class="gal-modal-body">
-    <button class="gal-modal-nav gal-modal-prev" onclick="galModalNav(-1)">‹</button>
-    <img class="gal-modal-img" id="galModalImg" src="" alt=""/>
-    <button class="gal-modal-nav gal-modal-next" onclick="galModalNav(1)">›</button>
-  </div>
-  <div class="gal-modal-footer">
-    <div class="gal-modal-dots" id="galModalDots"></div>
-  </div>
-</div>
 
 <!-- PROCESS -->
 <section id="process">
@@ -1395,7 +1429,27 @@ footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.1);padding:5
 <div class="gl-viewer" id="glViewer">
   <button class="gl-vc" onclick="closeViewer()">×</button>
   <button class="gl-nb gl-prev" onclick="viewNav(-1)">‹</button>
-  <div><div class="gl-v-img-wrap"><img id="glVImg" src="" alt=""/></div><div class="gl-v-info"><div class="gl-v-caption" id="glVCap"></div><div class="gl-v-counter" id="glVCtr"></div></div></div>
+  <div class="gl-v-shell">
+    <div class="gl-v-media">
+      <div class="gl-v-img-wrap">
+        <img id="glVImg" src="" alt=""/>
+        <video id="glVVideo" controls playsinline preload="metadata" style="display:none;"></video>
+      </div>
+    </div>
+    <div class="gl-v-side">
+      <div class="gl-v-side-top">
+        <div class="gl-v-kicker" id="glVKicker">Gallery Highlight</div>
+        <div class="gl-v-title" id="glVTitle">HAPPENHAUS Story</div>
+        <div class="gl-v-caption" id="glVCap"></div>
+        <div class="gl-v-meta" id="glVMeta"></div>
+        <div class="gl-v-counter" id="glVCtr"></div>
+      </div>
+      <div class="gl-v-actions">
+        <a class="gl-v-btn primary" href="#booking" onclick="closeViewer()">Enquire For Similar Event</a>
+        <button class="gl-v-btn secondary" onclick="closeViewer()" type="button">Continue Browsing</button>
+      </div>
+    </div>
+  </div>
   <button class="gl-nb gl-next" onclick="viewNav(1)">›</button>
 </div>
 
@@ -1574,12 +1628,24 @@ import { getFirestore, collection, addDoc, query, where, getDocs, getDoc, doc, u
 // Production: GitHub Actions generates config.js from GitHub Secrets.
 // Local dev: copy config.example.js to config.js and fill in real values.
 const firebaseConfig = (typeof window.__HH_CFG__ !== 'undefined' && window.__HH_CFG__) || null;
-if(!firebaseConfig || !firebaseConfig.apiKey || !firebaseConfig.projectId){
-  throw new Error('Missing runtime config. Add config.js locally or configure GitHub Secrets so deploy generates it.');
+let app = null;
+let auth = null;
+let db = null;
+window._firebaseStatus = { ready:false, reason:'' };
+if(firebaseConfig && firebaseConfig.apiKey && firebaseConfig.projectId){
+  try{
+    app = initializeApp(firebaseConfig);
+    auth = getAuth(app);
+    db = getFirestore(app);
+    window._firebaseStatus = { ready:true, reason:'' };
+  }catch(err){
+    console.error('[HAPPENHAUS] Firebase init failed:', err);
+    window._firebaseStatus = { ready:false, reason: err && err.message ? err.message : 'Firebase init failed.' };
+  }
+} else {
+  console.warn('[HAPPENHAUS] Missing runtime config. Firebase-backed features are disabled until config.js is available.');
+  window._firebaseStatus = { ready:false, reason:'Missing runtime config. Add config.js locally or configure GitHub Secrets so deploy generates it.' };
 }
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
 window._db = db; window._auth = auth;
 // ── Expose Firestore helpers to non-module scripts (fixes "addDoc is not defined") ──
 window._addDoc = addDoc;
@@ -1596,52 +1662,90 @@ const GALLERY_TAXONOMY = window.HHGalleryTaxonomy || null;
 let currentUser = null;
 let myBookings = [];
 
-// ── AUTH STATE ──
-onAuthStateChanged(auth, async user => {
-  currentUser = user;
-  if (user) {
-    document.getElementById('guestNav').classList.add('hidden');
-    document.getElementById('userNav').classList.remove('hidden');
-    document.getElementById('userNav').style.display='flex';
-    document.getElementById('mobGuest').classList.add('hidden');
-    document.getElementById('mobUser').classList.remove('hidden');
-    document.getElementById('myBookings').classList.remove('hidden');
-    const initial = (user.displayName || user.email || '?')[0].toUpperCase();
-    document.getElementById('uAvBtn').textContent = initial;
-    document.getElementById('profAvLg').textContent = initial;
-    document.getElementById('profEmailDisp').textContent = user.email;
-    document.getElementById('profEmail').value = user.email;
-    document.getElementById('profNameDisp').textContent = user.displayName || 'No name set';
-    document.getElementById('profName').value = user.displayName || '';
-    // Load phone from users collection
-    try {
-      const snap = await getDocs(query(collection(db,'users'),where('uid','==',user.uid)));
-      if(!snap.empty){ const d=snap.docs[0].data(); document.getElementById('profPhone').value=d.phone||''; }
-    } catch(e){}
-    showForm(true, false);
-    await loadMyBookings(user.uid);
-    loadCustomerNotifications(user.uid);
-    loadFirestoreGallery();
-    checkMaintenanceMode();
-    loadReviews();
-    // Check for confirmed booking to show review form
-    // Review available only on completed bookings — handled via booking card button
-  } else {
-    currentUser = null; myBookings = [];
-    document.getElementById('guestNav').classList.remove('hidden');
-    document.getElementById('userNav').classList.add('hidden');
-    document.getElementById('mobGuest').classList.remove('hidden');
-    document.getElementById('mobUser').classList.add('hidden');
-    document.getElementById('myBookings').classList.add('hidden');
-    if(!window._guestMode) showForm(false, false);
-    loadFirestoreGallery();
-    checkMaintenanceMode();
-    loadReviews();
+function syncBookingFormAccess(show){
+  const gate=document.getElementById('bkAuthGate');
+  const form=document.getElementById('bkForm');
+  if(gate) gate.style.display=show?'none':'block';
+  if(form) form.style.display=show?'block':'none';
+}
+
+function normalizeGalleryRecordForModule(item){
+  if(!item) return item;
+  if(GALLERY_TAXONOMY && typeof GALLERY_TAXONOMY.normalizeGalleryItem === 'function'){
+    return GALLERY_TAXONOMY.normalizeGalleryItem(item);
   }
-});
+  return item;
+}
+
+function requestGalleryRender(){
+  if(typeof window.renderDynGallery === 'function'){
+    window.renderDynGallery();
+  }
+}
+
+function requestReviewCarousel(total){
+  if(typeof window.initRevCarousel === 'function'){
+    window.initRevCarousel(total);
+  }
+}
+
+function requireFirebase(feature){
+  if(window._firebaseStatus && window._firebaseStatus.ready) return true;
+  showToast((feature || 'This feature') + ' is unavailable until Firebase runtime config is connected.');
+  return false;
+}
+
+// ── AUTH STATE ──
+if(auth){
+  onAuthStateChanged(auth, async user => {
+    currentUser = user;
+    if (user) {
+      document.getElementById('guestNav').classList.add('hidden');
+      document.getElementById('userNav').classList.remove('hidden');
+      document.getElementById('userNav').style.display='flex';
+      document.getElementById('mobGuest').classList.add('hidden');
+      document.getElementById('mobUser').classList.remove('hidden');
+      document.getElementById('myBookings').classList.remove('hidden');
+      const initial = (user.displayName || user.email || '?')[0].toUpperCase();
+      document.getElementById('uAvBtn').textContent = initial;
+      document.getElementById('profAvLg').textContent = initial;
+      document.getElementById('profEmailDisp').textContent = user.email;
+      document.getElementById('profEmail').value = user.email;
+      document.getElementById('profNameDisp').textContent = user.displayName || 'No name set';
+      document.getElementById('profName').value = user.displayName || '';
+      try {
+        const snap = await getDocs(query(collection(db,'users'),where('uid','==',user.uid)));
+        if(!snap.empty){ const d=snap.docs[0].data(); document.getElementById('profPhone').value=d.phone||''; }
+      } catch(e){}
+      syncBookingFormAccess(true);
+      await loadMyBookings(user.uid);
+      loadCustomerNotifications(user.uid);
+      loadFirestoreGallery();
+      checkMaintenanceMode();
+      loadReviews();
+    } else {
+      currentUser = null; myBookings = [];
+      document.getElementById('guestNav').classList.remove('hidden');
+      document.getElementById('userNav').classList.add('hidden');
+      document.getElementById('mobGuest').classList.remove('hidden');
+      document.getElementById('mobUser').classList.add('hidden');
+      document.getElementById('myBookings').classList.add('hidden');
+      if(!window._guestMode) syncBookingFormAccess(false);
+      loadFirestoreGallery();
+      checkMaintenanceMode();
+      loadReviews();
+    }
+  });
+} else {
+  currentUser = null;
+  myBookings = [];
+  syncBookingFormAccess(false);
+  requestGalleryRender();
+}
 
 // ── SIGN IN ──
 window.doLogin = async () => {
+  if(!requireFirebase('Sign in')) return;
   const st = document.getElementById('authSt');
   st.innerHTML='<span style="color:var(--gold)">Signing in…</span>';
   try {
@@ -1652,6 +1756,7 @@ window.doLogin = async () => {
 
 // ── REGISTER ──
 window.doRegister = async () => {
+  if(!requireFirebase('Registration')) return;
   const st = document.getElementById('authSt2');
   st.innerHTML='<span style="color:var(--gold)">Creating account…</span>';
   try {
@@ -1666,6 +1771,7 @@ window.doRegister = async () => {
 
 // ── FORGOT PASSWORD ──
 window.doForgotPwd = async () => {
+  if(!requireFirebase('Password reset')) return;
   const st = document.getElementById('authSt3');
   const email = document.getElementById('fpEmail').value.trim();
   if(!email){ st.innerHTML='<span class="a-err">Please enter your email.</span>'; return; }
@@ -1679,15 +1785,17 @@ window.doForgotPwd = async () => {
 
 // ── SIGN OUT ──
 window.doSignOut = async () => {
+  if(!auth) return;
   if(_bookingsUnsubscribe){ _bookingsUnsubscribe(); _bookingsUnsubscribe=null; }
   await signOut(auth);
   window._guestMode = false;
-  showForm(false, false);
+  syncBookingFormAccess(false);
   showToast('Signed out.');
 };
 
 // ── PROFILE SAVE ──
 window.saveProfile = async () => {
+  if(!requireFirebase('Profile updates')) return;
   const st = document.getElementById('profSt');
   const name = document.getElementById('profName').value.trim();
   const phone = document.getElementById('profPhone').value.trim();
@@ -1746,6 +1854,7 @@ window.checkDuplicate = async () => {
 // ── SUBMIT BOOKING ──
 window.submitBooking = async (ev) => {
   ev.preventDefault();
+  if(!requireFirebase('Booking requests')) return;
   const user = auth.currentUser;
   const btn = document.getElementById('subBtn');
   const st = document.getElementById('bkSt');
@@ -1909,6 +2018,7 @@ async function renderBookingsList(docs) {
 }
 
 async function loadMyBookings(uid) {
+  if(!db){ return; }
   const list = document.getElementById('bkList');
   list.innerHTML='<div class="empty-st">Loading…</div>';
   // Unsubscribe previous listener if any
@@ -1971,24 +2081,38 @@ window.saveModify = async () => {
 
 // ── FIRESTORE GALLERY LOAD ──
 async function loadFirestoreGallery(){
+  if(!db){
+    window._firestoreGallery = [];
+    requestGalleryRender();
+    return;
+  }
   try{
     const snap = await getDocs(collection(db,'gallery'));
     window._firestoreGallery = snap.docs.map(d=>{
       const data = { id:d.id, ...d.data() };
-      const normalized = normalizeGalleryItem(data);
+      const normalized = normalizeGalleryRecordForModule(data);
       if(GALLERY_TAXONOMY && GALLERY_TAXONOMY.needsGalleryNormalization(data)){
         updateDoc(doc(db,'gallery',d.id),{
+          mediaType: normalized.mediaType || 'photo',
+          poster: normalized.poster || '',
+          posterOffset: normalized.posterOffset != null ? normalized.posterOffset : null,
+          featured: !!normalized.featured,
           service: normalized.service,
           serviceKey: normalized.serviceKey,
           eventCategory: normalized.eventCategory,
           eventCategoryKey: normalized.eventCategoryKey,
-          filterKeys: normalized.filterKeys
+          filterKeys: normalized.filterKeys,
+          storyLabel: normalized.storyLabel || '',
+          durationLabel: normalized.durationLabel || ''
         }).catch(()=>{});
       }
       return normalized;
     });
-    renderDynGallery();
-  }catch(e){renderDynGallery();}
+    requestGalleryRender();
+  }catch(e){
+    window._firestoreGallery = [];
+    requestGalleryRender();
+  }
 }
 window.loadFirestoreGallery=loadFirestoreGallery;
 
@@ -1996,22 +2120,33 @@ window.loadFirestoreGallery=loadFirestoreGallery;
 window.loadSvcGallery = async (name) => {
   document.getElementById('glTtl').textContent=name;
   document.getElementById('glCount').textContent='';
-  document.getElementById('glGrid').innerHTML='<div class="gl-empty">Loading photos…</div>';
+  document.getElementById('glGrid').innerHTML='<div class="gl-empty">Loading gallery media…</div>';
   openGl();
   try{
     const svcKey=GALLERY_TAXONOMY ? GALLERY_TAXONOMY.getServiceKey(name) : name;
     const snap=await getDocs(collection(db,'gallery'));
     const fbImgs=snap.docs
       .map(d=>normalizeGalleryItem(d.data()))
-      .filter(img=>img.serviceKey===svcKey)
-      .map(img=>({url:img.url,caption:img.caption||name}));
-    const staticImgs=(window._svcPhotos[name]||[]).map(u=>({url:u,caption:name}));
+      .filter(img=>img.serviceKey===svcKey);
+    const staticImgs=(window._svcPhotos[name]||[]).map((u, index)=>normalizeGalleryItem({
+      id:`svc-${svcKey}-${index}`,
+      url:u,
+      caption:name,
+      service:name,
+      eventCategory:'General'
+    }));
     const all=[...fbImgs,...staticImgs];
+    window._galleryCollections.service = all;
     window._glImgs=all;
-    document.getElementById('glCount').textContent=`${all.length} photo${all.length!==1?'s':''}`;
-    if(!all.length){document.getElementById('glGrid').innerHTML='<div class="gl-empty">No photos yet for this service.</div>';return;}
-    document.getElementById('glGrid').innerHTML=all.map((img,i)=>`<div class="gl-item" onclick="openViewer(${i})"><img src="${img.url}" alt="${img.caption}" loading="lazy"/><div class="gl-item-lbl">${img.caption}</div><button class="gl-zoom-btn" onclick="event.stopPropagation();openViewer(${i})">🔍</button></div>`).join('');
-  }catch(err){document.getElementById('glGrid').innerHTML='<div class="gl-empty">Could not load photos.</div>';}
+    document.getElementById('glCount').textContent=`${all.length} visual${all.length!==1?'s':''}`;
+    if(!all.length){document.getElementById('glGrid').innerHTML='<div class="gl-empty">No gallery media yet for this service.</div>';return;}
+    document.getElementById('glGrid').innerHTML=all.map((img,i)=>`
+      <div class="gl-item" onclick="openViewer(${i}, 'service')">
+        <img src="${getMediaPoster(img)}" alt="${img.caption||name}" loading="lazy"/>
+        <div class="gl-item-lbl">${img.caption || name}</div>
+        <button class="gl-zoom-btn" onclick="event.stopPropagation();openViewer(${i}, 'service')">${isVideoMedia(img)?'▶':'🔍'}</button>
+      </div>`).join('');
+  }catch(err){document.getElementById('glGrid').innerHTML='<div class="gl-empty">Could not load gallery media.</div>';}
 };
 
 // ── REVIEWS ──
@@ -2034,6 +2169,7 @@ const FALLBACK_REVS=[
 ];
 async function loadReviews(){
   try{
+    if(!db) throw new Error('Firebase unavailable');
     const snap=await getDocs(query(collection(db,'reviews'),where('approved','==',true)));
     const revs=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
     if(revs.length){
@@ -2042,18 +2178,18 @@ async function loadReviews(){
       document.getElementById('revAvgCount').textContent=`Based on ${revs.length} verified review${revs.length!==1?'s':''}`;
       document.getElementById('revAvgStars').innerHTML=Array.from({length:5},(_,i)=>`<span>${i<Math.round(avg)?'★':'☆'}</span>`).join('');
       document.getElementById('revGrid').innerHTML=revs.map(r=>makeRevCard(r)).join('');
-      initRevCarousel(revs.length);
+      requestReviewCarousel(revs.length);
     } else {
       document.getElementById('revAvgNum').textContent='5.0';
       document.getElementById('revAvgCount').textContent='Based on verified reviews';
       document.getElementById('revGrid').innerHTML=FALLBACK_REVS.map(r=>makeRevCard(r)).join('');
-      initRevCarousel(FALLBACK_REVS.length);
+      requestReviewCarousel(FALLBACK_REVS.length);
     }
   }catch(e){
     document.getElementById('revAvgNum').textContent='5.0';
     document.getElementById('revAvgCount').textContent='Based on verified reviews';
     document.getElementById('revGrid').innerHTML=FALLBACK_REVS.map(r=>makeRevCard(r)).join('');
-    initRevCarousel(FALLBACK_REVS.length);
+    requestReviewCarousel(FALLBACK_REVS.length);
   }
 }
 window.loadReviews=loadReviews;
@@ -2062,6 +2198,7 @@ window.loadReviews=loadReviews;
 
 // ── CUSTOMER NOTIFICATIONS ──
 function loadCustomerNotifications(uid){
+  if(!db) return;
   // Use simple where query to avoid composite index requirement
   const q=query(collection(db,'notifications'),where('userId','==',uid));
   onSnapshot(q,snap=>{
@@ -2075,11 +2212,12 @@ function loadCustomerNotifications(uid){
   });
 }
 window.readNotif=async(id)=>{
+  if(!db) return;
   try{await updateDoc(doc(db,'notifications',id),{read:true});}catch(e){}
 };
 window.markAllRead=async(e)=>{
   e.stopPropagation();
-  if(!currentUser)return;
+  if(!currentUser || !db)return;
   const snap=await getDocs(query(collection(db,'notifications'),where('userId','==',currentUser.uid)));
   snap.docs.filter(d=>!d.data().read).forEach(d=>updateDoc(doc(db,'notifications',d.id),{read:true}));
 };
@@ -2158,14 +2296,13 @@ function initServices(){
   }).join('');
 }
 
-// ── CATEGORY GALLERY ──
 const STATIC_GALLERY=[
-  {url:'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=800&q=80',caption:'Lotus Flower Mandapam',eventCategory:'Wedding',service:'Luxury Decor & Styling'},
-  {url:'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=800&q=80',caption:'Grand Kalyana Mandapam',eventCategory:'Wedding',service:'Luxury Decor & Styling'},
-  {url:'https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=800&q=80',caption:'Floral Wedding Stage',eventCategory:'Wedding',service:'Luxury Decor & Styling'},
+  {url:'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=800&q=80',caption:'Lotus Flower Mandapam',eventCategory:'Wedding',service:'Luxury Decor & Styling',featured:true,storyLabel:'Wedding Story'},
+  {url:'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=800&q=80',caption:'Grand Kalyana Mandapam',eventCategory:'Wedding',service:'Luxury Decor & Styling',storyLabel:'Wedding Story'},
+  {url:'https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=800&q=80',caption:'Floral Wedding Stage',eventCategory:'Wedding',service:'Luxury Decor & Styling',storyLabel:'Wedding Story'},
   {url:'https://images.unsplash.com/photo-1606216794074-735e91aa2c92?w=800&q=80',caption:'Wedding Photography',eventCategory:'Wedding',service:'Professional Photography'},
   {url:'https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=800&q=80',caption:'Fairy Light Reception',eventCategory:'Wedding',service:'Premium Lighting Design'},
-  {url:'https://images.unsplash.com/photo-1529543544282-ea669407fca3?w=800&q=80',caption:'Bridal Floral Setup',eventCategory:'Engagement',service:'Luxury Decor & Styling'},
+  {url:'https://images.unsplash.com/photo-1529543544282-ea669407fca3?w=800&q=80',caption:'Bridal Floral Setup',eventCategory:'Engagement',service:'Luxury Decor & Styling',featured:true,storyLabel:'Engagement Story'},
   {url:'https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=800&q=80',caption:'Engagement Photography',eventCategory:'Engagement',service:'Professional Photography'},
   {url:'https://images.unsplash.com/photo-1561489413-985b06da5bee?w=800&q=80',caption:'Rose Petal Decor',eventCategory:'Engagement',service:'Luxury Decor & Styling'},
   {url:'https://images.unsplash.com/photo-1520854221256-17452cc3a785?w=800&q=80',caption:'Baby Shower Decor',eventCategory:'Baby Shower',service:'Luxury Decor & Styling'},
@@ -2176,50 +2313,62 @@ const STATIC_GALLERY=[
   {url:'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=800&q=80',caption:'Birthday Live Music',eventCategory:'Birthday',service:'Live Music & Entertainment'},
   {url:'https://images.unsplash.com/photo-1478146059778-26028b07395a?w=800&q=80',caption:'Anniversary Decor',eventCategory:'Anniversary',service:'Luxury Decor & Styling'},
   {url:'https://images.unsplash.com/photo-1567337710282-00832b415979?w=800&q=80',caption:'Anniversary Dinner',eventCategory:'Anniversary',service:'Gourmet Catering'},
-  // Reception
-  {url:'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=800&q=80',caption:'Grand Reception Hall',eventCategory:'Reception',service:'Complete Event Management'},
+  {url:'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=800&q=80',caption:'Grand Reception Hall',eventCategory:'Reception',service:'Complete Event Management',featured:true,storyLabel:'Reception Story'},
   {url:'https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=800&q=80',caption:'Reception Lighting Setup',eventCategory:'Reception',service:'Premium Lighting Design'},
-  {url:'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=800&q=80',caption:'Reception Floral Decor',eventCategory:'Reception',service:'Luxury Decor & Styling'},
-  // Sangeet
   {url:'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=800&q=80',caption:'Sangeet Night Stage',eventCategory:'Sangeet',service:'Live Music & Entertainment'},
   {url:'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800&q=80',caption:'Sangeet Lighting & Decor',eventCategory:'Sangeet',service:'Premium Lighting Design'},
-  // Mehendi
   {url:'https://images.unsplash.com/photo-1529543544282-ea669407fca3?w=800&q=80',caption:'Mehendi Ceremony Decor',eventCategory:'Mehendi',service:'Luxury Decor & Styling'},
-  {url:'https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=800&q=80',caption:'Mehendi Stage Setup',eventCategory:'Mehendi',service:'Luxury Decor & Styling'},
-  {url:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80',caption:'Housewarming Floral Entrance',eventCategory:'Housewarming',service:'Luxury Decor & Styling'},
+  {url:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80',caption:'Marigold Haldi Stage',eventCategory:'Haldi',service:'Luxury Decor & Styling',featured:true,storyLabel:'Haldi Story'},
   {url:'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80',caption:'Elegant Home Decor',eventCategory:'Housewarming',service:'Luxury Decor & Styling'},
-  {url:'https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=800&q=80',caption:'Housewarming Celebration',eventCategory:'Housewarming',service:'Complete Event Management'},
   {url:'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=800&q=80',caption:'Corporate Gala Setup',eventCategory:'Corporate',service:'Complete Event Management'},
-  {url:'https://images.unsplash.com/photo-1555244162-803834f70033?w=800&q=80',caption:'Corporate Catering',eventCategory:'Corporate',service:'Gourmet Catering'},
-  {url:'https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=800&q=80',caption:'Corporate Live Stage',eventCategory:'Corporate',service:'Live Music & Entertainment'},
-  // Haldi
-  {url:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80',caption:'Marigold Haldi Stage',eventCategory:'Haldi',service:'Luxury Decor & Styling'},
-  {url:'https://images.unsplash.com/photo-1529543544282-ea669407fca3?w=800&q=80',caption:'Haldi Floral Canopy',eventCategory:'Haldi',service:'Luxury Decor & Styling'},
-  {url:'https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=800&q=80',caption:'Folk Haldi Decor',eventCategory:'Haldi',service:'Luxury Decor & Styling'},
-  {url:'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=800&q=80',caption:'Vibrant Haldi Setup',eventCategory:'Haldi',service:'Luxury Decor & Styling'},
-  // Logistics
-  {url:'https://images.unsplash.com/photo-1520854221256-17452cc3a785?w=800&q=80',caption:'Event Setup Crew',eventCategory:'Logistics',service:'Logistics Services'},
-  {url:'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=800&q=80',caption:'Venue Preparation',eventCategory:'Logistics',service:'Logistics Services'},
-  {url:'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=800&q=80',caption:'Equipment Coordination',eventCategory:'Logistics',service:'Logistics Services'},
-  // Photography
-  {url:'https://images.unsplash.com/photo-1606216794074-735e91aa2c92?w=800&q=80',caption:'Wedding Candid Photography',eventCategory:'Photography',service:'Professional Photography'},
-  {url:'https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=800&q=80',caption:'Portrait Session',eventCategory:'Photography',service:'Professional Photography'},
-  {url:'https://images.unsplash.com/photo-1591604466107-ec97de577aff?w=800&q=80',caption:'Event Videography',eventCategory:'Photography',service:'Professional Photography'},
   {url:'https://images.unsplash.com/photo-1532712938310-34cb3982ef74?w=800&q=80',caption:'Drone Aerial Shot',eventCategory:'Photography',service:'Professional Photography'},
-  {url:'https://images.unsplash.com/photo-1537633552985-df8429e8048b?w=800&q=80',caption:'Reception Candids',eventCategory:'Photography',service:'Professional Photography'},
-  // Cradle Ceremony
-  {url:'https://images.unsplash.com/photo-1555252333-9f8e92e65df9?w=800&q=80',caption:'Cradle Ceremony Decor',eventCategory:'Cradle Ceremony',service:'Luxury Decor & Styling'},
-  {url:'https://images.unsplash.com/photo-1519689373023-dd07c7988603?w=800&q=80',caption:'Baby\'s First Celebration',eventCategory:'Cradle Ceremony',service:'Complete Event Management'},
-  {url:'https://images.unsplash.com/photo-1544126592-807ade215a0b?w=800&q=80',caption:'Floral Cradle Setup',eventCategory:'Cradle Ceremony',service:'Luxury Decor & Styling'},
-  {url:'https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?w=800&q=80',caption:'Naming & Cradle Celebration',eventCategory:'Cradle Ceremony',service:'Complete Event Management'},
+  {url:'https://images.unsplash.com/photo-1555252333-9f8e92e65df9?w=800&q=80',caption:'Cradle Ceremony Decor',eventCategory:'Cradle Ceremony',service:'Luxury Decor & Styling'}
 ].map(item=>normalizeGalleryItem(item));
 window._firestoreGallery=[];
+window._galleryCollections={all:[],active:[],service:[]};
 let activeCatFilter='all';
 let galleryExpanded=false;
 const GALLERY_INITIAL_COUNT=10;
 
 function normalizeGalleryItem(item){
-  return GALLERY_TAXONOMY ? GALLERY_TAXONOMY.normalizeGalleryItem(item) : { ...item };
+  const normalized=GALLERY_TAXONOMY ? GALLERY_TAXONOMY.normalizeGalleryItem(item) : { ...item };
+  const poster = isVideoMedia(normalized)
+    ? deriveCloudinaryPoster(normalized.url, normalized.posterOffset != null ? normalized.posterOffset : normalized.durationLabel) || normalized.poster || ''
+    : (normalized.poster || normalized.url || '');
+  return { ...normalized, poster };
+}
+
+function parsePosterOffset(value){
+  if(GALLERY_TAXONOMY && typeof GALLERY_TAXONOMY.parsePosterOffset === 'function'){
+    return GALLERY_TAXONOMY.parsePosterOffset(value);
+  }
+  return null;
+}
+
+function deriveCloudinaryPoster(url, offsetSeconds){
+  if(typeof url !== 'string' || url.indexOf('/video/upload/') === -1) return '';
+  const offset=parsePosterOffset(offsetSeconds);
+  const transform=offset !== null ? `so_${offset}` : 'so_0';
+  return url
+    .replace('/video/upload/',`/video/upload/${transform}/`)
+    .replace(/\.(mp4|mov|webm|m4v)(\?.*)?$/i,'.jpg$2');
+}
+
+function isVideoMedia(item){
+  return item && (item.mediaType === 'reel' || item.mediaType === 'video');
+}
+
+function getMediaBadge(item){
+  if(!item) return 'Photo';
+  if(item.mediaType === 'reel') return 'Short Reel';
+  if(item.mediaType === 'video') return 'Highlight Film';
+  return 'Photo';
+}
+
+function getMediaPoster(item){
+  if(!item) return '';
+  const posterOffset = item.posterOffset != null ? item.posterOffset : item.durationLabel;
+  return (isVideoMedia(item) ? deriveCloudinaryPoster(item.url, posterOffset) : '') || item.poster || item.url || '';
 }
 
 function matchesGalleryFilter(item, filterKey){
@@ -2228,14 +2377,25 @@ function matchesGalleryFilter(item, filterKey){
 
 function getGalleryData(){
   const firestoreImgs=window._firestoreGallery||[];
-  return firestoreImgs.length ? firestoreImgs : STATIC_GALLERY;
+  const normalizeSource = (source) => source
+    .map((item, index)=>{
+      const normalized = normalizeGalleryItem(item);
+      return {
+        ...normalized,
+        id: normalized.id || item.id || `gallery-${index}`
+      };
+    })
+    .filter(item=>item && item.url);
+  const firestoreSource = normalizeSource(firestoreImgs);
+  if(firestoreSource.length) return firestoreSource;
+  return normalizeSource(STATIC_GALLERY);
 }
 
 function initGalleryFilters(){
   const wrap=document.getElementById('galleryFilterChips');
   if(!wrap || !GALLERY_TAXONOMY) return;
   wrap.innerHTML=GALLERY_TAXONOMY.galleryFilters.map(filter=>`
-    <button class="cat-btn${filter.key==='all'?' active':''}" data-filter-key="${filter.key}" onclick="filterGallery('${filter.key}',this)">
+    <button class="cat-btn${filter.key==='all'?' active':''}" data-filter-key="${filter.key}" onclick="filterGallery('${filter.key}', this)">
       ${filter.icon ? filter.icon + ' ' : ''}${filter.label}
     </button>`).join('');
 }
@@ -2258,42 +2418,59 @@ function initGalleryReveal(){
 
 function renderDynGallery(){
   const combined=getGalleryData();
-  const filtered=activeCatFilter==='all'?combined:combined.filter(item=>matchesGalleryFilter(item, activeCatFilter));
+  const filtered=activeCatFilter==='all' ? combined : combined.filter(item=>matchesGalleryFilter(item, activeCatFilter));
   const grid=document.getElementById('dynGalleryGrid');
   const moreWrap=document.getElementById('galViewMoreWrap');
   const moreBtn=document.getElementById('galViewMoreBtn');
+  const meta=document.getElementById('galleryResultsMeta');
   if(!grid) return;
+
+  window._galleryCollections.all = combined;
+  window._galleryCollections.active = filtered;
+
+  if(meta){
+    const filterCatalog = GALLERY_TAXONOMY && Array.isArray(GALLERY_TAXONOMY.galleryFilters) ? GALLERY_TAXONOMY.galleryFilters : [];
+    const activeLabel = activeCatFilter === 'all'
+      ? 'All gallery highlights'
+      : (filterCatalog.find(filter=>filter.key===activeCatFilter)?.label || 'Filtered selection');
+    meta.textContent = `${activeLabel} · ${filtered.length} visual${filtered.length!==1?'s':''}`;
+  }
+
   if(!filtered.length){
     window._glImgs=[];
-    grid.innerHTML='<div class="gal-empty-msg">No photos in this category yet. Check back soon! 📸</div>';
-    if(moreWrap)moreWrap.style.display='none';
+    grid.innerHTML='<div class="gal-empty-msg">No visuals in this collection yet. Upload a new photo or reel from the admin gallery to bring this category to life.</div>';
+    if(moreWrap) moreWrap.style.display='none';
     return;
   }
 
-  const displayItems=galleryExpanded ? filtered : filtered.slice(0,GALLERY_INITIAL_COUNT);
-  window._glImgs=displayItems.map(item=>({
-    url:item.url,
-    caption:[item.caption||'', item.eventCategory||''].filter(Boolean).join(' · ')
-  }));
+  const displayItems = galleryExpanded ? filtered : filtered.slice(0,GALLERY_INITIAL_COUNT);
+  window._glImgs = filtered;
 
   grid.innerHTML=displayItems.map((item,i)=>`
-    <div class="dyn-item" onclick="openViewer(${i})">
-      <img src="${item.url}" alt="${item.caption||''}" loading="${i<6?'eager':'lazy'}"/>
+    <div class="dyn-item" onclick="openViewer(${i}, 'active')">
+      <div class="dyn-media">
+        <img class="dyn-thumb" src="${getMediaPoster(item)}" alt="${item.caption||''}" loading="${i<4?'eager':'lazy'}"/>
+      </div>
       <div class="dyn-lbl">
-        <span class="dyn-caption">${item.caption||''}</span>
-        <span class="dyn-cat">${item.eventCategory||''}</span>
-        <button class="dyn-view-btn" onclick="event.stopPropagation();openViewer(${i})">View Project</button>
+        <div class="dyn-meta">
+          <span class="dyn-badge">${getMediaBadge(item)}</span>
+          <span class="dyn-cat">${item.eventCategory || 'Signature Event'}</span>
+        </div>
+        <span class="dyn-caption">${item.caption || item.storyLabel || 'Curated event frame'}</span>
+        <span class="dyn-service">${item.service || 'Luxury event production'}</span>
+        <button class="dyn-view-btn" onclick="event.stopPropagation();openViewer(${i}, 'active')">View Media</button>
       </div>
       <div class="dyn-watermark">www.happenhaus.com</div>
     </div>`).join('');
 
   if(moreWrap){
-    const hasMore=filtered.length>GALLERY_INITIAL_COUNT;
-    moreWrap.style.display=hasMore?'block':'none';
-    if(moreBtn) moreBtn.textContent=galleryExpanded ? 'Show Less' : `View All (${filtered.length})`;
+    const hasMore = filtered.length > GALLERY_INITIAL_COUNT;
+    moreWrap.style.display = hasMore ? 'block' : 'none';
+    if(moreBtn) moreBtn.textContent = galleryExpanded ? 'Show Less' : `View More (${filtered.length})`;
   }
   initGalleryReveal();
 }
+window.renderDynGallery = renderDynGallery;
 
 window.toggleGalleryExpansion=()=>{
   galleryExpanded=!galleryExpanded;
@@ -2303,83 +2480,84 @@ window.toggleGalleryExpansion=()=>{
   }
 };
 
-window.filterGallery=(filterKey,btn)=>{
+window.filterGallery=(filterKey, btn)=>{
   activeCatFilter=filterKey;
   galleryExpanded=false;
   document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));
-  if(btn)btn.classList.add('active');
+  const activeBtn = btn || document.querySelector(`.cat-btn[data-filter-key="${filterKey}"]`);
+  if(activeBtn) activeBtn.classList.add('active');
   renderDynGallery();
+  document.getElementById('dynGalleryGrid')?.scrollIntoView({behavior:'smooth',block:'start'});
 };
 
-// ── FULLSCREEN GALLERY MODAL ──
-let galModalIdx=0;
-window.openGalleryModal=()=>{
-  galModalIdx=0;
-  document.getElementById('galModal').classList.add('open');
-  document.body.style.overflow='hidden';
-  galModalShow();
-};
-window.closeGalleryModal=()=>{document.getElementById('galModal').classList.remove('open');document.body.style.overflow='';};
-window.galModalNav=(dir)=>{
-  galModalIdx=(galModalIdx+dir+window._glImgs.length)%window._glImgs.length;
-  galModalShow();
-};
-function galModalShow(){
-  const img=window._glImgs[galModalIdx];if(!img)return;
-  const el=document.getElementById('galModalImg');
-  el.classList.add('sliding');
-  setTimeout(()=>{
-    el.src=img.url;
-    el.alt=img.caption||'';
-    el.classList.remove('sliding');
-  },200);
-  document.getElementById('galModalCounter').textContent=`${galModalIdx+1} / ${window._glImgs.length}`;
-  // Dots (show up to 7)
-  const dotsEl=document.getElementById('galModalDots');
-  if(dotsEl && window._glImgs.length<=20){
-    dotsEl.innerHTML=window._glImgs.map((_,i)=>`<div class="gal-mdot${i===galModalIdx?' active':''}" onclick="galModalIdx=${i};galModalShow()"></div>`).join('');
-  } else if(dotsEl){ dotsEl.innerHTML=''; }
-}
-// Keyboard nav for modal
 document.addEventListener('keydown',e=>{
-  if(document.getElementById('galModal').classList.contains('open')){
-    if(e.key==='ArrowRight') galModalNav(1);
-    if(e.key==='ArrowLeft') galModalNav(-1);
-    if(e.key==='Escape') closeGalleryModal();
-  }
-  if(document.getElementById('glViewer').classList.contains('open')){
+  const viewer=document.getElementById('glViewer');
+  if(viewer && viewer.classList.contains('open')){
     if(e.key==='ArrowRight') viewNav(1);
     if(e.key==='ArrowLeft') viewNav(-1);
     if(e.key==='Escape') closeViewer();
   }
 });
-// Touch/swipe for gallery modal
-(()=>{
-  let ts=0,tx=0;
-  const m=document.getElementById('galModal');
-  if(!m)return;
-  m.addEventListener('touchstart',e=>{ts=Date.now();tx=e.touches[0].clientX;},{passive:true});
-  m.addEventListener('touchend',e=>{
-    if(Date.now()-ts>500)return;
-    const dx=e.changedTouches[0].clientX-tx;
-    if(Math.abs(dx)>50)galModalNav(dx<0?1:-1);
-  },{passive:true});
-})();
 
 // ── SERVICE GALLERY OVERLAY ──
 function openGl(){document.getElementById('glOv').classList.add('open');document.body.style.overflow='hidden';}
 window.closeGl=()=>{document.getElementById('glOv').classList.remove('open');document.body.style.overflow='';}
 window._glImgs=[];let vIdx=0;
-window.openViewer=(i)=>{vIdx=i;showViewer();};
+window.openViewer=(i, sourceKey)=>{
+  const source = sourceKey && window._galleryCollections[sourceKey] ? window._galleryCollections[sourceKey] : window._glImgs;
+  if(source && source.length) window._glImgs = source;
+  vIdx=i;
+  showViewer();
+};
 function showViewer(){
-  const img=window._glImgs[vIdx];if(!img)return;
-  document.getElementById('glVImg').src=img.url;
-  document.getElementById('glVCap').textContent=img.caption||'';
-  document.getElementById('glVCtr').textContent=`${vIdx+1} / ${window._glImgs.length}`;
+  const item=window._glImgs[vIdx];if(!item)return;
+  const imgEl=document.getElementById('glVImg');
+  const videoEl=document.getElementById('glVVideo');
+  const titleEl=document.getElementById('glVTitle');
+  const kickerEl=document.getElementById('glVKicker');
+  const capEl=document.getElementById('glVCap');
+  const metaEl=document.getElementById('glVMeta');
+  const ctrEl=document.getElementById('glVCtr');
+  if(isVideoMedia(item)){
+    imgEl.style.display='none';
+    imgEl.src='';
+    videoEl.style.display='block';
+    videoEl.src=item.url;
+    if(item.poster) videoEl.poster=item.poster;
+    else videoEl.removeAttribute('poster');
+    videoEl.currentTime=0;
+    videoEl.play().catch(()=>{});
+  } else {
+    videoEl.pause();
+    videoEl.removeAttribute('src');
+    videoEl.load();
+    videoEl.style.display='none';
+    imgEl.style.display='block';
+    imgEl.src=getMediaPoster(item) || item.url;
+    imgEl.alt=item.caption||'';
+  }
+  kickerEl.textContent=getMediaBadge(item);
+  titleEl.textContent=item.caption || item.storyLabel || item.eventCategory || 'HAPPENHAUS Gallery';
+  capEl.textContent=`${item.service || 'Luxury event production'}${item.eventCategory ? ' · ' + item.eventCategory : ''}${item.storyLabel ? ' · ' + item.storyLabel : ''}`;
+  metaEl.innerHTML=[
+    item.eventCategory ? `<span class="gl-v-chip">${item.eventCategory}</span>` : '',
+    item.service ? `<span class="gl-v-chip">${item.service}</span>` : '',
+    item.durationLabel ? `<span class="gl-v-chip">${item.durationLabel}</span>` : '',
+    item.mediaType === 'reel' ? `<span class="gl-v-chip">Vertical Reel</span>` : '',
+    item.mediaType === 'video' ? `<span class="gl-v-chip">Highlight Video</span>` : ''
+  ].filter(Boolean).join('');
+  ctrEl.textContent=`${vIdx+1} / ${window._glImgs.length}`;
   document.getElementById('glViewer').classList.add('open');
   document.body.style.overflow='hidden';
 }
-window.closeViewer=()=>{document.getElementById('glViewer').classList.remove('open');if(!document.getElementById('glOv').classList.contains('open'))document.body.style.overflow='';};
+window.closeViewer=()=>{
+  const videoEl=document.getElementById('glVVideo');
+  videoEl.pause();
+  videoEl.removeAttribute('src');
+  videoEl.load();
+  document.getElementById('glViewer').classList.remove('open');
+  if(!document.getElementById('glOv').classList.contains('open'))document.body.style.overflow='';
+};
 window.viewNav=(d)=>{vIdx=(vIdx+d+window._glImgs.length)%window._glImgs.length;showViewer();};
 
 // ── LOCATION DETECT ──
@@ -2656,6 +2834,7 @@ function initRevCarousel(total){
   updateReviewTrack();
   startRevAuto();
 }
+window.initRevCarousel=initRevCarousel;
 
 function goRevSlide(n){
   if(!revCards.length)return;

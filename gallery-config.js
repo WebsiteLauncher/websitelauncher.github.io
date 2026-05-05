@@ -76,6 +76,7 @@
 
   var galleryFilters = [
     { key: 'all', label: 'All', icon: '🎊', type: 'all' },
+    { key: 'reels', label: 'Reels', icon: '🎬', type: 'media' },
     { key: 'wedding', label: 'Wedding', icon: '💍', type: 'event' },
     { key: 'reception', label: 'Reception', icon: '🎉', type: 'event' },
     { key: 'engagement', label: 'Engagement', icon: '💝', type: 'event' },
@@ -118,13 +119,45 @@
     return match ? match.key : slugify(value || '');
   }
 
+  function normalizeMediaType(value) {
+    var normalized = slugify(value || '');
+    if (normalized === 'reel' || normalized === 'short-reel' || normalized === 'short-video') return 'reel';
+    if (normalized === 'video' || normalized === 'highlight-video' || normalized === 'film') return 'video';
+    return 'photo';
+  }
+
+  function toBool(value) {
+    return value === true || value === 'true' || value === 1 || value === '1';
+  }
+
+  function parsePosterOffset(value) {
+    if (typeof value === 'number' && isFinite(value) && value >= 0) return Math.floor(value);
+    var raw = String(value || '').trim();
+    if (!raw) return null;
+    if (/^\d+(\.\d+)?$/.test(raw)) return Math.max(0, Math.floor(parseFloat(raw)));
+    if (/^\d+[sS]$/.test(raw)) return Math.max(0, parseInt(raw, 10));
+    if (!/^\d{1,2}:\d{2}(:\d{2})?$/.test(raw)) return null;
+    var parts = raw.split(':').map(function (part) { return parseInt(part, 10); });
+    if (parts.some(function (part) { return isNaN(part); })) return null;
+    if (parts.length === 2) return (parts[0] * 60) + parts[1];
+    return (parts[0] * 3600) + (parts[1] * 60) + parts[2];
+  }
+
   function normalizeGalleryItem(item) {
+    var mediaType = normalizeMediaType(item && item.mediaType);
     var normalizedService = normalizeService(item && item.service);
     var normalizedCategory = normalizeEventCategory(item && item.eventCategory);
     var serviceKey = getServiceKey(normalizedService);
     var eventCategoryKey = getEventCategoryKey(normalizedCategory);
-    var filterKeys = Array.from(new Set([eventCategoryKey, serviceKey].filter(Boolean)));
+    var mediaFilterKey = mediaType === 'photo' ? '' : 'reels';
+    var filterKeys = Array.from(new Set([eventCategoryKey, serviceKey, mediaFilterKey].filter(Boolean)));
     return Object.assign({}, item, {
+      mediaType: mediaType,
+      poster: item && item.poster ? item.poster : '',
+      posterOffset: parsePosterOffset(item && item.posterOffset != null ? item.posterOffset : item && item.durationLabel),
+      featured: toBool(item && item.featured),
+      storyLabel: item && item.storyLabel ? String(item.storyLabel).trim() : '',
+      durationLabel: item && item.durationLabel ? String(item.durationLabel).trim() : '',
       service: normalizedService,
       serviceKey: serviceKey,
       eventCategory: normalizedCategory,
@@ -142,12 +175,14 @@
       item.eventCategory !== normalized.eventCategory ||
       item.serviceKey !== normalized.serviceKey ||
       item.eventCategoryKey !== normalized.eventCategoryKey ||
+      parsePosterOffset(item.posterOffset) !== normalized.posterOffset ||
       currentKeys !== normalizedKeys;
   }
 
   function matchesGalleryFilter(item, filterKey) {
     if (!filterKey || filterKey === 'all') return true;
     var normalized = normalizeGalleryItem(item);
+    if (filterKey === 'reels') return normalized.mediaType === 'reel' || normalized.mediaType === 'video';
     return normalized.filterKeys.indexOf(filterKey) !== -1;
   }
 
@@ -158,8 +193,10 @@
     galleryFilters: galleryFilters,
     normalizeEventCategory: normalizeEventCategory,
     normalizeService: normalizeService,
+    normalizeMediaType: normalizeMediaType,
     getEventCategoryKey: getEventCategoryKey,
     getServiceKey: getServiceKey,
+    parsePosterOffset: parsePosterOffset,
     normalizeGalleryItem: normalizeGalleryItem,
     needsGalleryNormalization: needsGalleryNormalization,
     matchesGalleryFilter: matchesGalleryFilter
