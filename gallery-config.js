@@ -75,26 +75,26 @@
   ]);
 
   var galleryFilters = [
-    { key: 'all', label: 'All', icon: '🎊', type: 'all' },
-    { key: 'reels', label: 'Reels', icon: '🎬', type: 'media' },
-    { key: 'wedding', label: 'Wedding', icon: '💍', type: 'event' },
-    { key: 'reception', label: 'Reception', icon: '🎉', type: 'event' },
-    { key: 'engagement', label: 'Engagement', icon: '💝', type: 'event' },
-    { key: 'sangeet', label: 'Sangeet', icon: '🎶', type: 'event' },
-    { key: 'mehendi', label: 'Mehendi', icon: '🌿', type: 'event' },
-    { key: 'haldi', label: 'Haldi', icon: '🌼', type: 'event' },
-    { key: 'baby-shower', label: 'Baby Shower', icon: '👶', type: 'event' },
-    { key: 'birthday', label: 'Birthday', icon: '🎂', type: 'event' },
-    { key: 'anniversary', label: 'Anniversary', icon: '🌹', type: 'event' },
-    { key: 'housewarming', label: 'Housewarming', icon: '🏠', type: 'event' },
-    { key: 'corporate', label: 'Corporate', icon: '🏢', type: 'event' },
-    { key: 'farewell', label: 'Farewell', icon: '👋', type: 'event' },
-    { key: 'naming-ceremony', label: 'Naming', icon: '🍼', type: 'event' },
-    { key: 'cradle-ceremony', label: 'Cradle Ceremony', icon: '🌸', type: 'event' },
-    { key: 'logistics', label: 'Logistics', icon: '🚚', type: 'event' },
-    { key: 'photography', label: 'Photography', icon: '📷', type: 'event' },
-    { key: 'live-music-entertainment', label: 'Live Music and Entertainment', icon: '🎵', type: 'service' },
-    { key: 'premium-lighting-design', label: 'Premium Lighting Design', icon: '✨', type: 'service' }
+    { key: 'all', label: 'All', icon: '🎊', type: 'all', priority: 1, group: 'primary', featured: true },
+    { key: 'reels', label: 'Reels', icon: '🎬', type: 'media', priority: 2, group: 'primary', featured: true },
+    { key: 'wedding', label: 'Wedding', icon: '💍', type: 'event', priority: 3, group: 'primary', featured: true },
+    { key: 'reception', label: 'Reception', icon: '🎉', type: 'event', priority: 4, group: 'primary', featured: true },
+    { key: 'engagement', label: 'Engagement', icon: '💝', type: 'event', priority: 5, group: 'primary', featured: true },
+    { key: 'birthday', label: 'Birthday', icon: '🎂', type: 'event', priority: 6, group: 'primary', featured: true },
+    { key: 'corporate', label: 'Corporate', icon: '🏢', type: 'event', priority: 7, group: 'primary', featured: true },
+    { key: 'premium-lighting-design', label: 'Lighting', icon: '✨', type: 'service', priority: 8, group: 'primary', featured: true },
+    { key: 'photography', label: 'Photography', icon: '📷', type: 'event', priority: 19, group: 'more' },
+    { key: 'sangeet', label: 'Sangeet', icon: '🎶', type: 'event', priority: 20, group: 'more' },
+    { key: 'mehendi', label: 'Mehendi', icon: '🌿', type: 'event', priority: 21, group: 'more' },
+    { key: 'haldi', label: 'Haldi', icon: '🌼', type: 'event', priority: 22, group: 'more' },
+    { key: 'baby-shower', label: 'Baby Shower', icon: '👶', type: 'event', priority: 23, group: 'more' },
+    { key: 'anniversary', label: 'Anniversary', icon: '🌹', type: 'event', priority: 24, group: 'more' },
+    { key: 'housewarming', label: 'Housewarming', icon: '🏠', type: 'event', priority: 25, group: 'more' },
+    { key: 'farewell', label: 'Farewell', icon: '👋', type: 'event', priority: 26, group: 'more' },
+    { key: 'naming-ceremony', label: 'Naming', icon: '🍼', type: 'event', priority: 27, group: 'more' },
+    { key: 'cradle-ceremony', label: 'Cradle Ceremony', icon: '🌸', type: 'event', priority: 28, group: 'more' },
+    { key: 'logistics', label: 'Logistics', icon: '🚚', type: 'event', priority: 29, group: 'more' },
+    { key: 'live-music-entertainment', label: 'Live Music', icon: '🎵', type: 'service', priority: 30, group: 'more' }
   ];
 
   function normalizeEventCategory(value) {

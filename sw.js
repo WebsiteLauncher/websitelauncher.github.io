@@ -1,5 +1,5 @@
-// HAPPENHAUS — Service Worker v6
-const CACHE_NAME = 'happenhaus-v6';
+// HAPPENHAUS — Service Worker v13
+const CACHE_NAME = 'happenhaus-v13';
 const OFFLINE_URL = './index.html';
 
 self.addEventListener('install', e => {
